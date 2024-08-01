@@ -1,0 +1,21 @@
+                                
+#ignore ALL files
+*
+/.idea
+#Exclude these
+!.gitignore
+!.myfuncs
+!*/
+!Dockerfile
+!*.tf
+!*.c
+!*.md
+!*.sh
+!*.py
+!Makefile
+!*.h
+!*.html
+!*.css
+!*Jenkinsfile
+!*.tfvars
+
