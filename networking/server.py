@@ -11,12 +11,38 @@ def start_server():
         client_socket, addr = server_socket.accept()
         print(f"Connection from {addr} has been established.")
         
-        # Simulate a delay in response
-        time.sleep(60)  # 1 minute delay
-        
-        # Respond to the client
-        response = "Server response after delay"
-        client_socket.sendall(response.encode('utf-8'))
+        data_received = 0
+        buffer = b""
+        try:
+            while True:
+                part = client_socket.recv(1024)
+                if not part:
+                    break
+                buffer += part
+                data_received += len(part)
+                print(f"Received data: {data_received} bytes")
+                
+                # Simulate window full scenario
+                if data_received >= 65535:
+                    print("Server buffer full, introducing delay...")
+                    time.sleep(10)  # Short delay
+                    break
+
+            # Send "Are you still listening?" message
+            message = "Are you still listening?"
+            client_socket.sendall(message.encode('utf-8'))
+
+            # Receive the client's response to the "Are you still listening?" message
+            ack = client_socket.recv(1024).decode('utf-8')
+            print(f"Received acknowledgment: {ack}")
+
+            # Final response to the client
+            final_response = "Server response after delay"
+            client_socket.sendall(final_response.encode('utf-8'))
+
+        except Exception as e:
+            print(f"Exception: {e}")
+
         client_socket.close()
 
 if __name__ == "__main__":
