@@ -6,7 +6,7 @@
 !.gitignore
 !.myfuncs
 !*/
-!Dockerfile
+!dockerfile
 !*.tf
 !*.c
 !*.md
