@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/"${env.YOUR_USERNAME}/${env.YOUR_REPO}.git"'
+                git branch: 'main', url: 'https://github.com/${env.YOUR_USERNAME}/${env.YOUR_REPO}.git'
             }
         }
         stage('Lint Test') {

@@ -1,0 +1,11 @@
+# Use the official Apache HTTP Server image from the Docker Hub
+FROM httpd:2.4
+
+# Copy custom configuration file (if any)
+# COPY ./my-httpd.conf /usr/local/apache2/conf/httpd.conf
+
+# Copy the website content
+COPY ./webapp/webpage.html /usr/local/apache2/htdocs/
+
+# Expose the port Apache is running on
+EXPOSE 80
