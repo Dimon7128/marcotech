@@ -2,7 +2,7 @@ pipeline {
     agent agent
 
     environment {
-        // Define environment variables here
+        // Define    environment variables here
         ECR_REPO_URL  = '295257193777.dkr.ecr.eu-west-3.amazonaws.com'
         DOCKER_IMAGE  = 'ecs-static-site:latest'
         YOUR_USERNAME = 'Dimon7128'
