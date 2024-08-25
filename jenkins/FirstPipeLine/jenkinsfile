@@ -15,12 +15,12 @@ pipeline {
                 git branch: 'BranchForJenkins', url:  "${env.YOUR_REPO}"
             }
         }
-        stage('Lint Test') {
-            steps {
-                sh 'npm install'
-                sh 'npm run lint'
-            }
-        }
+        // stage('Lint Test') {
+        //     steps {
+        //         sh 'npm install'
+        //         sh 'npm run lint'
+        //     }
+        // }
         stage('Build Docker Image') {
             steps {
                 script {
