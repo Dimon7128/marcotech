@@ -4,9 +4,9 @@
 /.idea
 #Exclude these
 !.gitignore
-!.myfuncs
 !*/
-!Dockerfile
+!.myfuncs
+!dockerfile
 !*.tf
 !*.c
 !*.md
