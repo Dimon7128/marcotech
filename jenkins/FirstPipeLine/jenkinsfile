@@ -1,0 +1,41 @@
+pipeline {
+    agent agent
+
+    environment {
+        // Define environment variables here
+        ECR_REPO_URL  = '295257193777.dkr.ecr.eu-west-3.amazonaws.com'
+        DOCKER_IMAGE  = 'ecs-static-site:latest'
+        YOUR_USERNAME = 'Dimon7128'
+        YOUR_REPO     = 'https://github.com/Dimon7128/marcotech.git'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/"${YOUR_USERNAME}/${YOUR_REPO}"'
+            }
+        }
+        stage('Lint Test') {
+            steps {
+                sh 'npm install'
+                sh 'npm run lint'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
+                }
+            }
+        }
+        stage('Push to ECR') {
+            steps {
+                script {
+                    docker.withRegistry("https://${ECR_REPO_URL}", 'ecr-credentials-id') {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+    }
+}
