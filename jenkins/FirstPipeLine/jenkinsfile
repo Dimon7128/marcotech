@@ -6,13 +6,13 @@ pipeline {
         ECR_REPO_URL  = '295257193777.dkr.ecr.eu-west-3.amazonaws.com'
         DOCKER_IMAGE  = 'ecs-static-site:latest'
         YOUR_USERNAME = 'Dimon7128'
-        YOUR_REPO     = 'https://github.com/Dimon7128/marcotech.git'
+        YOUR_REPO     = 'https://github.com/Dimon7128/marcotech'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/"${YOUR_USERNAME}/${YOUR_REPO}"'
+                git branch: 'main', url: 'https://github.com/"${env.YOUR_USERNAME}/${envYOUR_REPO}.git"'
             }
         }
         stage('Lint Test') {
