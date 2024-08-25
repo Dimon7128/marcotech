@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/"${YOUR_USERNAME}/${YOUR_REPO}"'
+                git branch: 'main', url: 'https://github.com/"${YOUR_USERNAME}/${YOUR_REPO}/jenkins/FirstPipeLine"'
             }
         }
         stage('Lint Test') {
