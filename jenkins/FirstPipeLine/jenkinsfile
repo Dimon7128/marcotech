@@ -1,5 +1,5 @@
 pipeline {
-    agent agent
+    agent any
 
     environment {
         // Define    environment variables here
@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/"${YOUR_USERNAME}/${YOUR_REPO}/jenkins/FirstPipeLine"'
+                git branch: 'main', url: 'https://github.com/"${YOUR_USERNAME}/${YOUR_REPO}"'
             }
         }
         stage('Lint Test') {
