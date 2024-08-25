@@ -16,6 +16,6 @@
 !*.h
 !*.html
 !*.css
-!*Jenkinsfile
+!*jenkinsfile
 !.tfvars
 
