@@ -7,8 +7,7 @@ pipeline {
         BRANCH        = 'BranchForJenkins'
     }
        stages {
-        
-        stages {
+    
         stage('Checkout') {
             steps {
                 git branch: "${BRANCH}", url: "${GIT_REPO}"
@@ -37,7 +36,7 @@ pipeline {
             }
         }
     }
-}
+
 
 //  pipeline {
    
