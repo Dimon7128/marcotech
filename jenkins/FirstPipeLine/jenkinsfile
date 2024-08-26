@@ -1,10 +1,10 @@
 pipeline {
     agent any
     environment {
-        ECR_REPO_URL  = '295257193777.dkr.ecr.eu-west-3.amazonaws.com'
-        DOCKER_IMAGE  = 'ecs-static-site'
-        GIT_REPO      = 'https://github.com/Dimon7128/marcotech.git'
-        BRANCH        = 'BranchForJenkins'
+        DOCKER_HUB_URL = 'dimabu/simplewebserver'
+        DOCKER_TAG     = 'latest'
+        GIT_REPO       = 'https://github.com/Dimon7128/marcotech.git'
+        BRANCH         = 'BranchForJenkins'
     }
        stages {
     
@@ -26,10 +26,17 @@ pipeline {
                 sh 'htmlhint ./jenkins/FirstPipeLine/simple_web_app/index.html'
             }
         }
-        stage('Push to ECR') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    docker.withRegistry("https://${ECR_REPO_URL}", 'ecr-credentials-id') {
+                    dockerImage = docker.build("${DOCKER_HUB_URL}:${DOCKER_TAG}")
+                }
+            }
+        }
+        sstage('Push to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('', 'dockerhub-credentials-id') {
                         dockerImage.push()
                     }
                 }
