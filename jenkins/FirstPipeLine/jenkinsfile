@@ -6,14 +6,6 @@ pipeline {
         GIT_REPO      = 'https://github.com/Dimon7128/marcotech.git'
         BRANCH        = 'BranchForJenkins'
     }
-
-
-    stages {
-        stage('Checkout') {
-            steps {
-                git branch: "${BRANCH}", url:  "${env.YOUR_REPO}"
-            }
-        }
        stages {
         stage('Checkout') {
             steps {
@@ -45,7 +37,7 @@ pipeline {
         }
     }
 }
-}
+
 //  pipeline {
    
 
