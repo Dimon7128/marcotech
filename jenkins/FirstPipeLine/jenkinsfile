@@ -7,7 +7,7 @@ pipeline {
         BRANCH        = 'BranchForJenkins'
     }
        stages {
-        stage('Checkout') {
+        stage('Checko  ut') {
             steps {
                 git branch: "${BRANCH}", url: "${GIT_REPO}"
             }
@@ -26,15 +26,15 @@ pipeline {
                 }
             }
         }
-        stage('Push to ECR') {
-            steps {
-                script {
-                    docker.withRegistry("https://${ECR_REPO_URL}", 'ecr-credentials-id') {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
+        // stage('Push to ECR') {
+        //     steps {
+        //         script {
+        //             docker.withRegistry("https://${ECR_REPO_URL}", 'ecr-credentials-id') {
+        //                 dockerImage.push()
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
 
