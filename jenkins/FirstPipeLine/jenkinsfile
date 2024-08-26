@@ -7,10 +7,14 @@ pipeline {
         BRANCH        = 'BranchForJenkins'
     }
        stages {
-        stage('Checko  ut') {
-            steps {
-                git branch: "${BRANCH}", url: "${GIT_REPO}"
-            }
+        stage('Checkout') {
+            script {
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: "${BRANCH}"]],
+                        userRemoteConfigs: [[url: "${GIT_REPO}"]]
+                    ])
+                }
         }
 
         stage('Lint Test') {
