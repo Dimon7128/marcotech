@@ -5,6 +5,7 @@ pipeline {
         DOCKER_TAG     = 'latest'
         GIT_REPO       = 'https://github.com/Dimon7128/marcotech.git'
         BRANCH         = 'BranchForJenkins'
+        EC2_HOST       = 'ubuntu@172.31.4.146'
     }
        stages {
     
@@ -44,8 +45,25 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to EC2') {
+            steps {
+                script {
+                    sshagent (credentials: ['dimipimi']) {
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ${EC2_HOST} << EOF
+                            docker stop WebServer || true
+                            docker container prune -f
+                            docker pull ${DOCKER_HUB_URL}:${DOCKER_TAG}
+                            docker run -d --name WebServer -p 80:80 ${DOCKER_HUB_URL}:${DOCKER_TAG}
+                        EOF
+                        """
+                    }
+                }
+            }
+        }
     }
-}
+    }
+
 
 
 //  pipeline {
