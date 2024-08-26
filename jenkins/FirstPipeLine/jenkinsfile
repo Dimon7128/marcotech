@@ -1,26 +1,32 @@
 pipeline {
     agent any
-
     environment {
-        // Define    environment variables here
         ECR_REPO_URL  = '295257193777.dkr.ecr.eu-west-3.amazonaws.com'
-        DOCKER_IMAGE  = 'ecs-static-site:latest'
-        YOUR_USERNAME = 'Dimon7128'
-        YOUR_REPO     = 'https://github.com/Dimon7128/marcotech.git'
+        DOCKER_IMAGE  = 'ecs-static-site'
+        GIT_REPO      = 'https://github.com/Dimon7128/marcotech.git'
+        BRANCH        = 'BranchForJenkins'
     }
+
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'BranchForJenkins', url:  "${env.YOUR_REPO}"
+                git branch: "${BRANCH}", url:  "${env.YOUR_REPO}"
             }
         }
-        // stage('Lint Test') {
-        //     steps {
-        //         sh 'npm install'
-        //         sh 'npm run lint'
-        //     }
-        // }
+       stages {
+        stage('Checkout') {
+            steps {
+                git branch: "${BRANCH}", url: "${GIT_REPO}"
+            }
+        }
+
+        stage('Lint Test') {
+            steps {
+                sh 'pip install pylint'
+                sh 'pylint app.py'
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
@@ -39,3 +45,61 @@ pipeline {
         }
     }
 }
+// pipeline {
+   
+
+
+//         stage('Build Docker Image') {
+//             steps {
+//                 script {
+//                     dockerImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
+//                 }
+//             }
+//         }
+
+//         stage('Login to ECR') {
+//             steps {
+//                 script {
+//                     sh """
+//                         aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin ${ECR_REPO_URL}
+//                     """
+//                 }
+//             }
+//         }
+
+//         stage('Push to ECR') {
+//             steps {
+//                 script {
+//                     docker.withRegistry("https://${ECR_REPO_URL}", 'ecr-credentials-id') {
+//                         dockerImage.push("${env.BUILD_ID}")
+//                         dockerImage.push("latest")
+//                     }
+//                 }
+//             }
+//         }
+
+//         stage('Deploy to EC2') {
+//             steps {
+//                 sshagent (credentials: ['ec2-ssh-credentials']) {
+//                     sh '''
+//                     ssh -o StrictHostKeyChecking=no ec2-user@<ec2-app-ip> << EOF
+//                     docker stop app-container || true
+//                     docker rm app-container || true
+//                     docker pull ${ECR_REPO_URL}/${DOCKER_IMAGE}:latest
+//                     docker run -d --name app-container -p 80:80 ${ECR_REPO_URL}/${DOCKER_IMAGE}:latest
+//                     EOF
+//                     '''
+//                 }
+//             }
+//         }
+//     }
+
+//     post {
+//         success {
+//             echo 'Pipeline completed successfully!'
+//         }
+//         failure {
+//             echo 'Pipeline failed!'
+//         }
+//     }
+// }
