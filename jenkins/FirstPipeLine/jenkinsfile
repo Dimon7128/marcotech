@@ -23,7 +23,7 @@ pipeline {
 
         stage('Lint Test') {
             steps {
-                sh 'htmlhint ./simple_web_app/index.html'
+                sh 'htmlhint ./jenkins/agent/workspace/deploy-from-ecr/jenkins/FirstPipeLine/simple_web_app/index.html'
             }
         }
         stage('Push to ECR') {
