@@ -16,7 +16,8 @@ pipeline {
 
         stage('Install HTMLHint') {
             steps {
-                sh 'npm install -g htmlhint'
+                sh 'ls -a'
+                sh 'sudo npm install -g htmlhint'
             }
         }
 
