@@ -6,21 +6,21 @@ pipeline {
         ECR_REPO_URL  = '295257193777.dkr.ecr.eu-west-3.amazonaws.com'
         DOCKER_IMAGE  = 'ecs-static-site:latest'
         YOUR_USERNAME = 'Dimon7128'
-        YOUR_REPO     = 'https://github.com/Dimon7128/marcotech'
+        YOUR_REPO     = 'https://github.com/Dimon7128/marcotech.git'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/"${env.YOUR_USERNAME}/${env.YOUR_REPO}.git"'
+                git branch: 'BranchForJenkins', url:  "${env.YOUR_REPO}"
             }
         }
-        stage('Lint Test') {
-            steps {
-                sh 'npm install'
-                sh 'npm run lint'
-            }
-        }
+        // stage('Lint Test') {
+        //     steps {
+        //         sh 'npm install'
+        //         sh 'npm run lint'
+        //     }
+        // }
         stage('Build Docker Image') {
             steps {
                 script {

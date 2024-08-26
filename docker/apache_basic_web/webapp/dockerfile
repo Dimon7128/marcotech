@@ -1,0 +1,14 @@
+# Use a minimal base image
+FROM alpine:3.12
+
+# Install necessary packages
+#RUN apk add --no-cache bash
+
+# Create a directory for the web content
+RUN mkdir -p /usr/local/apache2/htdocs/
+
+# Copy the web content
+COPY ./webapp/webpage.html /usr/local/apache2/htdocs/
+
+# Start a simple HTTP server to serve the content
+CMD ["sh", "-c", "cd /usr/local/apache2/htdocs/ && httpd -f -h ."]
