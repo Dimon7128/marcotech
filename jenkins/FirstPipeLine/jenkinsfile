@@ -18,7 +18,6 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'ls -a'
-                sh 'sudo npm install -g htmlhint'
             }
         }
 
