@@ -7,16 +7,18 @@ pipeline {
         BRANCH        = 'BranchForJenkins'
     }
        stages {
+        
+        stages {
         stage('Checkout') {
-            steps{
-            script {
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: "${BRANCH}"]],
-                        userRemoteConfigs: [[url: "${GIT_REPO}"]]
-                    ])
-                }
+            steps {
+                git branch: "${BRANCH}", url: "${GIT_REPO}"
+            }
         }
+
+        stage('Install HTMLHint') {
+            steps {
+                sh 'npm install -g htmlhint'
+            }
         }
 
         stage('Lint Test') {
@@ -24,22 +26,16 @@ pipeline {
                 sh 'htmlhint ./simple_web_app/index.html'
             }
         }
-        stage('Build Docker Image') {
+    }
+        stage('Push to ECR') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
+                    docker.withRegistry("https://${ECR_REPO_URL}", 'ecr-credentials-id') {
+                        dockerImage.push()
+                    }
                 }
             }
         }
-        // stage('Push to ECR') {
-        //     steps {
-        //         script {
-        //             docker.withRegistry("https://${ECR_REPO_URL}", 'ecr-credentials-id') {
-        //                 dockerImage.push()
-        //             }
-        //         }
-        //     }
-        // }
     }
 }
 
