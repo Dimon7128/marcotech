@@ -25,7 +25,6 @@ pipeline {
                 sh 'htmlhint ./simple_web_app/index.html'
             }
         }
-    }
         stage('Push to ECR') {
             steps {
                 script {
@@ -36,6 +35,7 @@ pipeline {
             }
         }
     }
+}
 
 
 //  pipeline {
