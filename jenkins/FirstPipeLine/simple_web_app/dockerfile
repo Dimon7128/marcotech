@@ -1,0 +1,15 @@
+# Use the official Nginx base image
+FROM nginx:alpine
+
+# Remove the default Nginx welcome page
+RUN rm /usr/share/nginx/html/index.html
+
+# Copy the custom HTML file to the Nginx web server directory
+COPY index.html /usr/share/nginx/html/
+
+# Add a script to replace the placeholder with the actual instance name
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Set the startup command to the script
+CMD ["/start.sh"]
