@@ -15,8 +15,7 @@ pipeline {
 
         stage('Lint Test') {
             steps {
-                sh 'pip install pylint'
-                sh 'pylint app.py'
+                sh 'htmlhint ./simple_web_app/index.html'
             }
         }
         stage('Build Docker Image') {
