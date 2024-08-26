@@ -25,15 +25,15 @@ pipeline {
                 }
             }
         }
-        // stage('Push to ECR') {
-        //     steps {
-        //         script {
-        //             docker.withRegistry("https://${ECR_REPO_URL}", 'ecr-credentials-id') {
-        //                 dockerImage.push()
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Push to ECR') {
+            steps {
+                script {
+                    docker.withRegistry("https://${ECR_REPO_URL}", 'ecr-credentials-id') {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -49,49 +49,4 @@ pipeline {
 //             }
 //         }
 
-//         stage('Login to ECR') {
-//             steps {
-//                 script {
-//                     sh """
-//                         aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin ${ECR_REPO_URL}
-//                     """
-//                 }
-//             }
-//         }
-
-//         stage('Push to ECR') {
-//             steps {
-//                 script {
-//                     docker.withRegistry("https://${ECR_REPO_URL}", 'ecr-credentials-id') {
-//                         dockerImage.push("${env.BUILD_ID}")
-//                         dockerImage.push("latest")
-//                     }
-//                 }
-//             }
-//         }
-
-//         stage('Deploy to EC2') {
-//             steps {
-//                 sshagent (credentials: ['ec2-ssh-credentials']) {
-//                     sh '''
-//                     ssh -o StrictHostKeyChecking=no ec2-user@<ec2-app-ip> << EOF
-//                     docker stop app-container || true
-//                     docker rm app-container || true
-//                     docker pull ${ECR_REPO_URL}/${DOCKER_IMAGE}:latest
-//                     docker run -d --name app-container -p 80:80 ${ECR_REPO_URL}/${DOCKER_IMAGE}:latest
-//                     EOF
-//                     '''
-//                 }
-//             }
-//         }
-//     }
-
-//     post {
-//         success {
-//             echo 'Pipeline completed successfully!'
-//         }
-//         failure {
-//             echo 'Pipeline failed!'
-//         }
-//     }
-// }
+    |
