@@ -45,24 +45,23 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to EC2') {
-            steps {
-                script {
-                    sshagent (credentials: ['dimipimi']) {
-                        sh """
-                        ssh -o StrictHostKeyChecking=no ${EC2_HOST} << EOF
-                            docker stop WebServer || true
-                            docker container prune -f
-                            docker pull ${DOCKER_HUB_URL}:${DOCKER_TAG}
-                            TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
-                            docker run -d -p 80:80 --name WebServer -e INSTANCE_NAME=$(curl -H "X-aws-ec2-metadata-token: \$TOKEN" http://169.254.169.254/l
-                            atest/meta-data/instance-id) ${DOCKER_HUB_URL}:${DOCKER_TAG}
-                        EOF
-                        """
-                    }
-                }
+     stage('Deploy to EC2') {
+    steps {
+        script {
+            sshagent (credentials: ['dimipimi']) {
+                sh """
+                ssh -o StrictHostKeyChecking=no ${EC2_HOST} << 'EOF'
+                    docker stop WebServer || true
+                    docker container prune -f
+                    docker pull ${DOCKER_HUB_URL}:${DOCKER_TAG}
+                    TOKEN=\$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+                    docker run -d -p 80:80 --name WebServer -e INSTANCE_NAME=\$(curl -H "X-aws-ec2-metadata-token: \$TOKEN" http://169.254.169.254/latest/meta-data/instance-id) ${DOCKER_HUB_URL}:${DOCKER_TAG}
+                EOF
+                """
             }
         }
+    }
+    }
     }
     }
 
