@@ -20,7 +20,7 @@ pipeline {
         stage('Install HTMLHint') {
             steps {
                 sh 'pwd'
-                sh 'ls -a'
+                //sh 'ls -a'
                 // sh 'npm install -g htmlhint'
                 // sh 'htmlhint --version' // Verify installation
             }
