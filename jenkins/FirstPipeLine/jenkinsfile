@@ -21,8 +21,8 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'ls -a'
-                sh 'npm install -g htmlhint'
-                sh 'htmlhint --version' // Verify installation
+                // sh 'npm install -g htmlhint'
+                // sh 'htmlhint --version' // Verify installation
             }
         }
 
