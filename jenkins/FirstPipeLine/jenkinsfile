@@ -34,7 +34,9 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    echo "Starting Docker build..."
                     dockerImage = docker.build("${DOCKER_HUB_URL}:${DOCKER_TAG}", "./jenkins/FirstPipeLine/simple_web_app")
+                    echo "Docker build completed successfully."
                 }
             }
         }
