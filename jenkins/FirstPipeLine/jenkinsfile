@@ -26,6 +26,8 @@ pipeline {
 
         stage('Lint Test') {
             steps {
+                sh 'npm install -g htmlhint'
+                sh 'htmlhint --version'
                 sh 'htmlhint ./jenkins/FirstPipeLine/simple_web_app/index.html'
             }
         }
