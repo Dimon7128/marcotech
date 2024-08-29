@@ -18,7 +18,7 @@
 !*.css
 !*jenkinsfile
 !.tfvars
-!.*yaml
-!.*ini
+!*.yaml
+!*.ini
 
 

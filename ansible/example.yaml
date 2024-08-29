@@ -1,0 +1,89 @@
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+
+
+- name: Configure Web Servers
+  hosts: webservers
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+
+- name: Deploy Web Application
+  hosts: webservers
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+    - name: Start Nginx
+      service:
+        name: nginx
+        state: started
+    - name: Copy Website Files
+      copy:
+        src: /path/to/website/files/
+        dest: /var/www/html/
+
+
+        
+
+
+
+
+  all:
+    vars:
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
+
+    children:
+      webservers:
+        hosts:
+          web1:
+            ansible_host: 192.168.1.101
+            ansible_user: ubuntu
+          web2:
+            ansible_host: 192.168.1.102
+            ansible_user: ubuntu
+
+      dbservers:
+        hosts:
+          db1:
+            ansible_host: 192.168.1.201
+            ansible_user: root
+          db2:
+            ansible_host: 192.168.1.202
+            ansible_user: root
+
+
+
+
+
+- hosts: webservers
+  become: yes
+  tasks:
+    - name: Ensure Apache is installed
+      apt:
+        name: apache2
+        state: present
+
+    - name: Start Apache service
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Deploy index.html
+      copy:
+        src: /local/path/to/index.html
+        dest: /var/www/html/index.html
+
+
+ 
+
+
+
+
