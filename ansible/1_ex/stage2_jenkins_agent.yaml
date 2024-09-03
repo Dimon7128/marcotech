@@ -1,0 +1,81 @@
+- hosts: jenkins_agent
+  become: yes
+  tasks:
+    - name: Create dependencies.txt for Docker image
+      copy:
+        content: |
+          #!/bin/sh
+          apt-get update
+          apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+          apt-get install -y nodejs npm
+          npm install -g htmlhint
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sh get-docker.sh
+        dest: /tmp/dependencies.txt
+
+    - name: Create Dockerfile for Jenkins Agent
+      copy:
+        content: |
+          FROM jenkins/inbound-agent
+          ENV JENKINS_URL=http://{{ jenkins_master_ip }}:8080/
+          ENV JENKINS_SECRET={{ jenkins_secret }}
+          ENV JENKINS_AGENT_NAME=Agent
+          ENV JENKINS_WORKDIR=/home/jenkins/agent
+          
+          USER root
+          
+          # Copy dependencies.txt to the container
+          COPY dependencies.txt /tmp/dependencies.txt
+          
+          # Run the dependencies.txt file to install all necessary dependencies
+          RUN chmod +x /tmp/dependencies.txt && /bin/sh /tmp/dependencies.txt
+          
+          # Copy Jenkins agent jar
+          RUN curl -sO ${JENKINS_URL}jnlpJars/agent.jar
+          
+          # Entry point
+          ENTRYPOINT ["/bin/sh", "-c", "while true; do java -jar agent.jar -url ${JENKINS_URL} -secret ${JENKINS_SECRET} -name ${JENKINS_AGENT_NAME} -workDir ${JENKINS_WORKDIR}; sleep 10; done"]
+        dest: /tmp/Dockerfile
+
+    - name: Build custom Jenkins Agent Docker image
+      command: docker build -t custom-jenkins-agent /tmp/
+
+    - name: Run Jenkins Agent container
+      docker_container:
+        name: jenkins-agent
+        image: custom-jenkins-agent
+        state: started
+        restart_policy: unless-stopped
+        init: yes
+        privileged: yes
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+- hosts: webserver
+  become: yes
+  tasks:
+    - name: Pull simplewebserver Docker image
+      docker_image:
+        name: dimabu/simplewebserver:latest
+        source: pull
+
+    - name: Get AWS EC2 Metadata Token
+      shell: |
+        TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+        echo $TOKEN
+      register: aws_metadata_token
+
+    - name: Get EC2 Instance ID using Metadata Token
+      shell: |
+        curl -H "X-aws-ec2-metadata-token: {{ aws_metadata_token.stdout }}" http://169.254.169.254/latest/meta-data/instance-id
+      register: ec2_instance_id
+
+    - name: Run the Docker container with the instance ID as an environment variable
+      shell: |
+        sudo docker run -d -p 80:80 --name webserver \
+        -e INSTANCE_NAME={{ ec2_instance_id.stdout }} \
+        dimabu/simplewebserver:latest
+      register: docker_run_output
+
+    - name: Display the Docker run command output
+      debug:
+        var: docker_run_output.stdout
