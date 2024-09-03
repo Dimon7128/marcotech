@@ -19,6 +19,11 @@ variable "agent_sg_id" {
   type = string
 }
 
-variable "master_sg_id" {
+
+variable "key_name" {
+  type = string
+}
+
+variable "aws_vpc" {
   type = string
 }
