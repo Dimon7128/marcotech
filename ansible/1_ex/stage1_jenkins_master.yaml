@@ -1,0 +1,62 @@
+- hosts: jenkins_master, jenkins_agent, webserver
+  serial: 1
+  become: yes
+  tasks:
+    - name: Update apt and install Docker
+      apt:
+        update_cache: yes
+        name: docker.io
+        state: present
+
+    - name: Start and enable Docker service
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add user to Docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    # - name: Activate new group membership
+    #   shell: newgrp docker
+
+- hosts: jenkins_master
+  become: yes
+  tasks:
+    - name: Pull Jenkins Master Docker image
+      docker_image:
+        name: jenkins/jenkins
+        source: pull
+
+    - name: Run Jenkins Master container
+      docker_container:
+        name: jenkins-master
+        image: jenkins/jenkins:2.471
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "8080:8080"
+          - "50000:50000"
+        volumes:
+          - jenkins_home:/var/jenkins_home
+        init: yes
+        privileged: yes
+
+    - name: Wait for Jenkins to start
+      pause:
+        minutes: 2
+      wait_for:
+        port: 8080
+        host: "{{ ansible_host }}"
+        timeout: 300
+
+    - name: Get Jenkins initial admin password
+      command: docker exec -it jenkins-master cat /var/jenkins_home/secrets/initialAdminPassword
+      register: jenkins_initial_password
+
+    - name: Output Jenkins initial admin password
+      debug:
+        msg: "Jenkins initial admin password is: {{ jenkins_initial_password.stdout }}"
