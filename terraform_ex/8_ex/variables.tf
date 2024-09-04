@@ -13,7 +13,7 @@ variable "availability_zone" {
 variable "ami" {
   description = "The ID of the AMI to use for the EC2 instances"
   type        = string
-  default     = "ami-0abcdef1234567890"  # Replace with your desired AMI ID
+  default     = "ami-04a92520784b93e73"  # Replace with your desired AMI ID
 }
 
 variable "vpc_cidr" {
@@ -31,5 +31,5 @@ variable "subnet_cidr" {
 variable "key_name" {
   description = "Name of the PEM key"
   type = string 
-  default = "dimipimi.pem"
+  default = "dimipimi"
 }

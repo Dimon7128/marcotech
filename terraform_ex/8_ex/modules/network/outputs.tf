@@ -15,6 +15,6 @@ output "aws_vpc" {
     value = aws_vpc.main.id
 }
 
-# output "master_sg_id" {
-#   value = aws_security_group.master_sg.id
-# }
+output "master_sg_id" {
+  value = aws_security_group.master_sg.id
+}

@@ -27,3 +27,7 @@ variable "key_name" {
 variable "aws_vpc" {
   type = string
 }
+
+variable "master_sg_id" {
+  type = string
+}

@@ -1,0 +1,19 @@
+FROM jenkins/inbound-agent
+ENV JENKINS_URL=http://{{ jenkins_master_ip }}:8080/
+ENV JENKINS_SECRET={{ jenkins_secret }}
+ENV JENKINS_AGENT_NAME=Agent
+ENV JENKINS_WORKDIR=/home/jenkins/agent
+
+USER root
+
+# Copy dependencies.sh to the container
+COPY dependencies.sh /tmp/dependencies.sh
+
+# Run the dependencies.sh file to install all necessary dependencies
+RUN chmod +x /tmp/dependencies.sh && /bin/sh /tmp/dependencies.sh
+
+# Copy Jenkins agent jar
+RUN curl -sO ${JENKINS_URL}jnlpJars/agent.jar
+
+# Entry point
+ENTRYPOINT ["/bin/sh", "-c", "while true; do java -jar agent.jar -url ${JENKINS_URL} -secret ${JENKINS_SECRET} -name ${JENKINS_AGENT_NAME} -workDir ${JENKINS_WORKDIR}; sleep 10; done"]

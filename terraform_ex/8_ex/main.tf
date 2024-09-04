@@ -18,4 +18,5 @@ module "compute" {
   agent_sg_id  = module.network.agent_sg_id
   aws_vpc      = module.network.aws_vpc
   key_name     = var.key_name 
+  master_sg_id = module.network.master_sg_id
 }
