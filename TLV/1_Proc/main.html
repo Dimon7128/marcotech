@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Color Selector</title>
+</head>
+<body>
+    <h1>Select a Color</h1>
+    <select id="colorSelect">
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+        <option value="red">Red</option>
+    </select>
+    <button onclick="changeColor()">Submit</button>
+
+    <script>
+        function changeColor() {
+            const selectedColor = document.getElementById("colorSelect").value;
+            fetch('/update_color', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ color: selectedColor })
+            });
+        }
+    </script>
+</body>
+</html>
