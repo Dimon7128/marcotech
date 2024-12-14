@@ -2,7 +2,7 @@ from flask import Flask, request
 import csv
 
 app = Flask(__name__)
-db_file = "DB/DB.csv"
+db_file = "../DB/DB.csv"
 
 @app.route('/api/update_color', methods=['POST'])
 def update_color():
@@ -14,4 +14,4 @@ def update_color():
     return '', 204
 
 if __name__ == "__main__":
-    app.run(port=5001, debug=False)
+    app.run(port=5001, debug=True)

@@ -4,7 +4,7 @@ import csv
 import threading
 
 app = Flask(__name__)
-db_file = "DB/DB.csv"  # Use an absolute path
+db_file = "../DB/DB.csv"  # Use an absolute path
 current_color = "white"
 lock = threading.Lock()
 
@@ -45,4 +45,4 @@ def update_color():
 # Start the periodic background thread
 if __name__ == "__main__":
     threading.Thread(target=read_color_periodically, daemon=True).start()
-    app.run(port=5002, debug=False)
+    app.run(port=5002, debug=True)
