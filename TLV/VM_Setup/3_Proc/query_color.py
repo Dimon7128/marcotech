@@ -1,48 +1,26 @@
+from flask import Flask, jsonify
+from flask_cors import CORS
+import requests
 import time
-from flask import Flask, jsonify, request
-import csv
-import threading
 
 app = Flask(__name__)
-db_file = "DB/DB.csv"  # Use an absolute path
-current_color = "white"
-lock = threading.Lock()
+CORS(app)
 
-# Periodically read the color from the DB
-def read_color_periodically():
-    global current_color
-    while True:
-        try:
-            with open(db_file, 'r') as file:
-                reader = csv.reader(file)
-                color = next(reader)[0]
-                with lock:
-                    if color != current_color:
-                        current_color = color
-        except Exception as e:
-            print(f"Error reading DB.csv: {e}")
-        time.sleep(20)
+# Update this to point to VM2 where the DB file is
+backend_vm2_api = "http://192.168.1.178:5001/api/get_color"
 
-# Endpoint to fetch the current color
 @app.route('/api/get_color', methods=['GET'])
 def get_color():
-    with lock:
-        return jsonify({'color': current_color})
+    try:
+        # Add 10 second delay
+        time.sleep(10)
+        
+        response = requests.get(backend_vm2_api, timeout=5)
+        response.raise_for_status()
+        return jsonify(response.json())
+    except requests.exceptions.RequestException as e:
+        print(f"Error connecting to Backend VM2: {e}")
+        return jsonify({'color': 'white'})
 
-# Endpoint to update the color in the DB
-@app.route('/api/update_color', methods=['POST'])
-def update_color():
-    global current_color
-    data = request.get_json()
-    color = data.get('color', 'white')
-    with open(db_file, 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([color])
-    with lock:
-        current_color = color
-    return '', 204
-
-# Start the periodic background thread
 if __name__ == "__main__":
-    threading.Thread(target=read_color_periodically, daemon=True).start()
-    app.run(port=5002, debug=False)
+    app.run(host='0.0.0.0', port=5002, debug=False)

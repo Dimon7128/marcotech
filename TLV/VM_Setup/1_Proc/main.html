@@ -24,34 +24,50 @@
     <div id="colorSquare"></div>
 
     <script>
-        // Function to update the color in the DB
-        function changeColor() {
-            const selectedColor = document.getElementById("colorSelect").value;
-            fetch('/api/update_color', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ color: selectedColor })
-            });
-        }
+// Correctly assign endpoints to each backend
+const backendVM1BaseURL = 'http://192.168.1.177:5001'; // Backend VM 1 for updating color
+const backendVM2BaseURL = 'http://192.168.1.178:5002'; // Backend VM 2 for querying color
 
-        // Function to fetch the current color and update the square
-        function updateSquareColor() {
-            fetch('/api/get_color')
-                .then(response => response.json())
-                .then(data => {
-                    const square = document.getElementById('colorSquare');
-                    square.style.backgroundColor = data.color;
-                });
-        }
+// Function to update the color in the DB (uses Backend VM 1)
+function changeColor() {
+    const selectedColor = document.getElementById("colorSelect").value;
+    console.log('Selected color:', selectedColor);
+    fetch(`/api/update_color`, {  // Use relative path
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ color: selectedColor })
+    }).then(() => {
+        console.log('Color updated successfully');
+    }).catch(err => {
+        console.error('Error updating color:', err);
+    });
+}
 
-        // Fetch the current color when the page loads
-        window.onload = () => {
-            updateSquareColor();
-        };
+function updateSquareColor() {
+    console.log('Fetching color...');
+    fetch(`/api/get_color`, {
+        timeout: 15000  // 15 seconds
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Fetched color:', data.color);
+        const square = document.getElementById('colorSquare');
+        square.style.backgroundColor = data.color;
+    })
+    .catch(err => {
+        console.error('Error fetching color:', err);
+    });
+}
 
-        // Periodically update the square's color
-        setInterval(updateSquareColor, 5000);
+// Fetch the current color when the page loads
+window.onload = () => {
+    updateSquareColor();
+};
+
+// Periodically update the square's color
+setInterval(updateSquareColor, 5000);
+
+
     </script>
 </body>
 </html>
-
