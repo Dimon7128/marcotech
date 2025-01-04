@@ -3,71 +3,106 @@
 <head>
     <title>Color Selector</title>
     <style>
-        #colorSquare {
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .color-button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
             width: 100px;
-            height: 100px;
-            margin-top: 20px;
+        }
+        #colorSquare {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
             border: 2px solid black;
+        }
+        #message {
+            color: red;
+            margin: 10px 0;
+        }
+        .manage-link {
+            margin-top: 20px;
+            display: block;
         }
     </style>
 </head>
 <body>
     <h1>Select a Color</h1>
-    <select id="colorSelect">
-        <option value="blue">Blue</option>
-        <option value="green">Green</option>
-        <option value="red">Red</option>
-    </select>
-    <button onclick="changeColor()">Submit</button>
+    <div class="color-grid">
+        <button class="color-button" style="background-color: red;" onclick="selectColor('red')">Red</button>
+        <button class="color-button" style="background-color: blue; color: white;" onclick="selectColor('blue')">Blue</button>
+        <button class="color-button" style="background-color: green; color: white;" onclick="selectColor('green')">Green</button>
+        <button class="color-button" style="background-color: yellow;" onclick="selectColor('yellow')">Yellow</button>
+        <button class="color-button" style="background-color: purple; color: white;" onclick="selectColor('purple')">Purple</button>
+        <button class="color-button" style="background-color: orange;" onclick="selectColor('orange')">Orange</button>
+        <button class="color-button" style="background-color: pink;" onclick="selectColor('pink')">Pink</button>
+        <button class="color-button" style="background-color: brown; color: white;" onclick="selectColor('brown')">Brown</button>
+        <button class="color-button" style="background-color: gray; color: white;" onclick="selectColor('gray')">Gray</button>
+        <button class="color-button" style="background-color: black; color: white;" onclick="selectColor('black')">Black</button>
+        <button class="color-button" style="background-color: white;" onclick="selectColor('white')">White</button>
+        <button class="color-button" style="background-color: cyan;" onclick="selectColor('cyan')">Cyan</button>
+        <button class="color-button" style="background-color: magenta;" onclick="selectColor('magenta')">Magenta</button>
+        <button class="color-button" style="background-color: lime;" onclick="selectColor('lime')">Lime</button>
+        <button class="color-button" style="background-color: teal; color: white;" onclick="selectColor('teal')">Teal</button>
+    </div>
 
-    <!-- Color square -->
+    <div id="message"></div>
     <div id="colorSquare"></div>
+    <a href="update_not_allowed_colors.html" class="manage-link">Manage Not Allowed Colors</a>
 
     <script>
-// Correctly assign endpoints to each backend
-const backendVM1BaseURL = 'http://192.168.1.177:5001'; // Backend VM 1 for updating color
-const backendVM2BaseURL = 'http://192.168.1.178:5002'; // Backend VM 2 for querying color
+        function selectColor(color) {
+            // First check if color is allowed
+            fetch('/api/get_not_allowed')
+            .then(response => response.json())
+            .then(data => {
+                if (data.colors.includes(color)) {
+                    document.getElementById('message').textContent = 'This color is not allowed!';
+                } else {
+                    document.getElementById('message').textContent = '';
+                    // If color is allowed, update DB.csv
+                    fetch('/api/update_color', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ color: color })
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log('Success:', data))
+                    .catch(error => console.error('Error:', error));
+                }
+            })
+            .catch(error => {
+                console.error('Error checking not allowed colors:', error);
+                document.getElementById('message').textContent = 'Error checking color permissions';
+            });
+        }
 
-// Function to update the color in the DB (uses Backend VM 1)
-function changeColor() {
-    const selectedColor = document.getElementById("colorSelect").value;
-    console.log('Selected color:', selectedColor);
-    fetch(`/api/update_color`, {  // Use relative path
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ color: selectedColor })
-    }).then(() => {
-        console.log('Color updated successfully');
-    }).catch(err => {
-        console.error('Error updating color:', err);
-    });
-}
+        // Periodically query for color updates
+        function updateColorSquare() {
+            fetch('/api/get_color')
+            .then(response => response.json())
+            .then(data => {
+                if (data.color) {
+                    document.getElementById('colorSquare').style.backgroundColor = data.color;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
 
-function updateSquareColor() {
-    console.log('Fetching color...');
-    fetch(`/api/get_color`, {
-        timeout: 15000  // 15 seconds
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Fetched color:', data.color);
-        const square = document.getElementById('colorSquare');
-        square.style.backgroundColor = data.color;
-    })
-    .catch(err => {
-        console.error('Error fetching color:', err);
-    });
-}
+        // Initial color load
+        updateColorSquare();
 
-// Fetch the current color when the page loads
-window.onload = () => {
-    updateSquareColor();
-};
-
-// Periodically update the square's color
-setInterval(updateSquareColor, 5000);
-
-
+        // Set up periodic updates every 10 seconds
+        setInterval(updateColorSquare, 10000);
     </script>
 </body>
 </html>

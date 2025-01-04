@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Update this to point to VM2 where the DB file is
-backend_vm2_api = "http://192.168.1.178:5001/api/get_color"
+backend_vm2_api = "http://<IP_update_color>:5001/api/get_color"
 
 @app.route('/api/get_color', methods=['GET'])
 def get_color():
