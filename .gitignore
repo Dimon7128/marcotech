@@ -22,5 +22,6 @@
 !*.ini
 !*.csv
 !*.conf
+!*.tpl
 
 
