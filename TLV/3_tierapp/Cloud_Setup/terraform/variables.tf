@@ -41,3 +41,17 @@ variable "private_ec2_processes" {
     "private_ec2_3" = "private_ec2_3_setup.sh"
   }
 }
+variable "update_color_service_ip" {
+  description = "Private IP of the Update Color service (private_ec2_1)"
+  type        = string
+}
+
+variable "query_color_service_ip" {
+  description = "Private IP of the Query Color service (private_ec2_2)"
+  type        = string
+}
+
+variable "not_allowed_service_ip" {
+  description = "Private IP of the Not Allowed service (private_ec2_3)"
+  type        = string
+}

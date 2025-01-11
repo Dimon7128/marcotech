@@ -82,38 +82,6 @@ resource "aws_route_table_association" "private_assoc" {
   route_table_id = aws_route_table.private_rt.id
 }
 
-resource "aws_instance" "public_ec2" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  subnet_id     = aws_subnet.public.id
-  key_name      = var.key_name
-
-  security_groups = [aws_security_group.public_sg.name]
-
-  tags = {
-    Name = "public-ec2"
-  }
-
-  user_data = file("${path.module}/user_data/public_ec2_setup.sh")
-}
-
-resource "aws_instance" "private_ec2" {
-  for_each = var.private_ec2_processes
-
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  subnet_id     = aws_subnet.private.id
-  key_name      = var.key_name
-
-  security_groups = [aws_security_group.private_sg.name]
-
-  tags = {
-    Name = each.key
-  }
-
-  user_data = file("${path.module}/user_data/${each.value}")
-}
-
 resource "aws_db_instance" "default" {
   allocated_storage    = 20
   engine               = "mysql"
@@ -141,4 +109,90 @@ resource "aws_db_subnet_group" "default" {
   tags = {
     Name = "main-db-subnet-group"
   }
+}
+
+# Local variables to capture private IPs of backend EC2 instances
+locals {
+  update_color_ip  = aws_instance.private_ec2_1.private_ip
+  query_color_ip   = aws_instance.private_ec2_2.private_ip
+  not_allowed_ip   = aws_instance.private_ec2_3.private_ip
+
+  nginx_config = templatefile("${path.module}/templates/nginx.conf.tpl", {
+    update_color_ip = local.update_color_ip
+    query_color_ip  = local.query_color_ip
+    not_allowed_ip  = local.not_allowed_ip
+  })
+}
+
+# Public EC2 Instance with Nginx Configuration
+resource "aws_instance" "public_ec2" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  subnet_id     = aws_subnet.public.id
+  key_name      = var.key_name
+
+  security_groups = [aws_security_group.public_sg.name]
+
+  tags = {
+    Name = "public-ec2"
+  }
+
+  user_data = <<-EOF
+              #!/bin/bash
+              yum update -y
+              yum install -y nginx
+
+              # Deploy Nginx configuration
+              echo '${replace(local.nginx_config, "\n", "\n")}' > /etc/nginx/nginx.conf
+
+              # Start and enable Nginx
+              systemctl enable nginx
+              systemctl start nginx
+              EOF
+}
+
+# Private EC2 Instances
+resource "aws_instance" "private_ec2_1" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  subnet_id     = aws_subnet.private.id
+  key_name      = var.key_name
+
+  security_groups = [aws_security_group.private_sg.name]
+
+  tags = {
+    Name = "private-ec2-1"
+  }
+
+  user_data = file("${path.module}/user_data/private_ec2_1_setup.sh")
+}
+
+resource "aws_instance" "private_ec2_2" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  subnet_id     = aws_subnet.private.id
+  key_name      = var.key_name
+
+  security_groups = [aws_security_group.private_sg.name]
+
+  tags = {
+    Name = "private-ec2-2"
+  }
+
+  user_data = file("${path.module}/user_data/private_ec2_2_setup.sh")
+}
+
+resource "aws_instance" "private_ec2_3" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  subnet_id     = aws_subnet.private.id
+  key_name      = var.key_name
+
+  security_groups = [aws_security_group.private_sg.name]
+
+  tags = {
+    Name = "private-ec2-3"
+  }
+
+  user_data = file("${path.module}/user_data/private_ec2_3_setup.sh")
 }
