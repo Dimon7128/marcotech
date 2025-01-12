@@ -6,13 +6,13 @@ yum install -y python3 git
 pip3 install flask flask-cors requests
 
 # Clone your backend repository
-git clone https://github.com/yourusername/your-backend-repo.git /home/ec2-user/backend
+git clone https://github.com/Dimon7128/marcotech.git /home/ubuntu/backend
 
 # Navigate to the backend directory
-cd /home/ec2-user/backend
+cd /home/ubuntu/backend/TLV/3_tierapp/Cloud_Setup/2_Proc
 
 # Install Python dependencies
 pip3 install -r requirements.txt
 
-# Start the not_allowed_service
-nohup python3 not_allowed_service.py &
+# Start the update_color service
+nohup python3 update_color.py &

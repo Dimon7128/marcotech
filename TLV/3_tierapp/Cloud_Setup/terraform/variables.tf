@@ -1,6 +1,6 @@
 variable "aws_region" {
   description = "AWS Region"
-  default     = "us-east-1"
+  default     = "eu-west-3"
 }
 
 variable "vpc_cidr" {
@@ -25,7 +25,7 @@ variable "instance_type" {
 
 variable "ami_id" {
   description = "AMI ID for EC2 Instances"
-  default     = "ami-0c94855ba95c71c99"  # Example AMI for Amazon Linux 2 in us-east-1
+  default     = "ami-09be70e689bddcef5"  # Example AMI for ubuntu in eu-west-3
 }
 
 variable "key_name" {
@@ -36,9 +36,9 @@ variable "private_ec2_processes" {
   description = "Map of private EC2 instances to their user data scripts"
   type        = map(string)
   default = {
-    "private_ec2_1" = "private_ec2_1_setup.sh"
-    "private_ec2_2" = "private_ec2_2_setup.sh"
-    "private_ec2_3" = "private_ec2_3_setup.sh"
+    "private_ec2_1" = "user_data/2_Proc_init.sh"
+    "private_ec2_2" = "user_data/3_Proc_init.sh"
+    "private_ec2_3" = "user_data/4_Proc_init.sh"
   }
 }
 variable "update_color_service_ip" {
@@ -55,3 +55,27 @@ variable "not_allowed_service_ip" {
   description = "Private IP of the Not Allowed service (private_ec2_3)"
   type        = string
 }
+
+variable "rds_password_length" {
+  description = "Length of the RDS admin password"
+  type        = number
+  default     = 16
+}
+
+variable "rds_password_special" {
+  description = "Include special characters in the RDS admin password"
+  type        = bool
+  default     = true
+}
+
+variable "db_username" {
+  description = "Username for the RDS instance"
+  type        = string
+}
+
+variable "db_password" {
+  description = "Password for the RDS instance"
+  type        = string
+  sensitive   = true
+}
+

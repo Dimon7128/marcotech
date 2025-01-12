@@ -52,7 +52,12 @@ resource "aws_route_table_association" "public_assoc" {
 }
 
 resource "aws_eip" "nat_eip" {
-  vpc = true
+  vpc    = null
+  domain = "vpc"
+
+  tags = {
+    Name = "nat_eip"
+  }
 }
 
 resource "aws_nat_gateway" "nat_gw" {
@@ -82,18 +87,45 @@ resource "aws_route_table_association" "private_assoc" {
   route_table_id = aws_route_table.private_rt.id
 }
 
+# Generate a random password for RDS using variables
+resource "random_password" "rds_password" {
+  length  = var.rds_password_length
+  special = var.rds_password_special
+}
+
+# Create a Secrets Manager Secret to store the RDS password
+resource "aws_secretsmanager_secret" "rds_password_secret" {
+  name        = "rds_colordb_password"
+  description = "Secret for RDS colordb instance password"
+
+  tags = {
+    Environment = "production"
+    Application = "color-selector-app"
+  }
+}
+
+# Add the generated password to the Secrets Manager Secret
+resource "aws_secretsmanager_secret_version" "rds_password_secret_version" {
+  secret_id     = aws_secretsmanager_secret.rds_password_secret.id
+  secret_string = jsonencode({
+    username = "admin"
+    password = random_password.rds_password.result
+  })
+}
+
+# Modify the RDS instance to use the secret from Secrets Manager
 resource "aws_db_instance" "default" {
   allocated_storage    = 20
   engine               = "mysql"
   engine_version       = "8.0"
-  instance_class       = "db.t2.micro"
-  name                 = "colordb"
-  username             = "admin"
-  password             = "YourSecurePassword123"
+  instance_class       = "db.t3.micro"
+  identifier           = "colordb"
+  username             = var.db_username
+  password             = var.db_password
   parameter_group_name = "default.mysql8.0"
-  db_subnet_group_name = aws_db_subnet_group.default.id
-  vpc_security_group_ids = [aws_security_group.rds_sg.id]
-  publicly_accessible  = false
+  db_subnet_group_name    = aws_db_subnet_group.default.id
+  vpc_security_group_ids  = [aws_security_group.rds_sg.id]
+  publicly_accessible     = false
 
   tags = {
     Name = "color-rds"
@@ -113,86 +145,45 @@ resource "aws_db_subnet_group" "default" {
 
 # Local variables to capture private IPs of backend EC2 instances
 locals {
-  update_color_ip  = aws_instance.private_ec2_1.private_ip
-  query_color_ip   = aws_instance.private_ec2_2.private_ip
-  not_allowed_ip   = aws_instance.private_ec2_3.private_ip
-
-  nginx_config = templatefile("${path.module}/templates/nginx.conf.tpl", {
-    update_color_ip = local.update_color_ip
-    query_color_ip  = local.query_color_ip
-    not_allowed_ip  = local.not_allowed_ip
-  })
+  ec2_instances = {
+    "public_ec2" = {
+      user_data = "1_proc_setup.sh"
+      role      = "public_role"
+    }
+    "private_ec2_1" = {
+      user_data = "private_ec2_1_setup.sh"
+      role      = "private_role"
+    }
+    "private_ec2_2" = {
+      user_data = "private_ec2_2_setup.sh"
+      role      = "private_role"
+    }
+    "private_ec2_3" = {
+      user_data = "private_ec2_3_setup.sh"
+      role      = "private_role"
+    }
+  }
 }
 
-# Public EC2 Instance with Nginx Configuration
-resource "aws_instance" "public_ec2" {
+# EC2 Instances using for_each loop
+resource "aws_instance" "ec2" {
+  for_each = local.ec2_instances
+
   ami           = var.ami_id
   instance_type = var.instance_type
-  subnet_id     = aws_subnet.public.id
+  subnet_id     = each.key == "public_ec2" ? aws_subnet.public.id : aws_subnet.private.id
   key_name      = var.key_name
 
-  security_groups = [aws_security_group.public_sg.name]
+  # Assign different security groups based on instance type
+  vpc_security_group_ids = each.key == "public_ec2" ? [aws_security_group.public_sg.id] : [aws_security_group.private_sg.id]
 
   tags = {
-    Name = "public-ec2"
+    Name = each.key
   }
 
-  user_data = <<-EOF
-              #!/bin/bash
-              yum update -y
-              yum install -y nginx
+  # Associate IAM instance profile based on the role
+  iam_instance_profile = local.ec2_instance_profiles[each.value.role].name
 
-              # Deploy Nginx configuration
-              echo '${replace(local.nginx_config, "\n", "\n")}' > /etc/nginx/nginx.conf
-
-              # Start and enable Nginx
-              systemctl enable nginx
-              systemctl start nginx
-              EOF
-}
-
-# Private EC2 Instances
-resource "aws_instance" "private_ec2_1" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  subnet_id     = aws_subnet.private.id
-  key_name      = var.key_name
-
-  security_groups = [aws_security_group.private_sg.name]
-
-  tags = {
-    Name = "private-ec2-1"
-  }
-
-  user_data = file("${path.module}/user_data/private_ec2_1_setup.sh")
-}
-
-resource "aws_instance" "private_ec2_2" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  subnet_id     = aws_subnet.private.id
-  key_name      = var.key_name
-
-  security_groups = [aws_security_group.private_sg.name]
-
-  tags = {
-    Name = "private-ec2-2"
-  }
-
-  user_data = file("${path.module}/user_data/private_ec2_2_setup.sh")
-}
-
-resource "aws_instance" "private_ec2_3" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  subnet_id     = aws_subnet.private.id
-  key_name      = var.key_name
-
-  security_groups = [aws_security_group.private_sg.name]
-
-  tags = {
-    Name = "private-ec2-3"
-  }
-
-  user_data = file("${path.module}/user_data/private_ec2_3_setup.sh")
+  # Assign user data script
+  user_data = file("${path.module}/user_data/${each.value.user_data}")
 }

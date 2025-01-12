@@ -1,18 +1,13 @@
 #!/bin/bash
-yum update -y
-yum install -y python3 git
+# Update package lists
+sudo apt-get update -y
 
-# Install Flask and dependencies
-pip3 install flask flask-cors
+# Install Nginx
+sudo apt-get install -y nginx
 
-# Clone your application repository
-git clone https://github.com/yourusername/your-repo.git /home/ec2-user/app
+# Deploy Nginx configuration
+sudo bash -c "echo '${replace(local.nginx_config, "\n", "\n")}' > /etc/nginx/sites-available/default"
 
-# Navigate to the app directory
-cd /home/ec2-user/app
-
-# Install Python dependencies
-pip3 install -r requirements.txt
-
-# Start the Flask application
-nohup python3 app.py &
+# Start and enable Nginx
+sudo systemctl enable nginx
+sudo systemctl start nginx
