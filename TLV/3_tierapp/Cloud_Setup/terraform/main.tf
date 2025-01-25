@@ -248,6 +248,7 @@ resource "aws_instance" "public_ec2" {
   associate_public_ip_address = true
 
   user_data = templatefile("${path.module}/user_data/1_Proc_init.sh", {
+    update_color_ip = aws_instance.private_ec2_1.private_ip
     query_color_ip = aws_instance.remaining_ec2["private_ec2_2"].private_ip
     not_allowed_ip = aws_instance.remaining_ec2["private_ec2_3"].private_ip
   })

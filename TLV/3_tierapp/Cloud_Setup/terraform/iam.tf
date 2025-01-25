@@ -113,3 +113,15 @@ resource "aws_iam_role_policy_attachment" "public_policy_attachment" {
   policy_arn = aws_iam_policy.public_policy.arn
   role       = aws_iam_role.public_role.name
 }
+
+# Add SSM policy attachment for public role
+resource "aws_iam_role_policy_attachment" "public_ssm_policy" {
+  role       = aws_iam_role.public_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+# Add SSM policy attachment for private role
+resource "aws_iam_role_policy_attachment" "private_ssm_policy" {
+  role       = aws_iam_role.private_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}

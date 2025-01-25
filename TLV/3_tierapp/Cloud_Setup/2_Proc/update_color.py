@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 db_file = "DB/DB.csv"  # Make sure this path is correct
-CSV_PATH = 'not_allowed.csv'
+CSV_PATH = 'DB/not_allowed.csv'
 
 def read_not_allowed_colors():
     if not os.path.exists(CSV_PATH):
