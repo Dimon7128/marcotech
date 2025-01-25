@@ -33,12 +33,21 @@ resource "aws_iam_role" "private_role" {
 # IAM Policy for Public EC2 (if needed)
 resource "aws_iam_policy" "public_policy" {
   name        = "public_ec2_policy"
-  description = "Policy for Public EC2 instances"
+  description = "Policy for public EC2 instances"
 
   policy = jsonencode({
-    Version = "2012-10-17",
+    Version = "2012-10-17"
     Statement = [
-      # Define necessary permissions
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters"
+        ]
+        Resource = [
+          aws_ssm_parameter.rds_password.arn
+        ]
+      }
     ]
   })
 }
@@ -46,27 +55,18 @@ resource "aws_iam_policy" "public_policy" {
 # IAM Policy for Private EC2 Instances (e.g., access Secrets Manager)
 resource "aws_iam_policy" "private_policy" {
   name        = "private_ec2_policy"
-  description = "Policy for Private EC2 instances to access Secrets Manager"
+  description = "Policy for private EC2 instances"
 
   policy = jsonencode({
-    Version = "2012-10-17",
+    Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ],
-        Resource = aws_secretsmanager_secret.rds_password_secret.arn
-      },
-      {
-        Effect   = "Allow",
-        Action   = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-        ],
-        Resource = "arn:aws:logs:*:*:*"
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters"
+        ]
+        Resource = aws_ssm_parameter.rds_password.arn
       }
     ]
   })
@@ -100,4 +100,16 @@ locals {
     "public_role"  = aws_iam_instance_profile.public_instance_profile
     "private_role" = aws_iam_instance_profile.private_instance_profile
   }
+}
+
+# IAM instance profile for public EC2
+resource "aws_iam_instance_profile" "public_profile" {
+  name = "public_ec2_profile"
+  role = aws_iam_role.public_role.name
+}
+
+# Attach policy to public role
+resource "aws_iam_role_policy_attachment" "public_policy_attachment" {
+  policy_arn = aws_iam_policy.public_policy.arn
+  role       = aws_iam_role.public_role.name
 }

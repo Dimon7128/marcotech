@@ -30,6 +30,7 @@ variable "ami_id" {
 
 variable "key_name" {
   description = "EC2 Key Pair Name"
+  default     = "ForMy3TierApp"
 }
 
 variable "private_ec2_processes" {
@@ -41,26 +42,6 @@ variable "private_ec2_processes" {
     "private_ec2_3" = "user_data/4_Proc_init.sh"
   }
 }
-variable "update_color_service_ip" {
-  description = "Private IP of the Update Color service (private_ec2_1)"
-  type        = string
-}
-
-variable "query_color_service_ip" {
-  description = "Private IP of the Query Color service (private_ec2_2)"
-  type        = string
-}
-
-variable "not_allowed_service_ip" {
-  description = "Private IP of the Not Allowed service (private_ec2_3)"
-  type        = string
-}
-
-variable "rds_password_length" {
-  description = "Length of the RDS admin password"
-  type        = number
-  default     = 16
-}
 
 variable "rds_password_special" {
   description = "Include special characters in the RDS admin password"
@@ -71,11 +52,6 @@ variable "rds_password_special" {
 variable "db_username" {
   description = "Username for the RDS instance"
   type        = string
-}
-
-variable "db_password" {
-  description = "Password for the RDS instance"
-  type        = string
-  sensitive   = true
+  default     = "admin"
 }
 

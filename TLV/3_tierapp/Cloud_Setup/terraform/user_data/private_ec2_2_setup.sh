@@ -1,6 +1,6 @@
 #!/bin/bash
-yum update -y
-yum install -y python3 git
+apt-get update
+apt-get install -y python3 python3-pip git
 
 # Install Flask and dependencies
 pip3 install flask flask-cors requests
@@ -8,11 +8,17 @@ pip3 install flask flask-cors requests
 # Clone your backend repository
 git clone https://github.com/Dimon7128/marcotech.git  /home/ubuntu/backend
 
+# Create environment file
+cat << EOF > /home/ubuntu/backend/TLV/3_tierapp/Cloud_Setup/3_Proc/.env
+UPDATE_COLOR_IP=${update_color_ip}
+EOF
+
 # Navigate to the backend directory
 cd /home/ubuntu/backend/TLV/3_tierapp/Cloud_Setup/3_Proc
 
 # Install Python dependencies
-pip3 install -r requirements.txt
+pip3 install -r requirements.txt python-dotenv
 
-# Start the query_color service
+# Start the query_color service with environment variables
+export UPDATE_COLOR_IP=${update_color_ip}
 nohup python3 query_color.py &
