@@ -1,0 +1,20 @@
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy the application files
+COPY update_color.py .
+COPY DB/ ./DB/
+
+# Install dependencies
+RUN pip install flask flask-cors requests
+
+# Create directory for CSV files if it doesn't exist
+RUN mkdir -p DB
+
+# Expose port 5001
+EXPOSE 5001
+
+# Command to run the application
+CMD ["python", "update_color.py"]

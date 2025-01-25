@@ -1,0 +1,22 @@
+FROM nginx:alpine
+
+# Copy the HTML files to nginx html directory
+COPY main.html /usr/share/nginx/html/
+COPY update_not_allowed.html /usr/share/nginx/html/
+
+# Copy the nginx template and entrypoint script
+COPY nginx.conf.template /etc/nginx/templates/
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+# Make the entrypoint script executable
+RUN chmod +x /docker-entrypoint.sh
+
+# Expose port 80
+EXPOSE 80
+
+# Set default environment variables
+ENV QUERY_COLOR_SERVICE=query-color-service \
+    NOT_ALLOWED_SERVICE=not-allowed-service
+
+# Use the custom entrypoint script
+ENTRYPOINT ["/docker-entrypoint.sh"]

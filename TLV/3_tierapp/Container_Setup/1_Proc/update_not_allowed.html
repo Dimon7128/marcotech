@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage Not Allowed Colors</title>
+    <style>
+        .color-option {
+            margin: 10px;
+            display: inline-block;
+            width: 200px;
+        }
+        #message {
+            margin-top: 20px;
+            color: green;
+        }
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manage Not Allowed Colors</h1>
+    <div class="color-grid">
+        <div class="color-option">
+            <input type="checkbox" id="red" value="red">
+            <label for="red">Red</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="blue" value="blue">
+            <label for="blue">Blue</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="green" value="green">
+            <label for="green">Green</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="yellow" value="yellow">
+            <label for="yellow">Yellow</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="purple" value="purple">
+            <label for="purple">Purple</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="orange" value="orange">
+            <label for="orange">Orange</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="pink" value="pink">
+            <label for="pink">Pink</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="brown" value="brown">
+            <label for="brown">Brown</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="gray" value="gray">
+            <label for="gray">Gray</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="black" value="black">
+            <label for="black">Black</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="white" value="white">
+            <label for="white">White</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="cyan" value="cyan">
+            <label for="cyan">Cyan</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="magenta" value="magenta">
+            <label for="magenta">Magenta</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="lime" value="lime">
+            <label for="lime">Lime</label>
+        </div>
+        <div class="color-option">
+            <input type="checkbox" id="teal" value="teal">
+            <label for="teal">Teal</label>
+        </div>
+    </div>
+    <button onclick="updateNotAllowedColors()">Save Changes</button>
+    <div id="message"></div>
+    <p><a href="main.html">Back to Color Selector</a></p>
+
+    <script>
+        function updateNotAllowedColors() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const notAllowedColors = Array.from(checkboxes).map(cb => cb.value);
+            
+            fetch('/api/update_not_allowed', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ colors: notAllowedColors })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('message').textContent = 'Not allowed colors updated successfully!';
+            })
+            .catch(err => {
+                document.getElementById('message').textContent = 'Error updating not allowed colors';
+                document.getElementById('message').style.color = 'red';
+                console.error('Error:', err);
+            });
+        }
+
+        window.onload = () => {
+            fetch('/api/get_not_allowed')
+            .then(response => response.json())
+            .then(data => {
+                data.colors.forEach(color => {
+                    const checkbox = document.getElementById(color);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            })
+            .catch(err => console.error('Error loading not allowed colors:', err));
+        };
+    </script>
+</body>
+</html>
