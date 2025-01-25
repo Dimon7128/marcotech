@@ -1,6 +1,6 @@
 #!/bin/bash
-yum update -y
-yum install -y python3 git
+apt-get update
+apt-get install -y python3 python3-pip git
 
 # Install Flask and dependencies
 pip3 install flask flask-cors requests

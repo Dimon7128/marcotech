@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-# VM2's address where the CSV file is located
-VM2_BASE_URL = 'http://<IP_update_color>:5001'  # Update with VM2's actual IP
+# Get the IP from environment variable
+VM2_BASE_URL = f"http://{os.environ.get('UPDATE_COLOR_IP', 'localhost')}:5001"
 
 @app.route('/api/update_not_allowed', methods=['POST'])
 def update_not_allowed():
