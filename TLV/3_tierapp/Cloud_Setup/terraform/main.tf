@@ -182,7 +182,7 @@ locals {
   }
 }
 
-# Create the first EC2 instance separately
+# First, create private EC2 instances
 resource "aws_instance" "private_ec2_1" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
@@ -192,50 +192,50 @@ resource "aws_instance" "private_ec2_1" {
   vpc_security_group_ids = [aws_security_group.private_sg.id]
   iam_instance_profile   = aws_iam_instance_profile.private_profile.name
   
-  user_data = templatefile("${path.module}/user_data/private_ec2_1_setup.sh", {})
+  user_data = file("${path.module}/user_data/private_ec2_1_setup.sh")
 
   tags = {
     Name = "private_ec2_1"
   }
 }
 
-# Create the remaining EC2 instances with for_each
-locals {
-  remaining_ec2_instances = {
-    "private_ec2_2" = {
-      name      = "private_ec2_2"
-      user_data = "private_ec2_2_setup.sh"
-      subnet_id = aws_subnet.private.id
-    },
-    "private_ec2_3" = {
-      name      = "private_ec2_3"
-      user_data = "private_ec2_3_setup.sh"
-      subnet_id = aws_subnet.private.id
-    }
-  }
-}
-
-resource "aws_instance" "remaining_ec2" {
-  for_each = local.remaining_ec2_instances
-  
+resource "aws_instance" "private_ec2_2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
-  subnet_id     = each.value.subnet_id
+  subnet_id     = aws_subnet.private.id
   key_name      = var.key_name
   
   vpc_security_group_ids = [aws_security_group.private_sg.id]
   iam_instance_profile   = aws_iam_instance_profile.private_profile.name
   
-  user_data = templatefile("${path.module}/user_data/${each.value.user_data}", {
+  user_data = templatefile("${path.module}/user_data/private_ec2_2_setup.sh", {
     update_color_ip = aws_instance.private_ec2_1.private_ip
   })
 
   tags = {
-    Name = each.value.name
+    Name = "private_ec2_2"
   }
 }
 
-# Public EC2 instance for Nginx frontend
+resource "aws_instance" "private_ec2_3" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.private.id
+  key_name      = var.key_name
+  
+  vpc_security_group_ids = [aws_security_group.private_sg.id]
+  iam_instance_profile   = aws_iam_instance_profile.private_profile.name
+  
+  user_data = templatefile("${path.module}/user_data/private_ec2_3_setup.sh", {
+    update_color_ip = aws_instance.private_ec2_1.private_ip
+  })
+
+  tags = {
+    Name = "private_ec2_3"
+  }
+}
+
+# Then create public EC2 with references to private instances
 resource "aws_instance" "public_ec2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
@@ -249,8 +249,8 @@ resource "aws_instance" "public_ec2" {
 
   user_data = templatefile("${path.module}/user_data/1_Proc_init.sh", {
     update_color_ip = aws_instance.private_ec2_1.private_ip
-    query_color_ip = aws_instance.remaining_ec2["private_ec2_2"].private_ip
-    not_allowed_ip = aws_instance.remaining_ec2["private_ec2_3"].private_ip
+    query_color_ip = aws_instance.private_ec2_2.private_ip
+    not_allowed_ip = aws_instance.private_ec2_3.private_ip
   })
 
   tags = {

@@ -18,25 +18,25 @@ output "rds_endpoint" {
 }
 
 output "private_ec2_1_ip" {
-  description = "Private IP of EC2 instance 1 (Update Color Service)"
+  description = "Private IP of EC2 instance 1"
   value       = aws_instance.private_ec2_1.private_ip
 }
 
 output "private_ec2_2_ip" {
-  description = "Private IP of EC2 instance 2 (Query Color Service)"
-  value       = aws_instance.remaining_ec2["private_ec2_2"].private_ip
+  description = "Private IP of EC2 instance 2"
+  value       = aws_instance.private_ec2_2.private_ip
 }
 
 output "private_ec2_3_ip" {
-  description = "Private IP of EC2 instance 3 (Not Allowed Service)"
-  value       = aws_instance.remaining_ec2["private_ec2_3"].private_ip
+  description = "Private IP of EC2 instance 3"
+  value       = aws_instance.private_ec2_3.private_ip
 }
 
-# If you need all remaining EC2 IPs in a map format
-output "all_remaining_ec2_ips" {
-  description = "Private IPs of all remaining EC2 instances"
+output "all_private_ec2_ips" {
+  description = "Map of all private EC2 instance IPs"
   value = {
-    for instance, details in aws_instance.remaining_ec2 :
-    instance => details.private_ip
+    private_ec2_1 = aws_instance.private_ec2_1.private_ip
+    private_ec2_2 = aws_instance.private_ec2_2.private_ip
+    private_ec2_3 = aws_instance.private_ec2_3.private_ip
   }
 } 
