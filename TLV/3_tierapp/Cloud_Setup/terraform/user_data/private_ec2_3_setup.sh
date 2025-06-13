@@ -15,10 +15,35 @@ EOF
 
 # Navigate to the backend directory
 cd /home/ubuntu/backend/TLV/3_tierapp/Cloud_Setup/4_Proc
-    
+
 # Install Python dependencies
 pip3 install -r requirements.txt python-dotenv
 
-# Start the not_allowed_service with environment variables
-export UPDATE_COLOR_IP=${update_color_ip}
-nohup python3 not_allowed_service.py &
+# Create systemd service file
+cat <<'SERVICE' > /etc/systemd/system/python-app.service
+[Unit]
+Description=Not Allowed Service (Port 5003)
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/backend/TLV/3_tierapp/Cloud_Setup/4_Proc
+ExecStart=/usr/bin/python3 not_allowed_service.py
+Environment="PORT=5003"
+Environment="UPDATE_COLOR_IP=${update_color_ip}"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+SERVICE
+
+# Set permissions
+chmod 644 /etc/systemd/system/python-app.service
+
+# Reload systemd
+systemctl daemon-reload
+
+# Enable and start service
+systemctl enable python-app
+systemctl start python-app

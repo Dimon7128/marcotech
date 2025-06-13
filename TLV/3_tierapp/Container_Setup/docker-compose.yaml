@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./1_Proc
+    ports:
+      - "8080:80"
+    environment:
+      - QUERY_COLOR_SERVICE=query-color-service
+      - NOT_ALLOWED_SERVICE=not-allowed-service
+      - UPDATE_COLOR_SERVICE=update-color-service
+    depends_on:
+      - query-color-service
+      - not-allowed-service
+      - update-color-service
+
+  update-color-service:
+    build: ./2_Proc
+    volumes:
+      - ./2_Proc/DB:/app/DB
+    ports:
+      - "5001:5001"
+
+  query-color-service:
+    build: ./3_Proc
+    environment:
+      - UPDATE_COLOR_SERVICE=update-color-service
+    ports:
+      - "5002:5002"
+    depends_on:
+      - update-color-service
+
+  not-allowed-service:
+    build: ./4_Proc
+    environment:
+      - UPDATE_COLOR_SERVICE=update-color-service
+    ports:
+      - "5003:5003"
+    depends_on:
+      - update-color-service

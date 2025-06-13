@@ -30,6 +30,15 @@ server {
         try_files \$uri \$uri/ =404;
     }
 
+    location /api/update_color {
+        proxy_pass http://${update_color_ip}:5001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
+
     location /api/get_color {
         proxy_pass http://${query_color_ip}:5002;
         proxy_http_version 1.1;

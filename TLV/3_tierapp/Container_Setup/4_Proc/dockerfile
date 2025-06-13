@@ -1,0 +1,16 @@
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy the application file
+COPY not_allowed_service.py .
+
+# Install dependencies
+RUN pip install flask flask-cors requests
+
+# Expose port 5003
+EXPOSE 5003
+
+# Command to run the application
+CMD ["python", "not_allowed_service.py"]
