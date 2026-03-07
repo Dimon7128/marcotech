@@ -16,25 +16,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Copy HTML files to EC2
+      - name: Copy files to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "Etgar/Init_CI/html/*"
+          source: "Etgar/Init_CI/html/index1.html,Etgar/Init_CI/html/index2.html,Etgar/Init_CI/nginx/nginx.conf"
           target: /tmp/deploy
-          strip_components: 3
-
-      - name: Copy Nginx config to EC2
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: "Etgar/Init_CI/nginx/nginx.conf"
-          target: /tmp/deploy/nginx
-          strip_components: 3
+          strip_components: 2
 
       - name: Deploy files and reload Nginx
         uses: appleboy/ssh-action@v1.2.0
