@@ -19,6 +19,7 @@
 !*jenkinsfile
 !.tfvars
 !*.yaml
+!*.yml
 !*.ini
 !*.csv
 !*.conf

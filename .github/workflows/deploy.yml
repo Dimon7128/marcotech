@@ -1,0 +1,48 @@
+name: Deploy Nginx to EC2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Etgar/Init_CI/**'
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Copy HTML files to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "Etgar/Init_CI/html/*"
+          target: /tmp/deploy
+          strip_components: 3
+
+      - name: Copy Nginx config to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "Etgar/Init_CI/nginx/nginx.conf"
+          target: /tmp/deploy/nginx
+          strip_components: 3
+
+      - name: Deploy files and reload Nginx
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo cp /tmp/deploy/html/* /var/www/html/
+            sudo cp /tmp/deploy/nginx/nginx.conf /etc/nginx/sites-available/default
+            sudo nginx -t && sudo systemctl reload nginx
+            rm -rf /tmp/deploy
