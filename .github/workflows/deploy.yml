@@ -10,6 +10,7 @@ jobs:
   deploy:
     name: Deploy to EC2
     runs-on: ubuntu-latest
+    environment: EC2_HOST
 
     steps:
       - name: Checkout repository
