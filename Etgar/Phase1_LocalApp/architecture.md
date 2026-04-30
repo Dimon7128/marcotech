@@ -41,67 +41,7 @@ flowchart LR
 
 ---
 
-## 2. Folder structure
-
-```mermaid
-flowchart TD
-    ROOT["myapp/"]
-    FE["frontend/"]
-    BE["backend/"]
-
-    ROOT --> FE
-    ROOT --> BE
-
-    FE --> FE1["index.html"]
-    FE --> FE2["style.css"]
-    FE --> FE3["app.js"]
-
-    BE --> BE1["app.py<br/>(API layer / routes)"]
-    BE --> SVCS["services/"]
-    BE --> DATA["data/"]
-    BE --> TESTS["tests/"]
-
-    SVCS --> SVC1["external_api.py<br/>(calls currency API)"]
-    SVCS --> SVC2["repository.py<br/>(ExcelRepository)"]
-
-    DATA --> XLSX["app_data.xlsx"]
-```
-
----
-
-## 3. Request flow — “Convert” button
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor U as User
-    participant FE as Frontend (app.js)
-    participant API as Backend API<br/>/api/convert
-    participant SVC as Service layer
-    participant EXT as External API
-    participant REPO as ExcelRepository
-    participant XLSX as app_data.xlsx
-
-    U->>FE: fills amount + from + to,<br/>clicks "Convert"
-    FE->>API: GET /api/convert?amount&from&to
-    API->>SVC: convert(amount, from, to)
-    SVC->>EXT: GET rates(from, to)
-    EXT-->>SVC: { rate }
-    SVC->>SVC: result = amount * rate
-    SVC->>REPO: save(timestamp, amount, from, to, result)
-    REPO->>XLSX: append row
-    XLSX-->>REPO: ok
-    REPO-->>SVC: ok
-    SVC-->>API: { result }
-    API-->>FE: 200 JSON { result }
-    FE-->>U: render result on page
-
-    Note over FE,API: On error → backend returns 4xx/5xx,<br/>frontend shows error message
-```
-
----
-
-## 4. Backend layering & the swap point
+## 2. Backend layering & the swap point
 
 The whole point of splitting layers in Phase 1 is so that **only the repository changes** later.
 
@@ -129,7 +69,7 @@ Frontend ↔ API contract stays identical when the repo is swapped.
 
 ---
 
-## 5. Health check
+## 3. Health check
 
 ```mermaid
 flowchart LR
@@ -139,7 +79,7 @@ flowchart LR
 
 ---
 
-## 6. Done criteria checklist
+## 4. Done criteria checklist
 
 ```mermaid
 flowchart TD
@@ -154,7 +94,7 @@ flowchart TD
 
 ---
 
-## 7. Excel row schema
+## 5. Excel row schema
 
 | column      | example                  |
 |-------------|--------------------------|
