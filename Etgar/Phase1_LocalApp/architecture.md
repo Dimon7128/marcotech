@@ -74,7 +74,7 @@ Frontend ↔ API contract stays identical when the repo is swapped.
 ```mermaid
 flowchart LR
     Client["curl / browser / monitor"] -- "GET /health" --> H["Backend /health"]
-    H -- "200 OK<br/>{ \"status\": \"ok\" }" --> Client
+    H -- "200 OK<br/>{ &quot;status&quot;: &quot;ok&quot; }" --> Client
 ```
 
 ---
