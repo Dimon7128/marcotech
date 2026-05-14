@@ -24,8 +24,8 @@ jobs:
           script: |
             if ! command -v nginx &> /dev/null; then
               echo "Nginx not found, installing..."
-              sudo apt-get update -y
-              sudo apt-get install -y nginx
+              sudo yum update -y
+              sudo yum install -y nginx
               sudo systemctl enable nginx
               sudo systemctl start nginx
             else
