@@ -38,7 +38,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "Etgar/Init_CI/html/index1.html,Etgar/Init_CI/html/index2.html,Etgar/Init_CI/nginx/nginx.conf"
+          source: "Etgar/Init_CI/html/index1.html,Etgar/Init_CI/html/index2.html,Etgar/Init_CI/html/index3.html,Etgar/Init_CI/nginx/nginx.conf"
           target: /tmp/deploy
           strip_components: 2
 
