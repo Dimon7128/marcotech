@@ -51,6 +51,6 @@ jobs:
           script: |
             sudo mkdir -p /var/www/html
             sudo cp /tmp/deploy/html/* /var/www/html/
-            sudo cp /tmp/deploy/nginx/nginx.conf /etc/nginx/sites-available/default
+            sudo cp /tmp/deploy/nginx/nginx.conf /etc/nginx/default.d/nginx.conf
             sudo nginx -t && sudo systemctl reload nginx
             rm -rf /tmp/deploy
