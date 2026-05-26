@@ -1,0 +1,64 @@
+# SOLUTION compose file.
+#
+# Structurally identical to broken-stack/docker-compose.yml -- the three
+# bugs lived in .env and in proxy/nginx.conf, not in this file. The two
+# differences from the broken stack are:
+#   1. ../broken-stack/web and ../broken-stack/db are reused (no code change
+#      was needed in the app or DB to fix the exercise).
+#   2. ./proxy/nginx.conf and ./.env are the *fixed* copies in this folder.
+#
+# Smoke-test this with:
+#   ../build.sh solution
+
+services:
+  proxy:
+    image: nginx:1.27-alpine
+    container_name: motd-proxy-fixed
+    depends_on:
+      - web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+
+  web:
+    image: ${WEB_IMAGE:-dimabu/motd-web:latest}
+    build: ../broken-stack/web
+    container_name: motd-web-fixed
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_started
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      APP_PORT: ${APP_PORT}
+
+  db:
+    image: postgres:16-alpine
+    container_name: motd-db-fixed
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ../broken-stack/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - db_data_fixed:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  cache:
+    image: redis:7-alpine
+    container_name: motd-cache-fixed
+
+volumes:
+  db_data_fixed:

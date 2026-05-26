@@ -1,0 +1,56 @@
+name: Deploy Nginx to EC2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Etgar/Init_CI/**'
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Ensure Nginx is installed
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            if ! command -v nginx &> /dev/null; then
+              echo "Nginx not found, installing..."
+              sudo yum update -y
+              sudo yum install -y nginx
+              sudo systemctl enable nginx
+              sudo systemctl start nginx
+            else
+              echo "Nginx is already installed: $(nginx -v 2>&1)"
+            fi
+
+      - name: Copy files to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "Etgar/Init_CI/html/index1.html,Etgar/Init_CI/html/index2.html,Etgar/Init_CI/html/index3.html,Etgar/Init_CI/nginx/nginx.conf"
+          target: /tmp/deploy
+          strip_components: 2
+
+      - name: Deploy files and reload Nginx
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo mkdir -p /var/www/html
+            sudo cp /tmp/deploy/html/* /var/www/html/
+            sudo cp /tmp/deploy/nginx/nginx.conf /etc/nginx/default.d/nginx.conf
+            sudo nginx -t && sudo systemctl reload nginx
+            rm -rf /tmp/deploy

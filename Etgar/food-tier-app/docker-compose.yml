@@ -1,0 +1,56 @@
+# docker-compose.yml — works for BOTH local dev and EC2 deployment.
+#
+# Local dev (no Docker Hub, just build from source):
+#   docker compose up --build
+#   The ${DOCKERHUB_USERNAME:-localdev} / ${IMAGE_TAG:-local} defaults
+#   tag the freshly-built images as `localdev/food-tier-*:local`.
+#
+# EC2 deployment (Blue staging / Prod):
+#   .env on the host defines:
+#     DOCKERHUB_USERNAME=<your dockerhub user>
+#     IMAGE_TAG=staging       (on Blue EC2)
+#     IMAGE_TAG=prod          (on Prod EC2)
+#     OPENAI_API_KEY=<key>
+#   Then:
+#     docker compose pull
+#     docker compose up -d
+#
+# Tip: `docker compose down` keeps the CSV file on the host
+# (./backend/data/food_history.csv — see the bind mount below).
+
+services:
+  backend:
+    # `image:` is what `docker compose pull` uses on EC2.
+    # `build:` is what `docker compose up --build` uses locally.
+    # When both are set, compose tags the built image as `image:` —
+    # which is exactly what CI relies on before pushing to Docker Hub.
+    image: ${DOCKERHUB_USERNAME:-localdev}/food-tier-backend:${IMAGE_TAG:-local}
+    build: ./backend
+    container_name: food-tier-backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Read straight from the .env file next to docker-compose.yml.
+      # On EC2 this is the only file holding the OpenAI key.
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      # Bind mount: the CSV survives container restarts AND is editable
+      # from the host, which is great for inspecting the data tier.
+      - ./backend/data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0) if urllib.request.urlopen('http://localhost:8000/health').status==200 else sys.exit(1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  frontend:
+    image: ${DOCKERHUB_USERNAME:-localdev}/food-tier-frontend:${IMAGE_TAG:-local}
+    build: ./frontend
+    container_name: food-tier-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

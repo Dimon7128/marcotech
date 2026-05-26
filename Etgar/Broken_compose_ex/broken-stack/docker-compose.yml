@@ -1,0 +1,66 @@
+# Intentionally broken docker-compose stack for the
+# "Fix the Broken Compose Stack" troubleshooting exercise.
+#
+# Three bugs are spread across this stack:
+#   1. broken-stack/.env       -> DB_HOST is wrong (networking)
+#   2. broken-stack/.env       -> DB_PASSWORD mismatch (auth)
+#   3. broken-stack/proxy/...  -> proxy points to wrong port (reverse proxy)
+#
+# Each bug surfaces a different symptom and lives in a different file, so the
+# student practices `docker compose logs <service>` per-service triage.
+
+services:
+  proxy:
+    image: nginx:1.27-alpine
+    container_name: motd-proxy
+    depends_on:
+      - web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+
+  web:
+    # Students just need to pull this from Docker Hub -- they do NOT need
+    # the ./web source directory. Instructors can still rebuild + push it
+    # with ../publish.sh (see README "For instructors -- publish the image").
+    image: ${WEB_IMAGE:-dimabu/motd-web:latest}
+    build: ./web
+    container_name: motd-web
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_started
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      APP_PORT: ${APP_PORT}
+
+  db:
+    image: postgres:16-alpine
+    container_name: motd-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  cache:
+    image: redis:7-alpine
+    container_name: motd-cache
+
+volumes:
+  db_data:
