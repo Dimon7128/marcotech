@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Tier Classifier</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="card">
+      <h1>Food Tier Classifier</h1>
+      <p class="subtitle">
+        Type a food and get a nutrition tier:
+        <span class="badge badge-A">A</span> good,
+        <span class="badge badge-B">B</span> okay,
+        <span class="badge badge-C">C</span> limit.
+      </p>
+
+      <form id="food-form" autocomplete="off">
+        <input
+          id="food-input"
+          name="food"
+          type="text"
+          placeholder="e.g. egg, kale, donut"
+          required
+          maxlength="100"
+        />
+        <button id="submit-btn" type="submit">Classify</button>
+      </form>
+
+      <!-- Result card is hidden until we have something to show. -->
+      <section id="result" class="result hidden" aria-live="polite">
+        <div class="result-header">
+          <h2 id="result-food"></h2>
+          <span id="result-tier" class="badge"></span>
+        </div>
+        <p id="result-explanation"></p>
+        <p class="source">
+          source: <span id="result-source" class="pill"></span>
+        </p>
+      </section>
+
+      <!-- Error / status messages live here. -->
+      <p id="status" class="status hidden" role="alert"></p>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,105 @@
+# --- Food Tier App: Frontend CI ---------------------------------------------
+# Static-only frontend (no Node, no build step). The pipeline is therefore
+# trivial: assert the files exist, build the nginx image, hit it with curl,
+# push to Docker Hub. Same tagging scheme as the backend (sha + staging).
+#
+# NOTE: The project lives at Etgar/food-tier-app/ inside the marcotech repo;
+# the path filters and build context below are prefixed accordingly.
+# ---------------------------------------------------------------------------
+
+name: food-tier-app — frontend CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Etgar/food-tier-app/frontend/**"
+      - ".github/workflows/food-tier-ci-frontend.yml"
+  pull_request:
+    paths:
+      - "Etgar/food-tier-app/frontend/**"
+      - ".github/workflows/food-tier-ci-frontend.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: food-tier-ci-frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE_NAME: food-tier-frontend
+  PROJECT_DIR: Etgar/food-tier-app/frontend
+
+jobs:
+  validate-build-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # -------- Static checks: file existence ------------------------------
+      - name: Verify required static files exist
+        run: |
+          for f in index.html app.js style.css nginx.conf; do
+            full="${{ env.PROJECT_DIR }}/$f"
+            if [ ! -f "$full" ]; then
+              echo "missing required file: $full"
+              exit 1
+            fi
+            echo "ok: $full"
+          done
+
+      # -------- Build the nginx image --------------------------------------
+      - name: Build frontend Docker image
+        run: |
+          docker build \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}:${{ github.sha }} \
+            ${{ env.PROJECT_DIR }}
+
+      # -------- Smoke-test: does it actually serve the page? ---------------
+      - name: Run frontend container
+        run: |
+          docker run -d \
+            --name frontend-ci \
+            -p 8080:80 \
+            ${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}:${{ github.sha }}
+
+      - name: Curl the frontend (expect HTTP 200)
+        run: |
+          for i in $(seq 1 15); do
+            # `-o /dev/null` discards body; `-w '%{http_code}'` prints just the status.
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080)
+            if [ "$code" = "200" ]; then
+              echo " — frontend served HTTP 200"
+              exit 0
+            fi
+            echo "waiting for nginx... ($i/15) — got: $code"
+            sleep 1
+          done
+          echo "frontend never returned 200:"
+          docker logs frontend-ci
+          exit 1
+
+      - name: Stop CI container
+        if: always()
+        run: docker rm -f frontend-ci || true
+
+      # -------- Push image(s) ----------------------------------------------
+      - name: Login to Docker Hub
+        if: success()
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push immutable SHA tag
+        if: success()
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}:${{ github.sha }}
+
+      - name: Promote to staging tag
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker tag \
+            ${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}:${{ github.sha }} \
+            ${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}:staging
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}:staging

@@ -1,0 +1,25 @@
+# Local Terraform working dir + lock file written by `terraform init`.
+.terraform/
+.terraform.lock.hcl
+
+# State files — should live in a remote backend (S3, TF Cloud) in real use.
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Sensitive variable values: identifies your GitHub org and AWS account.
+terraform.tfvars
+*.auto.tfvars
+
+# Crash log Terraform writes on panic.
+crash.log
+crash.*.log
+
+# Override files some teams use to swap providers locally.
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Plan output you might `terraform show` later.
+*.tfplan

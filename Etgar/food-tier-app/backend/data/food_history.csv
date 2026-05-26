@@ -1,0 +1,9 @@
+food,tier,explanation
+egg,A,"Eggs are a great source of protein and essential nutrients, making them a nutritious everyday option."
+blueberries,A,"Blueberries are rich in antioxidants, vitamins, and fiber, making them a great everyday option for health."
+cat,C,Cat food is not suitable for human consumption and lacks essential nutrients for humans.
+apple,A,"Apples are rich in vitamins, fiber, and antioxidants, making them a great everyday option."
+date,A,"Dates are nutrient-dense, high in fiber, and provide natural sugars for energy."
+cocacola,C,Coca-Cola is high in sugar and provides little nutritional value.
+rice,B,"Rice can be a good source of carbohydrates but is low in other nutrients, so its value depends on portion size and what it's paired with."
+pizza,B,"Pizza can be nutritious if topped with vegetables and lean proteins, but it often contains high levels of calories and saturated fats."
