@@ -34,7 +34,7 @@ services:
     build: ./4_Proc
     environment:
       - UPDATE_COLOR_SERVICE=update-color-service
-    ports:
+    ports: 
       - "5003:5003"
     depends_on:
       - update-color-service
