@@ -80,7 +80,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
-          aws-region:     ${{ secrets.AWS_REGION }}
+          aws-region:     ${{ vars.AWS_REGION }}
           # Friendly session name shows up in CloudTrail next to every API call.
           role-session-name: gh-actions-food-tier-deploy-blue
 
@@ -99,9 +99,9 @@ jobs:
           # credentials are passed through the SSM payload. We only need
           # the region (to pick the right ECR endpoint) and the registry
           # URL (the `docker login` target).
-          AWS_REGION:   ${{ secrets.AWS_REGION }}
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-          INSTANCE_ID:  ${{ secrets.BLUE_EC2_INSTANCE_ID }}
+          AWS_REGION:   ${{ vars.AWS_REGION }}
+          ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
+          INSTANCE_ID:  ${{ vars.BLUE_EC2_INSTANCE_ID }}
         run: |
           set -euo pipefail
 
@@ -159,7 +159,7 @@ jobs:
       - name: Wait for Blue EC2 to come up
         run: |
           for i in $(seq 1 30); do
-            if curl -fsS "http://${{ secrets.BLUE_EC2_HOST }}:8000/health" > /dev/null; then
+            if curl -fsS "http://${{ vars.BLUE_EC2_HOST }}:8000/health" > /dev/null; then
               echo "Blue backend is up"
               break
             fi
@@ -169,20 +169,20 @@ jobs:
 
       - name: Integration test — frontend HTTP 200 on Blue
         run: |
-          code=$(curl -s -o /dev/null -w '%{http_code}' "http://${{ secrets.BLUE_EC2_HOST }}:8080")
+          code=$(curl -s -o /dev/null -w '%{http_code}' "http://${{ vars.BLUE_EC2_HOST }}:8080")
           echo "frontend status: $code"
           test "$code" = "200"
 
       - name: Integration test — backend /health on Blue
         run: |
-          body=$(curl -fsS "http://${{ secrets.BLUE_EC2_HOST }}:8000/health")
+          body=$(curl -fsS "http://${{ vars.BLUE_EC2_HOST }}:8000/health")
           echo "health body: $body"
           test "$body" = '{"status":"ok"}'
 
       - name: Integration test (optional) — CSV cache hit on Blue
         # Uses GET /api/history/{food} so it does NOT spend OpenAI tokens.
         run: |
-          response=$(curl -s "http://${{ secrets.BLUE_EC2_HOST }}:8000/api/history/egg")
+          response=$(curl -s "http://${{ vars.BLUE_EC2_HOST }}:8000/api/history/egg")
           echo "history response: $response"
           if echo "$response" | grep -q '"exists":true'; then
             echo " — CSV cache contains 'egg' as expected"
@@ -193,7 +193,7 @@ jobs:
       - name: Clean unused Docker resources on Blue EC2
         if: success()
         env:
-          INSTANCE_ID: ${{ secrets.BLUE_EC2_INSTANCE_ID }}
+          INSTANCE_ID: ${{ vars.BLUE_EC2_INSTANCE_ID }}
         run: |
           CMD_ID=$(aws ssm send-command \
             --instance-ids "$INSTANCE_ID" \
@@ -218,7 +218,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
-          aws-region:     ${{ secrets.AWS_REGION }}
+          aws-region:     ${{ vars.AWS_REGION }}
           role-session-name: gh-actions-food-tier-deploy-prod
 
       # -------- Promote tags inside ECR -----------------------------------
@@ -251,9 +251,9 @@ jobs:
 
       - name: Deploy :prod images to Prod EC2 via SSM
         env:
-          AWS_REGION:   ${{ secrets.AWS_REGION }}
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-          INSTANCE_ID:  ${{ secrets.PROD_EC2_INSTANCE_ID }}
+          AWS_REGION:   ${{ vars.AWS_REGION }}
+          ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
+          INSTANCE_ID:  ${{ vars.PROD_EC2_INSTANCE_ID }}
         run: |
           set -euo pipefail
 
@@ -296,7 +296,7 @@ jobs:
       - name: Wait for Prod EC2 to come up
         run: |
           for i in $(seq 1 30); do
-            if curl -fsS "http://${{ secrets.PROD_EC2_HOST }}:8000/health" > /dev/null; then
+            if curl -fsS "http://${{ vars.PROD_EC2_HOST }}:8000/health" > /dev/null; then
               echo "Prod backend is up"
               break
             fi
@@ -306,18 +306,18 @@ jobs:
 
       - name: Production health check — frontend HTTP 200
         run: |
-          code=$(curl -s -o /dev/null -w '%{http_code}' "http://${{ secrets.PROD_EC2_HOST }}:8080")
+          code=$(curl -s -o /dev/null -w '%{http_code}' "http://${{ vars.PROD_EC2_HOST }}:8080")
           echo "frontend status: $code"
           test "$code" = "200"
 
       - name: Production health check — backend /health
         run: |
-          body=$(curl -fsS "http://${{ secrets.PROD_EC2_HOST }}:8000/health")
+          body=$(curl -fsS "http://${{ vars.PROD_EC2_HOST }}:8000/health")
           echo "health body: $body"
           test "$body" = '{"status":"ok"}'
 
       - name: Deployment summary
         run: |
           echo "Deployment finished successfully"
-          echo "Blue:  http://${{ secrets.BLUE_EC2_HOST }}:8080  (image tag: staging)"
-          echo "Prod:  http://${{ secrets.PROD_EC2_HOST }}:8080  (image tag: prod)"
+          echo "Blue:  http://${{ vars.BLUE_EC2_HOST }}:8080  (image tag: staging)"
+          echo "Prod:  http://${{ vars.PROD_EC2_HOST }}:8080  (image tag: prod)"

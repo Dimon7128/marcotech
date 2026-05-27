@@ -61,7 +61,7 @@ jobs:
       - name: Build frontend Docker image
         run: |
           docker build \
-            -t ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }} \
+            -t ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }} \
             ${{ env.PROJECT_DIR }}
 
       # -------- Smoke-test: does it actually serve the page? ---------------
@@ -70,7 +70,7 @@ jobs:
           docker run -d \
             --name frontend-ci \
             -p 8080:80 \
-            ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
+            ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
 
       - name: Curl the frontend (expect HTTP 200)
         run: |
@@ -101,7 +101,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
-          aws-region:     ${{ secrets.AWS_REGION }}
+          aws-region:     ${{ vars.AWS_REGION }}
           role-session-name: gh-actions-food-tier-ci-frontend
 
       - name: Login to Amazon ECR
@@ -110,12 +110,12 @@ jobs:
 
       - name: Push immutable SHA tag
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: docker push ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
+        run: docker push ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
 
       - name: Promote to staging tag
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           docker tag \
-            ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }} \
-            ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:staging
-          docker push ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:staging
+            ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }} \
+            ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:staging
+          docker push ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:staging

@@ -85,7 +85,7 @@ jobs:
       - name: Build backend Docker image
         run: |
           docker build \
-            -t ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }} \
+            -t ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }} \
             ${{ env.PROJECT_DIR }}
 
       # -------- Smoke-test the image we just built -------------------------
@@ -97,7 +97,7 @@ jobs:
             --name backend-ci \
             -p 8000:8000 \
             -e OPENAI_API_KEY=dummy-ci-key \
-            ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
+            ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
 
       - name: Wait for the container to become healthy
         run: |
@@ -135,7 +135,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
-          aws-region:     ${{ secrets.AWS_REGION }}
+          aws-region:     ${{ vars.AWS_REGION }}
           role-session-name: gh-actions-food-tier-ci-backend
 
       - name: Login to Amazon ECR
@@ -144,13 +144,13 @@ jobs:
 
       - name: Push immutable SHA tag
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: docker push ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
+        run: docker push ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
 
       - name: Promote to staging tag
         # `staging` is a moving pointer — CD will pull this next.
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           docker tag \
-            ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }} \
-            ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:staging
-          docker push ${{ secrets.ECR_REGISTRY }}/${IMAGE_NAME}:staging
+            ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:${{ github.sha }} \
+            ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:staging
+          docker push ${{ vars.ECR_REGISTRY }}/${IMAGE_NAME}:staging
