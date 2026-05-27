@@ -176,9 +176,15 @@ Notes:
 
 ## 7. Troubleshooting
 
-**`OPENAI_API_KEY is not set`** — you forgot step 2 (`cp .env.example
-.env` and paste a real key). Restart the backend / `docker compose up`
-after editing the file.
+**`OPENAI_API_KEY is not set`** — two possible causes:
+
+- *Local dev*: you forgot step 2 (`cp .env.example .env` and paste a real
+  key). Restart the backend / `docker compose up` after editing the file.
+- *EC2 / production*: the SSM SecureString still holds the placeholder.
+  Populate it with `aws ssm put-parameter --name /food-tier/openai-key
+  --type SecureString --value sk-... --overwrite`, then `docker compose
+  restart backend` on each EC2 (via SSM). The startup log will print
+  `[entrypoint] OPENAI_API_KEY loaded from SSM` on success.
 
 **CORS error in the browser console** — make sure you are loading the
 frontend from `http://localhost:8080` (matching the origin the backend
@@ -270,25 +276,51 @@ Each CI run pushes two tags for the same image bits:
 | `:staging` | moving pointer | What the next CD run will deploy to Blue EC2. |
 | `:prod` | moving pointer | What is currently live in production. Set by CD after Blue validates. |
 
-### Required GitHub secrets
+### Required GitHub configuration
 
-Configure in **Settings → Secrets and variables → Actions**:
+The workflows read **two kinds** of repo-level config from GitHub
+(`Settings → Secrets and variables → Actions`). Splitting them along
+GitHub's own UI boundary keeps the semantics honest — log-masked
+credentials in one bucket, plain config in the other:
 
-| Secret | Used by |
-| ------ | ------- |
-| `AWS_DEPLOY_ROLE_ARN`    | CI + CD (the IAM role GitHub assumes via OIDC; ECR push *and* SSM SendCommand) |
-| `AWS_REGION`             | CI + CD (e.g. `il-central-1`) |
-| `ECR_REGISTRY`           | CI + CD (your account-scoped registry URL — `terraform output ecr_registry_url`, e.g. `123456789012.dkr.ecr.il-central-1.amazonaws.com`) |
-| `BLUE_EC2_INSTANCE_ID`   | CD (`i-0abc...` — used by `aws ssm send-command`) |
-| `PROD_EC2_INSTANCE_ID`   | CD |
-| `BLUE_EC2_HOST`          | CD (public DNS / IP — used by the runner to curl the integration tests) |
-| `PROD_EC2_HOST`          | CD |
+**Variables** (`${{ vars.X }}` — not masked in logs, used for plain config)
+
+| Variable                | Used by | Notes |
+| ----------------------- | ------- | ----- |
+| `AWS_REGION`            | CI + CD | e.g. `il-central-1` |
+| `ECR_REGISTRY`          | CI + CD | Account-scoped registry URL — `terraform output ecr_registry_url`, e.g. `123456789012.dkr.ecr.il-central-1.amazonaws.com` |
+| `BLUE_EC2_INSTANCE_ID`  | CD      | `i-0abc...` — used by `aws ssm send-command` |
+| `PROD_EC2_INSTANCE_ID`  | CD      | |
+| `BLUE_EC2_HOST`         | CD      | Public DNS / IP — used by the runner to curl the integration tests |
+| `PROD_EC2_HOST`         | CD      | |
+
+**Secrets** (`${{ secrets.X }}` — masked in logs, used for credentials)
+
+| Secret                | Used by | Notes |
+| --------------------- | ------- | ----- |
+| `AWS_DEPLOY_ROLE_ARN` | CI + CD | IAM role GitHub assumes via OIDC; ECR push *and* SSM SendCommand. Treated as a secret because it reveals the AWS account ID. |
+
+#### Sync from Terraform — one command
+
+Don't paste values by hand. The Terraform module emits two map outputs
+(`github_actions_variables`, `github_actions_secrets`) shaped exactly
+like the tables above, and [`infra/sync-github-vars.sh`](infra/sync-github-vars.sh)
+pushes them to GitHub via `gh`:
+
+```bash
+cd Etgar/food-tier-app/infra
+./sync-github-vars.sh                       # auto-detects repo from `gh repo view`
+# or
+./sync-github-vars.sh Dimon7128/marcotech   # explicit owner/repo
+```
+
+Re-run any time Terraform outputs change (most often: after
+`terraform destroy && apply` regenerates EC2 instance IDs and DNS names).
+Prereqs: `gh auth login` once on this machine, plus `jq` on PATH.
 
 Notice what is **no longer** required compared to the previous variants:
 - `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN` — Docker Hub is replaced by ECR; auth on GitHub is via OIDC and on EC2 via the instance profile.
 - `BLUE_EC2_USER`, `BLUE_EC2_SSH_KEY`, `PROD_EC2_USER`, `PROD_EC2_SSH_KEY` — SSM Run Command replaces SSH.
-
-Tip: `terraform output github_actions_secrets` prints all of the above as a single map you can copy line-by-line.
 
 ### AWS one-time setup
 
@@ -396,17 +428,43 @@ curl -O https://raw.githubusercontent.com/<your-org>/marcotech/main/Etgar/food-t
 
 # 2. .env  (Blue server — on Prod use IMAGE_TAG=prod)
 #    ECR_REGISTRY comes from `terraform output ecr_registry_url`.
+#    OPENAI_PARAM_NAME points at the SSM SecureString — the real key is
+#    populated separately (step 3 below) and never lives in this file.
 cat > .env <<'EOF'
 ECR_REGISTRY=<acct>.dkr.ecr.<region>.amazonaws.com
 IMAGE_TAG=staging
-OPENAI_API_KEY=<your-openai-key>
+OPENAI_PARAM_NAME=/food-tier/openai-key
+AWS_REGION=il-central-1
 EOF
+
+# 3. Populate the real OpenAI key in SSM Parameter Store (once for both
+#    EC2s — they share the same parameter). Run this from your laptop:
+aws ssm put-parameter \
+  --name /food-tier/openai-key \
+  --type SecureString \
+  --value sk-...your-real-openai-key... \
+  --overwrite
 ```
 
 Authentication to ECR happens automatically inside the CD workflow's
 SSM commands (`aws ecr get-login-password | docker login ...`); the EC2's
 instance profile carries the `AmazonEC2ContainerRegistryReadOnly` policy
 Terraform attached, so no static credentials live on the box.
+
+The OpenAI key follows the same "no static credentials on disk" rule:
+Terraform also attaches a scoped `ssm:GetParameter` policy on the
+`/food-tier/openai-key` ARN, and the backend container's entrypoint
+(`backend/entrypoint.sh`) fetches the SecureString value at startup
+when `OPENAI_PARAM_NAME` is set. Rotating the key is one command:
+
+```bash
+aws ssm put-parameter --name /food-tier/openai-key \
+  --type SecureString --value sk-new-key --overwrite
+# then restart the backend on each EC2 (via SSM):
+aws ssm send-command --instance-ids <i-blue> <i-prod> \
+  --document-name AWS-RunShellScript \
+  --parameters 'commands=["cd /home/ubuntu/food-tier-app && docker compose restart backend"]'
+```
 
 SSM Run Command runs as **root**, so the `APP_DIR` in the workflow
 (`/home/ubuntu/food-tier-app`) is the absolute path on the box. If

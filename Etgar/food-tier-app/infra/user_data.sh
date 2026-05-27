@@ -75,9 +75,15 @@ Next steps (one-time, done by a human or by an SSM command):
   1. Place docker-compose.yml at /home/ubuntu/food-tier-app/docker-compose.yml
   2. Place .env at /home/ubuntu/food-tier-app/.env with:
        ECR_REGISTRY=<acct>.dkr.ecr.<region>.amazonaws.com
-       IMAGE_TAG=staging   (or "prod" on the prod EC2)
-       OPENAI_API_KEY=<your-openai-key>
+       IMAGE_TAG=staging                       (or "prod" on the prod EC2)
+       OPENAI_PARAM_NAME=/food-tier/openai-key
+       AWS_REGION=il-central-1                 (optional)
      (the ECR_REGISTRY value comes from `terraform output ecr_registry_url`)
+  3. Populate the actual OpenAI key once (from your laptop, not the EC2):
+       aws ssm put-parameter --name /food-tier/openai-key \
+         --type SecureString --value sk-... --overwrite
+     The backend container fetches it at startup via this EC2's instance
+     profile — no key ever sits on disk here in plaintext.
 After that, the CD workflow (food-tier-cd-deploy.yml) takes over.
 EOF
 chown ubuntu:ubuntu /home/ubuntu/food-tier-app/README.bootstrap

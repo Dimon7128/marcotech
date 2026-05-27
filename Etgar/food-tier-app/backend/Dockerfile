@@ -22,7 +22,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application source. We deliberately copy individual modules instead
 # of `COPY . .` so a stray local file (e.g. .env) cannot end up in the image.
-COPY main.py openai_client.py food_storage.py ./
+#   entrypoint.sh + fetch_secret.py implement the "fetch OPENAI_API_KEY
+#   from SSM Parameter Store on EC2" path. They no-op when OPENAI_API_KEY
+#   is already in the environment (local dev via .env).
+COPY main.py openai_client.py food_storage.py fetch_secret.py entrypoint.sh ./
+RUN chmod +x /app/entrypoint.sh
 
 # The CSV "data tier". docker-compose bind-mounts ./backend/data on top of
 # this at runtime, but having the directory in the image means the app can
@@ -37,6 +41,8 @@ USER appuser
 
 EXPOSE 8000
 
-# `--host 0.0.0.0` is required so the port is reachable from outside the
-# container. No `--reload` here: this image is for prod/staging too.
+# Entrypoint wraps the CMD: it loads OPENAI_API_KEY from SSM if needed
+# and then exec's whatever is in CMD. Keeping CMD as the uvicorn line
+# means `docker run <image> python -c '...'` still works for debugging.
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -8,9 +8,15 @@
 # EC2 deployment (Blue staging / Prod):
 #   .env on the host defines:
 #     ECR_REGISTRY=<acct>.dkr.ecr.<region>.amazonaws.com
-#     IMAGE_TAG=staging       (on Blue EC2)
-#     IMAGE_TAG=prod          (on Prod EC2)
-#     OPENAI_API_KEY=<key>
+#     IMAGE_TAG=staging               (on Blue EC2)
+#     IMAGE_TAG=prod                  (on Prod EC2)
+#     OPENAI_PARAM_NAME=/food-tier/openai-key
+#     AWS_REGION=il-central-1         (optional — see backend/entrypoint.sh)
+#   The real OpenAI key is NOT in this .env file — it lives in AWS SSM
+#   Parameter Store (KMS-encrypted SecureString). The backend container
+#   fetches it at startup via the EC2 instance profile. Populate it once:
+#     aws ssm put-parameter --name /food-tier/openai-key \
+#       --type SecureString --value sk-... --overwrite
 #   Then (the CD workflow does this automatically via SSM):
 #     aws ecr get-login-password --region <region> \
 #       | docker login --username AWS --password-stdin ${ECR_REGISTRY}
@@ -32,9 +38,20 @@ services:
     ports:
       - "8000:8000"
     environment:
-      # Read straight from the .env file next to docker-compose.yml.
-      # On EC2 this is the only file holding the OpenAI key.
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # Two sources for OPENAI_API_KEY, picked by entrypoint.sh:
+      #
+      #   Local dev: set OPENAI_API_KEY=sk-... in .env.  Compose passes
+      #     it through here; entrypoint sees it set and skips SSM.
+      #
+      #   On EC2:   leave OPENAI_API_KEY empty, set OPENAI_PARAM_NAME
+      #     (e.g. /food-tier/openai-key) in the host's .env instead.
+      #     The container's entrypoint then fetches the value from
+      #     SSM Parameter Store using the EC2's instance profile.
+      #     AWS_REGION is optional — boto3 falls back to the EC2
+      #     metadata service when unset.
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_PARAM_NAME=${OPENAI_PARAM_NAME:-}
+      - AWS_REGION=${AWS_REGION:-}
     volumes:
       # Bind mount: the CSV survives container restarts AND is editable
       # from the host, which is great for inspecting the data tier.

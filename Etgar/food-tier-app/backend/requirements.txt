@@ -6,3 +6,9 @@ uvicorn[standard]>=0.27,<1.0
 pydantic>=2.5,<3.0
 python-dotenv>=1.0,<2.0
 openai>=1.30,<2.0
+
+# Used by entrypoint.sh / fetch_secret.py to load OPENAI_API_KEY from
+# AWS SSM Parameter Store at container startup (production / EC2 path).
+# When OPENAI_API_KEY is already set in the environment (local dev),
+# boto3 is imported but never used.
+boto3>=1.34,<2.0

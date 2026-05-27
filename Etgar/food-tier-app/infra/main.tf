@@ -427,3 +427,62 @@ resource "aws_ecr_lifecycle_policy" "frontend" {
   repository = aws_ecr_repository.frontend.name
   policy     = local.ecr_lifecycle_policy
 }
+
+// =============================================================================
+// 9. Secrets — OpenAI API key in SSM Parameter Store (SecureString / KMS).
+//
+//   This replaces the previous pattern of dropping the key into an .env file
+//   on each EC2:
+//     * one place to rotate
+//     * KMS-encrypted at rest (uses the account's default `alias/aws/ssm` key)
+//     * CloudTrail logs every read with who/when
+//     * blast radius stays AWS-only — never touches GitHub or any laptop
+//
+//   The Terraform creates the parameter as an EMPTY PLACEHOLDER. After
+//   `terraform apply`, populate the real value once:
+//
+//     aws ssm put-parameter \
+//       --name /food-tier/openai-key \
+//       --type SecureString \
+//       --value sk-...your-real-key... \
+//       --overwrite
+//
+//   `lifecycle.ignore_changes` makes sure terraform never overwrites the
+//   real value on subsequent applies.
+// =============================================================================
+
+resource "aws_ssm_parameter" "openai_key" {
+  name        = "/${var.project_name}/openai-key"
+  description = "OpenAI API key consumed by the food-tier-app backend at container startup."
+  type        = "SecureString"
+  // Starts with "sk-your-" so the backend's existing safety check
+  // (openai_client.py) refuses to call the OpenAI API until the real
+  // value has been put with `aws ssm put-parameter --overwrite`.
+  value = "sk-your-placeholder-set-via-cli-after-apply"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+
+  tags = {
+    Name = "${var.project_name}-openai-key"
+  }
+}
+
+// Inline policy on the EC2 role granting read-only access to JUST this
+// one parameter ARN. Resource-level scoping is supported for
+// ssm:GetParameter — so even a compromised EC2 can't enumerate other
+// SecureStrings in the account.
+resource "aws_iam_role_policy" "ec2_read_openai_key" {
+  name = "${var.project_name}-ec2-read-openai-key"
+  role = aws_iam_role.ec2_ssm.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid      = "ReadOpenAIKeyParameter"
+      Effect   = "Allow"
+      Action   = ["ssm:GetParameter"]
+      Resource = aws_ssm_parameter.openai_key.arn
+    }]
+  })
+}

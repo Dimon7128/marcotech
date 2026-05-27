@@ -3,7 +3,7 @@
 variable "aws_region" {
   description = "AWS region the lab is deployed in."
   type        = string
-  default     = "il-central-1"
+  default     = "eu-west-1"
 }
 
 variable "instance_type" {

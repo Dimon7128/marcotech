@@ -1,7 +1,10 @@
 // outputs.tf — everything you might want from `terraform output`.
 //
-// `github_actions_secrets` at the bottom is shaped exactly like the
-// GitHub Secrets the CD workflow expects — copy/paste-friendly.
+// The two bundles at the bottom (`github_actions_variables`,
+// `github_actions_secrets`) are shaped exactly like the GitHub Actions
+// config the CI + CD workflows expect, and are consumed by
+// `infra/sync-github-vars.sh` to push values into the repo without
+// manual copy/paste.
 
 // --- Blue EC2 ---------------------------------------------------------------
 
@@ -78,6 +81,21 @@ output "ecr_frontend_repository_url" {
   value       = aws_ecr_repository.frontend.repository_url
 }
 
+// --- Secrets ----------------------------------------------------------------
+
+output "openai_key_param_name" {
+  description = <<-EOT
+    SSM Parameter Store name holding the OpenAI API key (SecureString).
+    Created empty by Terraform — populate the real value with:
+
+      aws ssm put-parameter --name <this> --type SecureString \\
+        --value sk-...your-real-key... --overwrite
+
+    The backend container fetches this at startup on EC2 (entrypoint.sh).
+  EOT
+  value       = aws_ssm_parameter.openai_key.name
+}
+
 // --- Misc -------------------------------------------------------------------
 
 output "aws_region" {
@@ -85,21 +103,32 @@ output "aws_region" {
   value       = var.aws_region
 }
 
-// --- GitHub Secrets bundle --------------------------------------------------
+// --- GitHub Actions config bundles ------------------------------------------
 //
-// Paste these values into Settings → Secrets and variables → Actions of
-// the repo named in var.github_repo. Names match those expected by the
-// food-tier-cd-deploy.yml workflow.
+// Split into two outputs that mirror GitHub's own two-tab UI:
+//   * github_actions_variables  -> Settings → Variables (non-secret, ${{ vars.X }})
+//   * github_actions_secrets    -> Settings → Secrets   (credentials,  ${{ secrets.X }})
+//
+// `infra/sync-github-vars.sh` consumes both via `terraform output -json`
+// and pushes each map to the correct GitHub API (gh variable set / gh
+// secret set), so you never have to paste anything into the UI by hand.
 
-output "github_actions_secrets" {
-  description = "Values to paste into GitHub repo secrets (names match the CI + CD workflows)."
+output "github_actions_variables" {
+  description = "Non-secret config consumed by the CI + CD workflows. Synced to GitHub repo Variables."
   value = {
     AWS_REGION           = var.aws_region
-    AWS_DEPLOY_ROLE_ARN  = aws_iam_role.github_deploy.arn
+    ECR_REGISTRY         = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com"
     BLUE_EC2_INSTANCE_ID = aws_instance.blue.id
     PROD_EC2_INSTANCE_ID = aws_instance.prod.id
     BLUE_EC2_HOST        = aws_instance.blue.public_dns
     PROD_EC2_HOST        = aws_instance.prod.public_dns
-    ECR_REGISTRY         = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com"
+  }
+}
+
+output "github_actions_secrets" {
+  description = "Credentials consumed by the CI + CD workflows. Synced to GitHub repo Secrets (masked in logs)."
+  sensitive   = true
+  value = {
+    AWS_DEPLOY_ROLE_ARN = aws_iam_role.github_deploy.arn
   }
 }

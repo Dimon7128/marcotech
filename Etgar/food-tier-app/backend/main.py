@@ -26,18 +26,18 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# CORS: the frontend runs on http://localhost:8080 (nginx container) and we
-# also allow 127.0.0.1 because some browsers treat the two as different
-# origins. `allow_origins=["*"]` would also work but being explicit is a
-# good teaching point.
+# CORS: the frontend (nginx on :8080) and backend (FastAPI on :8000)
+# always run on different origins — locally, on Blue EC2, on Prod EC2 —
+# so the browser needs an explicit Access-Control-Allow-Origin header on
+# every API response or it will block the fetch.
+#
+# For this educational app we accept any origin. In a real deployment
+# you would prefer a strict allowlist driven by an env var:
+#
+#   allow_origins = [o for o in os.getenv("ALLOWED_ORIGINS", "").split(",") if o]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:8080",
-        "http://127.0.0.1:8080",
-        # Handy when a student opens index.html directly from disk.
-        "null",
-    ],
+    allow_origins=["*"],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
