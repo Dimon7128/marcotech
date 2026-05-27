@@ -102,17 +102,30 @@ jobs:
           AWS_REGION:   ${{ vars.AWS_REGION }}
           ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
           INSTANCE_ID:  ${{ vars.BLUE_EC2_INSTANCE_ID }}
+          # Source of truth for the docker-compose.yml served via raw.githubusercontent.
+          # Resolves to e.g. "Dimon7128/marcotech". `github.repository` is always
+          # owner/name of the repo running the workflow.
+          GH_REPO:      ${{ github.repository }}
+          IMAGE_TAG:    staging
         run: |
           set -euo pipefail
 
           # Build the JSON payload. `workingDirectory` makes SSM cd before
           # running the commands — cleaner than embedding `cd` in every line.
+          # The pre-flight block (curl + grep guards) is idempotent: it lays
+          # down docker-compose.yml and .env on first run, no-ops thereafter.
+          # That makes "destroy → apply → click CD" a zero-touch flow.
           cat > /tmp/ssm-commands.json <<JSON
           {
             "workingDirectory": ["${APP_DIR}"],
             "commands": [
               "set -e",
-              "grep -q '^IMAGE_TAG=' .env || echo 'IMAGE_TAG=staging' >> .env",
+              "[ -f docker-compose.yml ] || curl -fsSL -o docker-compose.yml https://raw.githubusercontent.com/${GH_REPO}/main/Etgar/food-tier-app/docker-compose.yml",
+              "[ -f .env ] || touch .env",
+              "grep -q '^ECR_REGISTRY='      .env || echo 'ECR_REGISTRY=${ECR_REGISTRY}'           >> .env",
+              "grep -q '^IMAGE_TAG='         .env || echo 'IMAGE_TAG=${IMAGE_TAG}'                 >> .env",
+              "grep -q '^OPENAI_PARAM_NAME=' .env || echo 'OPENAI_PARAM_NAME=/food-tier/openai-key' >> .env",
+              "grep -q '^AWS_REGION='        .env || echo 'AWS_REGION=${AWS_REGION}'               >> .env",
               "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}",
               "docker compose pull",
               "docker compose up -d --remove-orphans",
@@ -254,15 +267,24 @@ jobs:
           AWS_REGION:   ${{ vars.AWS_REGION }}
           ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
           INSTANCE_ID:  ${{ vars.PROD_EC2_INSTANCE_ID }}
+          GH_REPO:      ${{ github.repository }}
+          IMAGE_TAG:    prod
         run: |
           set -euo pipefail
 
+          # Pre-flight bootstrap is idempotent — see deploy-blue for the
+          # rationale. The only difference vs Blue is IMAGE_TAG=prod.
           cat > /tmp/ssm-commands.json <<JSON
           {
             "workingDirectory": ["${APP_DIR}"],
             "commands": [
               "set -e",
-              "grep -q '^IMAGE_TAG=' .env || echo 'IMAGE_TAG=prod' >> .env",
+              "[ -f docker-compose.yml ] || curl -fsSL -o docker-compose.yml https://raw.githubusercontent.com/${GH_REPO}/main/Etgar/food-tier-app/docker-compose.yml",
+              "[ -f .env ] || touch .env",
+              "grep -q '^ECR_REGISTRY='      .env || echo 'ECR_REGISTRY=${ECR_REGISTRY}'           >> .env",
+              "grep -q '^IMAGE_TAG='         .env || echo 'IMAGE_TAG=${IMAGE_TAG}'                 >> .env",
+              "grep -q '^OPENAI_PARAM_NAME=' .env || echo 'OPENAI_PARAM_NAME=/food-tier/openai-key' >> .env",
+              "grep -q '^AWS_REGION='        .env || echo 'AWS_REGION=${AWS_REGION}'               >> .env",
               "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}",
               "docker compose down",
               "docker compose pull",
