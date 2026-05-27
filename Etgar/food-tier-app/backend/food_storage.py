@@ -17,7 +17,7 @@ All public functions normalize the food name (trim + lowercase) so that
 from __future__ import annotations
 
 import csv
-import os
+import os 
 from pathlib import Path
 from typing import Optional
 

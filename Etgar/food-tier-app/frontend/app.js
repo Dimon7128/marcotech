@@ -94,7 +94,7 @@ form.addEventListener("submit", async (event) => {
     showStatus("Please enter a food name.");
     return;
   }
- 
+  
   clearStatus();
   hideResult();
   submitBtn.disabled = true;
