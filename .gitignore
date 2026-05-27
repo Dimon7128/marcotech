@@ -7,6 +7,11 @@
 !*/
 !.myfuncs
 !dockerfile
+!Dockerfile
+!Dockerfile.*
+!.dockerignore
+!.env.example
+!*.txt
 !*.tf
 !*.c
 !*.md
@@ -24,5 +29,7 @@
 !*.csv
 !*.conf
 !*.tpl
+!*.js
+!*.json
 
 

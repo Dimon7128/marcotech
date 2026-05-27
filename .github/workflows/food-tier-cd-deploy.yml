@@ -1,19 +1,26 @@
 # --- Food Tier App: Continuous Deployment (OIDC + SSM Run Command) ---------
 # Manual ("button-press") deployment. Triggered from the Actions tab.
 #
-# Auth model — no SSH, no static AWS keys:
+# Auth model — no SSH, no static AWS keys, no Docker Hub credentials:
 #   GitHub Actions  --(OIDC)-->  AWS IAM Role  --(ssm:SendCommand)-->  EC2
+#                                            \--(ecr:PutImage)--> ECR
 #
 # The runner exchanges a signed OIDC token for short-lived STS credentials
-# via aws-actions/configure-aws-credentials. It then asks SSM to run a
-# shell script ON the EC2 instance — SSM Agent (pre-installed on Amazon
-# Linux 2023 and recent Ubuntu AMIs) executes it as root with the
-# instance profile attached to the EC2.
+# via aws-actions/configure-aws-credentials. With those creds it can:
+#   * call SSM to run docker commands on each EC2 (deploy + reload), and
+#   * call ECR directly to retag :staging -> :prod server-side (zero
+#     image bytes transferred through the runner).
+#
+# The EC2s authenticate to ECR via their own instance profile (the
+# AWS-managed `AmazonEC2ContainerRegistryReadOnly` policy), so the SSM
+# commands just need `aws ecr get-login-password | docker login` — no
+# secrets ever leave AWS.
 #
 # Flow:
 #   1. Deploy `:staging` images to Blue EC2 via SSM.
 #   2. Run integration tests against Blue EC2 (curl from the runner).
-#   3. If Blue tests pass, promote `:staging` -> `:prod` on Docker Hub.
+#   3. If Blue tests pass, promote `:staging` -> `:prod` in ECR via
+#      `aws ecr put-image` (server-side retag — no docker pull/push).
 #   4. Deploy `:prod` images to Prod EC2 via SSM.
 #   5. Run health checks against Prod EC2.
 # ---------------------------------------------------------------------------
@@ -83,14 +90,18 @@ jobs:
 
       # --------------------------------------------------------------------
       # Build a small JSON file with the commands SSM will run, then send
-      # it. Heredoc is used so we can interpolate Docker Hub creds safely
-      # (single-quoted in bash, escaped inside the JSON string).
+      # it. Heredoc is used so AWS_REGION / ECR_REGISTRY interpolate
+      # cleanly into the JSON-quoted command strings.
       # --------------------------------------------------------------------
       - name: Deploy :staging images to Blue EC2 via SSM
         env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN:    ${{ secrets.DOCKERHUB_TOKEN }}
-          INSTANCE_ID:        ${{ secrets.BLUE_EC2_INSTANCE_ID }}
+          # ECR login on the EC2 uses the instance profile — no static
+          # credentials are passed through the SSM payload. We only need
+          # the region (to pick the right ECR endpoint) and the registry
+          # URL (the `docker login` target).
+          AWS_REGION:   ${{ secrets.AWS_REGION }}
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          INSTANCE_ID:  ${{ secrets.BLUE_EC2_INSTANCE_ID }}
         run: |
           set -euo pipefail
 
@@ -102,7 +113,7 @@ jobs:
             "commands": [
               "set -e",
               "grep -q '^IMAGE_TAG=' .env || echo 'IMAGE_TAG=staging' >> .env",
-              "echo '${DOCKERHUB_TOKEN}' | docker login -u '${DOCKERHUB_USERNAME}' --password-stdin",
+              "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}",
               "docker compose pull",
               "docker compose up -d --remove-orphans",
               "docker compose ps"
@@ -195,35 +206,14 @@ jobs:
             --query "StandardOutputContent" --output text
 
   # =========================================================================
-  # Stage 2: promote :staging -> :prod on Docker Hub, then deploy to Prod EC2
+  # Stage 2: promote :staging -> :prod in ECR, then deploy to Prod EC2
   # =========================================================================
   promote-and-deploy-prod:
     needs: deploy-blue
     runs-on: ubuntu-latest
 
     steps:
-      # -------- Promote tags on Docker Hub (no AWS involved) --------------
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Promote backend image  staging -> prod
-        run: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${BACKEND_IMAGE}:staging
-          docker tag  ${{ secrets.DOCKERHUB_USERNAME }}/${BACKEND_IMAGE}:staging \
-                      ${{ secrets.DOCKERHUB_USERNAME }}/${BACKEND_IMAGE}:prod
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${BACKEND_IMAGE}:prod
-
-      - name: Promote frontend image  staging -> prod
-        run: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${FRONTEND_IMAGE}:staging
-          docker tag  ${{ secrets.DOCKERHUB_USERNAME }}/${FRONTEND_IMAGE}:staging \
-                      ${{ secrets.DOCKERHUB_USERNAME }}/${FRONTEND_IMAGE}:prod
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${FRONTEND_IMAGE}:prod
-
-      # -------- Deploy to Prod EC2 via SSM --------------------------------
+      # -------- Auth first — both promotion and the SSM deploy need it ----
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -231,11 +221,39 @@ jobs:
           aws-region:     ${{ secrets.AWS_REGION }}
           role-session-name: gh-actions-food-tier-deploy-prod
 
+      # -------- Promote tags inside ECR -----------------------------------
+      # `aws ecr put-image` adds a new tag to an existing manifest
+      # server-side. No `docker pull/tag/push` from the runner — zero
+      # image bytes move, the promotion is effectively instant.
+      - name: Promote backend image  staging -> prod
+        run: |
+          MANIFEST=$(aws ecr batch-get-image \
+            --repository-name "${BACKEND_IMAGE}" \
+            --image-ids imageTag=staging \
+            --query 'images[0].imageManifest' --output text)
+          aws ecr put-image \
+            --repository-name "${BACKEND_IMAGE}" \
+            --image-tag prod \
+            --image-manifest "$MANIFEST" > /dev/null
+          echo "backend: tagged :prod -> same digest as :staging"
+
+      - name: Promote frontend image  staging -> prod
+        run: |
+          MANIFEST=$(aws ecr batch-get-image \
+            --repository-name "${FRONTEND_IMAGE}" \
+            --image-ids imageTag=staging \
+            --query 'images[0].imageManifest' --output text)
+          aws ecr put-image \
+            --repository-name "${FRONTEND_IMAGE}" \
+            --image-tag prod \
+            --image-manifest "$MANIFEST" > /dev/null
+          echo "frontend: tagged :prod -> same digest as :staging"
+
       - name: Deploy :prod images to Prod EC2 via SSM
         env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN:    ${{ secrets.DOCKERHUB_TOKEN }}
-          INSTANCE_ID:        ${{ secrets.PROD_EC2_INSTANCE_ID }}
+          AWS_REGION:   ${{ secrets.AWS_REGION }}
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          INSTANCE_ID:  ${{ secrets.PROD_EC2_INSTANCE_ID }}
         run: |
           set -euo pipefail
 
@@ -245,7 +263,7 @@ jobs:
             "commands": [
               "set -e",
               "grep -q '^IMAGE_TAG=' .env || echo 'IMAGE_TAG=prod' >> .env",
-              "echo '${DOCKERHUB_TOKEN}' | docker login -u '${DOCKERHUB_USERNAME}' --password-stdin",
+              "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}",
               "docker compose down",
               "docker compose pull",
               "docker compose up -d --remove-orphans",
