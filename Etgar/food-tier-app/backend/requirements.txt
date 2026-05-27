@@ -1,0 +1,8 @@
+# Runtime dependencies only. These end up in the production image
+# (see backend/Dockerfile). Test-only deps live in requirements-dev.txt
+# so they never ship to staging / prod.
+fastapi>=0.110,<1.0
+uvicorn[standard]>=0.27,<1.0
+pydantic>=2.5,<3.0
+python-dotenv>=1.0,<2.0
+openai>=1.30,<2.0

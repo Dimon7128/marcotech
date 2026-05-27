@@ -125,6 +125,16 @@ resource "aws_iam_role_policy_attachment" "ec2_ssm_core" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
+// Pull-only access to ECR. Together with the SSM core policy, this lets the
+// EC2 run `docker pull` against the app's ECR repos without any static
+// credentials — the docker daemon authenticates via the instance profile
+// when the CD workflow issues `aws ecr get-login-password | docker login`
+// over SSM.
+resource "aws_iam_role_policy_attachment" "ec2_ecr_pull" {
+  role       = aws_iam_role.ec2_ssm.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
 resource "aws_iam_instance_profile" "ec2" {
   name = "${var.project_name}-ec2-instance-profile"
   role = aws_iam_role.ec2_ssm.name
@@ -295,10 +305,125 @@ data "aws_iam_policy_document" "github_deploy_permissions" {
     ]
     resources = ["*"]
   }
+
+  // ECR authorisation token — required before any ECR push or pull.
+  // IAM does not support resource-level scoping on this action, so "*"
+  // is the tightest grant possible.
+  statement {
+    sid       = "AllowEcrAuth"
+    effect    = "Allow"
+    actions   = ["ecr:GetAuthorizationToken"]
+    resources = ["*"]
+  }
+
+  // Push + retag the two app images, and read manifests (needed by the
+  // `aws ecr put-image` server-side promotion in the CD workflow).
+  // Scoped to the two repo ARNs — the deploy role cannot touch any other
+  // ECR repo in the account.
+  statement {
+    sid    = "AllowEcrPushPullOnAppRepos"
+    effect = "Allow"
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:CompleteLayerUpload",
+      "ecr:InitiateLayerUpload",
+      "ecr:PutImage",
+      "ecr:UploadLayerPart",
+      "ecr:BatchGetImage",
+      "ecr:DescribeImages",
+      "ecr:ListImages",
+    ]
+    resources = [
+      aws_ecr_repository.backend.arn,
+      aws_ecr_repository.frontend.arn,
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "github_deploy" {
   name   = "${var.project_name}-github-deploy-policy"
   role   = aws_iam_role.github_deploy.id
   policy = data.aws_iam_policy_document.github_deploy_permissions.json
+}
+
+// =============================================================================
+// 8. ECR — private registries for the backend and frontend images.
+//
+//   Two private repos in this account/region. Tags are MUTABLE because the
+//   CI/CD scheme retags `:staging` and `:prod` to point at different
+//   immutable `:${sha}` builds over time. Scanning is enabled so basic
+//   CVE info shows up under the repo's "Images" tab.
+//
+//   IAM:
+//     * GitHub deploy role (above) gets push perms on these two ARNs.
+//     * EC2 instance profile gets the AWS-managed pull-only policy
+//       (see `ec2_ecr_pull` near the EC2 IAM section).
+// =============================================================================
+
+resource "aws_ecr_repository" "backend" {
+  name                 = "${var.project_name}-backend"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  tags = {
+    Name = "${var.project_name}-backend"
+  }
+}
+
+resource "aws_ecr_repository" "frontend" {
+  name                 = "${var.project_name}-frontend"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  tags = {
+    Name = "${var.project_name}-frontend"
+  }
+}
+
+// Lifecycle policy — keeps storage bounded for a long-running educational
+// repo. Two rules, evaluated in priority order:
+//   1. Drop untagged images older than 7 days (cleans up failed pushes).
+//   2. Keep only the 20 most recent images per repo.
+locals {
+  ecr_lifecycle_policy = jsonencode({
+    rules = [
+      {
+        rulePriority = 1
+        description  = "Expire untagged images older than 7 days"
+        selection = {
+          tagStatus   = "untagged"
+          countType   = "sinceImagePushed"
+          countUnit   = "days"
+          countNumber = 7
+        }
+        action = { type = "expire" }
+      },
+      {
+        rulePriority = 2
+        description  = "Keep only the 20 most recent images"
+        selection = {
+          tagStatus   = "any"
+          countType   = "imageCountMoreThan"
+          countNumber = 20
+        }
+        action = { type = "expire" }
+      },
+    ]
+  })
+}
+
+resource "aws_ecr_lifecycle_policy" "backend" {
+  repository = aws_ecr_repository.backend.name
+  policy     = local.ecr_lifecycle_policy
+}
+
+resource "aws_ecr_lifecycle_policy" "frontend" {
+  repository = aws_ecr_repository.frontend.name
+  policy     = local.ecr_lifecycle_policy
 }

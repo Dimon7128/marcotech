@@ -1,17 +1,19 @@
 # docker-compose.yml — works for BOTH local dev and EC2 deployment.
 #
-# Local dev (no Docker Hub, just build from source):
+# Local dev (no registry pull, just build from source):
 #   docker compose up --build
-#   The ${DOCKERHUB_USERNAME:-localdev} / ${IMAGE_TAG:-local} defaults
-#   tag the freshly-built images as `localdev/food-tier-*:local`.
+#   The ${ECR_REGISTRY:-localdev} / ${IMAGE_TAG:-local} defaults tag the
+#   freshly-built images as `localdev/food-tier-*:local`.
 #
 # EC2 deployment (Blue staging / Prod):
 #   .env on the host defines:
-#     DOCKERHUB_USERNAME=<your dockerhub user>
+#     ECR_REGISTRY=<acct>.dkr.ecr.<region>.amazonaws.com
 #     IMAGE_TAG=staging       (on Blue EC2)
 #     IMAGE_TAG=prod          (on Prod EC2)
 #     OPENAI_API_KEY=<key>
-#   Then:
+#   Then (the CD workflow does this automatically via SSM):
+#     aws ecr get-login-password --region <region> \
+#       | docker login --username AWS --password-stdin ${ECR_REGISTRY}
 #     docker compose pull
 #     docker compose up -d
 #
@@ -23,8 +25,8 @@ services:
     # `image:` is what `docker compose pull` uses on EC2.
     # `build:` is what `docker compose up --build` uses locally.
     # When both are set, compose tags the built image as `image:` —
-    # which is exactly what CI relies on before pushing to Docker Hub.
-    image: ${DOCKERHUB_USERNAME:-localdev}/food-tier-backend:${IMAGE_TAG:-local}
+    # which is exactly what CI relies on before pushing to ECR.
+    image: ${ECR_REGISTRY:-localdev}/food-tier-backend:${IMAGE_TAG:-local}
     build: ./backend
     container_name: food-tier-backend
     ports:
@@ -46,7 +48,7 @@ services:
       start_period: 10s
 
   frontend:
-    image: ${DOCKERHUB_USERNAME:-localdev}/food-tier-frontend:${IMAGE_TAG:-local}
+    image: ${ECR_REGISTRY:-localdev}/food-tier-frontend:${IMAGE_TAG:-local}
     build: ./frontend
     container_name: food-tier-frontend
     ports:

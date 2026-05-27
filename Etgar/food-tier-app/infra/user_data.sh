@@ -74,9 +74,10 @@ This EC2 was provisioned by Terraform (food-tier-app/infra).
 Next steps (one-time, done by a human or by an SSM command):
   1. Place docker-compose.yml at /home/ubuntu/food-tier-app/docker-compose.yml
   2. Place .env at /home/ubuntu/food-tier-app/.env with:
-       DOCKERHUB_USERNAME=<your-dockerhub-user>
+       ECR_REGISTRY=<acct>.dkr.ecr.<region>.amazonaws.com
        IMAGE_TAG=staging   (or "prod" on the prod EC2)
        OPENAI_API_KEY=<your-openai-key>
+     (the ECR_REGISTRY value comes from `terraform output ecr_registry_url`)
 After that, the CD workflow (food-tier-cd-deploy.yml) takes over.
 EOF
 chown ubuntu:ubuntu /home/ubuntu/food-tier-app/README.bootstrap

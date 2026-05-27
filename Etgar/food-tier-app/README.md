@@ -240,7 +240,7 @@ asks SSM to run docker commands on the EC2 as root.
         ┌──────────┴────── if Blue OK ──────────┐      │
         ▼                                       ▼      │
    retag staging → prod                  aws ssm send-command
-   on Docker Hub                                ▼      │
+   in ECR (put-image)                            ▼      │
                                           Prod EC2 (SSM Agent)
                                           ─ docker compose down
                                           ─ docker compose pull (:prod)
@@ -276,17 +276,19 @@ Configure in **Settings → Secrets and variables → Actions**:
 
 | Secret | Used by |
 | ------ | ------- |
-| `DOCKERHUB_USERNAME`     | CI + CD (image namespace + Docker Hub login) |
-| `DOCKERHUB_TOKEN`        | CI + CD (use a **Personal Access Token**, not your Docker Hub password) |
-| `AWS_DEPLOY_ROLE_ARN`    | CD (the IAM role GitHub assumes via OIDC, e.g. `arn:aws:iam::123456789012:role/github-actions-food-tier-deploy`) |
-| `AWS_REGION`             | CD (e.g. `eu-west-1`) |
+| `AWS_DEPLOY_ROLE_ARN`    | CI + CD (the IAM role GitHub assumes via OIDC; ECR push *and* SSM SendCommand) |
+| `AWS_REGION`             | CI + CD (e.g. `il-central-1`) |
+| `ECR_REGISTRY`           | CI + CD (your account-scoped registry URL — `terraform output ecr_registry_url`, e.g. `123456789012.dkr.ecr.il-central-1.amazonaws.com`) |
 | `BLUE_EC2_INSTANCE_ID`   | CD (`i-0abc...` — used by `aws ssm send-command`) |
 | `PROD_EC2_INSTANCE_ID`   | CD |
 | `BLUE_EC2_HOST`          | CD (public DNS / IP — used by the runner to curl the integration tests) |
 | `PROD_EC2_HOST`          | CD |
 
-Notice what is **no longer** required compared to the SSH variant:
-`BLUE_EC2_USER`, `BLUE_EC2_SSH_KEY`, `PROD_EC2_USER`, `PROD_EC2_SSH_KEY`.
+Notice what is **no longer** required compared to the previous variants:
+- `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN` — Docker Hub is replaced by ECR; auth on GitHub is via OIDC and on EC2 via the instance profile.
+- `BLUE_EC2_USER`, `BLUE_EC2_SSH_KEY`, `PROD_EC2_USER`, `PROD_EC2_SSH_KEY` — SSM Run Command replaces SSH.
+
+Tip: `terraform output github_actions_secrets` prints all of the above as a single map you can copy line-by-line.
 
 ### AWS one-time setup
 
@@ -387,18 +389,24 @@ only need to drop the compose file and `.env` on each box:
 # SSH alternative (not strictly needed — you can do this via SSM too):
 # `aws ssm start-session --target <instance-id>`
 
-# 1. lay down the compose file (images come from Docker Hub — no source
+# 1. lay down the compose file (images are pulled from ECR — no source
 #    code lives on the EC2)
 cd ~/food-tier-app
 curl -O https://raw.githubusercontent.com/<your-org>/marcotech/main/Etgar/food-tier-app/docker-compose.yml
 
 # 2. .env  (Blue server — on Prod use IMAGE_TAG=prod)
+#    ECR_REGISTRY comes from `terraform output ecr_registry_url`.
 cat > .env <<'EOF'
-DOCKERHUB_USERNAME=<your-dockerhub-user>
+ECR_REGISTRY=<acct>.dkr.ecr.<region>.amazonaws.com
 IMAGE_TAG=staging
 OPENAI_API_KEY=<your-openai-key>
 EOF
 ```
+
+Authentication to ECR happens automatically inside the CD workflow's
+SSM commands (`aws ecr get-login-password | docker login ...`); the EC2's
+instance profile carries the `AmazonEC2ContainerRegistryReadOnly` policy
+Terraform attached, so no static credentials live on the box.
 
 SSM Run Command runs as **root**, so the `APP_DIR` in the workflow
 (`/home/ubuntu/food-tier-app`) is the absolute path on the box. If
