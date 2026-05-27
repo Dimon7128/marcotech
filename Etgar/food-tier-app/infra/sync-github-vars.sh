@@ -71,7 +71,10 @@ echo "==> Pushing GitHub Actions Secrets (credentials)..."
 terraform output -json github_actions_secrets \
   | jq -r 'to_entries[] | [.key, .value] | @tsv' \
   | while IFS=$'\t' read -r KEY VAL; do
-      printf '%s' "$VAL" | gh secret set "$KEY" --repo "$REPO" --body -
+      # NOTE: piping into `gh secret set` without --body makes it read
+      # the value from stdin. Do NOT use `--body -` — that sets the
+      # literal one-character value "-" and silently corrupts your secret.
+      printf '%s' "$VAL" | gh secret set "$KEY" --repo "$REPO"
       echo "    set secret: $KEY = (masked)"
     done
 

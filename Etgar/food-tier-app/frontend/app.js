@@ -104,7 +104,7 @@ form.addEventListener("submit", async (event) => {
   try {
     const data = await classifyFood(food);
     renderResult(data);
-  } catch (err) {
+  } catch (err) { 
     // Network errors (backend down, CORS, DNS) land here as TypeError.
     const message =
       err instanceof TypeError
