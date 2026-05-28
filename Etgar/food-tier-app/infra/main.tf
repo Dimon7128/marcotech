@@ -162,6 +162,17 @@ resource "aws_instance" "blue" {
   associate_public_ip_address = true
   user_data                   = local.user_data
 
+  // Enforce IMDSv2 (token-based) and allow ONE extra network hop so
+  // Docker containers on the bridge network can reach the metadata
+  // service. The default hop limit of 1 silently breaks any AWS SDK
+  // call from inside a container (boto3, aws-sdk, etc.) — boto3 just
+  // logs "Unable to locate credentials" with no other hint.
+  metadata_options {
+    http_tokens                 = "required" // IMDSv2 only
+    http_put_response_hop_limit = 2          // host -> docker bridge -> container
+    http_endpoint               = "enabled"
+  }
+
   tags = {
     Name        = "${var.project_name}-blue"
     Environment = "blue"
@@ -176,6 +187,13 @@ resource "aws_instance" "prod" {
   iam_instance_profile        = aws_iam_instance_profile.ec2.name
   associate_public_ip_address = true
   user_data                   = local.user_data
+
+  // See aws_instance.blue for rationale on metadata_options.
+  metadata_options {
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 2
+    http_endpoint               = "enabled"
+  }
 
   tags = {
     Name        = "${var.project_name}-prod"

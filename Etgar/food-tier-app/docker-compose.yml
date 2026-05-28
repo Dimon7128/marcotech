@@ -47,8 +47,9 @@ services:
       #     (e.g. /food-tier/openai-key) in the host's .env instead.
       #     The container's entrypoint then fetches the value from
       #     SSM Parameter Store using the EC2's instance profile.
-      #     AWS_REGION is optional — boto3 falls back to the EC2
-      #     metadata service when unset.
+      #     AWS_REGION is REQUIRED on the EC2 path — boto3 does NOT
+      #     auto-detect region from IMDS, only credentials. Without
+      #     it, fetch_secret.py raises NoRegionError at client init.
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - OPENAI_PARAM_NAME=${OPENAI_PARAM_NAME:-}
       - AWS_REGION=${AWS_REGION:-}

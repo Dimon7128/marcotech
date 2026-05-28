@@ -29,12 +29,26 @@ def main() -> int:
         print("OPENAI_PARAM_NAME is not set", file=sys.stderr)
         return 1
 
+    # boto3 reads region from the first source it finds:
+    # AWS_REGION env var, AWS_DEFAULT_REGION env var, ~/.aws/config.
+    # It does NOT auto-discover region from EC2 IMDS (it does for
+    # credentials, not for region), so we pass it explicitly and fail
+    # loudly with a clearer message than boto3's NoRegionError.
+    region = os.environ.get("AWS_REGION") or os.environ.get("AWS_DEFAULT_REGION")
+    if not region:
+        print(
+            "AWS_REGION is not set. On EC2, add `AWS_REGION=<region>` to "
+            "/home/ubuntu/food-tier-app/.env and `docker compose restart backend`.",
+            file=sys.stderr,
+        )
+        return 3
+
     # Imported lazily so the (small) boto3 import cost is only paid on
     # the EC2 path, not on every local container start.
     import boto3
     from botocore.exceptions import BotoCoreError, ClientError
 
-    ssm = boto3.client("ssm")
+    ssm = boto3.client("ssm", region_name=region)
     try:
         response = ssm.get_parameter(Name=param_name, WithDecryption=True)
     except (BotoCoreError, ClientError) as exc:

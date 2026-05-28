@@ -14,7 +14,7 @@
 // `http://localhost:8080` (dev) and `http://<ec2-ip>:8080` (deployed).
 // `file://` (opening index.html from disk) falls back to localhost.
 const API_BASE = (() => {
-  const host = window.location.hostname || "localhost";
+  const host = window.location.hostname || "localhost"; 
   const protocol =
     window.location.protocol === "https:" ? "https:" : "http:";
   return `${protocol}//${host}:8000`;
