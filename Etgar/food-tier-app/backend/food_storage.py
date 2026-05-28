@@ -77,7 +77,7 @@ def save(food: str, tier: str, explanation: str) -> dict:
     main.py) is responsible for checking with `find()` first. Keeping the
     storage layer dumb makes it easier to reason about for students.
     """
-    ensure_csv_exists()
+    ensure_csv_exists() 
     row = {
         "food": normalize(food),
         "tier": tier,
