@@ -18,7 +18,7 @@ const API_BASE = (() => {
   const protocol =
     window.location.protocol === "https:" ? "https:" : "http:";
   return `${protocol}//${host}:8000`;
-})();
+})(); 
 
 const form = document.getElementById("food-form");
 const input = document.getElementById("food-input");
