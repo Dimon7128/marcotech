@@ -1,0 +1,123 @@
+================================================================================
+ Exercise: Fix the Broken Compose Stack
+================================================================================
+
+Objective
+---------
+You are provided with a multi-service Docker Compose stack located in:
+
+    broken-stack/
+
+Your goal is to:
+  1. Bring the stack up and observe what is wrong with it.
+  2. Investigate, diagnose, and fix the issue(s).
+  3. End with a healthy stack that responds successfully on
+         http://localhost:8080/
+
+
+Stack Layout
+------------
+  proxy   reverse proxy, host port 8080 -> container 80
+  web     Python application (the "MOTD" service)
+  db      PostgreSQL 16
+  cache   Redis 7
+
+The web image is published on Docker Hub as:
+
+    dimabu/motd-web:latest
+
+You do NOT need to build anything locally. The other three services
+use stock public images.
+
+When the stack is healthy, `curl -s http://localhost:8080/` returns
+valid JSON containing a short message and a visit counter that grows
+on every request.
+
+
+Steps to Complete
+-----------------
+   1. cd broken-stack
+   2. docker compose pull         # grabs all images from Docker Hub
+   3. docker compose up -d        # brings up the stack
+   4. docker compose ps
+        - Note which services do and do not reach a healthy state.
+   5. Investigate.
+        - Read the logs of each service.
+        - Form a hypothesis about what is wrong.
+        - Confirm it before changing anything.
+   6. Apply your fix(es).
+   7. Re-run the stack and re-check status until it is healthy.
+   8. Verify end-to-end:
+          curl -s http://localhost:8080/healthz
+          curl -s http://localhost:8080/
+   9. Tear down:
+          docker compose down -v
+
+
+Deliverables
+------------
+  - A short write-up describing:
+      * what you observed when you first brought the stack up,
+      * how you investigated (which commands, which logs),
+      * what you concluded was wrong,
+      * what you changed to fix it.
+  - Final output of:
+      * docker compose ps
+      * curl -s http://localhost:8080/
+
+
+Useful Hints (no spoilers)
+--------------------------
+  * "docker compose ps" tells you which services are healthy, which are
+    restarting, and which exited.
+  * "docker compose logs <service> --tail=50" is your most important tool.
+    Read each service's logs SEPARATELY -- a multi-service stack often
+    has more than one thing to say, and the most useful clue is usually
+    on the last line of someone's log.
+  * When a service complains it cannot reach something, read the FULL
+    error carefully. A connection error usually names three things:
+        - the host it tried to reach,
+        - the port it tried to use,
+        - the reason the attempt failed (refused / timeout / auth / DNS).
+    Each of those is a separate thing that can be misconfigured.
+  * Configuration in a Compose stack lives in more than one place:
+    the compose file, environment files, and any config files mounted
+    into a container. Skim them all -- values that appear in more than
+    one place are supposed to agree.
+  * After you change a file, the service that uses it needs to be
+    recreated or restarted before it sees the new value. Look up what
+    each of these does to a running stack:
+        docker compose up -d
+        docker compose restart <service>
+        docker compose down [-v]
+  * PostgreSQL only runs /docker-entrypoint-initdb.d/ on FIRST boot
+    against an EMPTY data volume. If you suspect the DB has cached an
+    earlier (bad) state, `docker compose down -v` gives you a clean one.
+  * If you need to inspect a running service from the inside:
+        docker compose exec <service> sh
+    For services that have already exited, run a throwaway shell in
+    a fresh copy of the image instead:
+        docker run -it --rm --entrypoint sh <image>
+
+
+Good luck!
+================================================================================
+
+
+For Instructors (Publishing the Image)
+--------------------------------------
+The web app is built from broken-stack/web/ and published to Docker Hub.
+A helper script ships in the repo root:
+
+    ./publish.sh                                  # build dimabu/motd-web:latest only
+    ./publish.sh youruser/motd-web v2             # different repo / tag
+    PUSH=1 ./publish.sh youruser/motd-web latest  # build AND push (needs docker login)
+
+If you publish under a different name, either edit the default in
+broken-stack/docker-compose.yml or have students export:
+
+    WEB_IMAGE=youruser/motd-web:latest
+
+before running `docker compose pull && docker compose up -d`.
+================================================================================
+

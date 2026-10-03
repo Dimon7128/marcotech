@@ -1,0 +1,22 @@
+# Never bake secrets into the image — the .env is provided at runtime
+# via `env_file:` in docker-compose.yml.
+.env
+.env.*
+!.env.example
+
+# Local virtualenvs and Python caches.
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# IDE / editor noise.
+.vscode/
+.idea/
+
+# We mount ./backend/data from the host, so there is no reason to ship
+# whatever happened to be in the local CSV at build time.
+data/

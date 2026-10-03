@@ -1,0 +1,9 @@
+# Editor / OS noise that should never end up in the image.
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.log
+
+# Notes & docs are not needed inside the nginx container.
+README.md

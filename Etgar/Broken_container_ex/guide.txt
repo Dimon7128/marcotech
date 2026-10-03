@@ -1,0 +1,58 @@
+================================================================================
+ Exercise: Fix the Broken NGINX Container
+================================================================================
+
+Objective
+---------
+You are provided with a prebuilt Docker image:
+
+    dimabu/broken_image:latest
+
+Your goal is to:
+  1. Identify why the container is crashing.
+  2. Investigate and fix the issue.
+  3. Ensure the container runs successfully after applying your fix.
+
+
+Steps to Complete
+-----------------
+  1. Pull the provided Docker image.
+  2. Run the container using the image: dimabu/broken_image:latest.
+  3. Observe the behavior of the container.
+  4. Investigate the issue causing the container to crash:
+       - Use Docker logs to gather information about the error.
+       - Inspect the relevant configuration files or container internals.
+  5. Fix the issue within the container.
+  6. Restart the container and verify that it runs without crashing.
+
+
+Deliverables
+------------
+  - Document the steps you took to identify the problem.
+  - Provide the solution you implemented to fix the issue.
+  - Confirm the container is running successfully.
+
+
+Useful Hints (no spoilers)
+--------------------------
+  * "docker ps"     shows running containers.
+  * "docker ps -a"  also shows containers that have already exited.
+  * "docker logs <name|id>" prints stdout/stderr of a container, including
+    the reason it crashed at startup.
+  * A container that is already crashed cannot be entered with "docker exec".
+    You can still get a shell in a fresh copy of the image by overriding
+    the entrypoint:
+        docker run -it --rm --entrypoint sh dimabu/broken_image:latest
+  * The NGINX configuration inside the image lives at:
+        /etc/nginx/nginx.conf
+  * There are several legitimate ways to apply a fix:
+        - Bind-mount a corrected config file from the host with -v
+        - Edit inside a throwaway container, then "docker commit" it
+        - Build a new image FROM the broken one with a corrected config
+    Any of these is acceptable.
+  * Map port 80 of the container to a host port, e.g. -p 8080:80,
+    and verify with: curl -I http://localhost:8080
+
+
+Good luck!
+================================================================================
