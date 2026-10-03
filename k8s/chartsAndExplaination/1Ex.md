@@ -59,6 +59,42 @@ graph TB
     style Action fill:#28B463,stroke:#1E8449,color:#fff
 ```
 
+## Desired State vs Actual State
+
+Kubernetes is fundamentally a **desired-state system**.
+
+### You Declare:
+```yaml
+replicas: 3
+```
+
+### You Are Saying:
+**"I want three instances running."**
+
+### You Are NOT Saying:
+~~"Start container A on server X."~~
+
+**Kubernetes decides how to reach the requested state.**
+
+### Reconciliation Process:
+
+```mermaid
+graph TB
+    DS[Desired State<br/>3 Pods]
+    DS --> Check[Controller checks cluster]
+    Check --> AS[Actual State<br/>2 Pods]
+    AS --> Action[Create 1 Pod]
+    Action --> Final[Reconciliation Complete<br/>3 Pods Running]
+    
+    style DS fill:#3498DB,stroke:#2874A6,color:#fff
+    style Check fill:#9B59B6,stroke:#7D3C98,color:#fff
+    style AS fill:#E67E22,stroke:#CA6F1E,color:#fff
+    style Action fill:#F39C12,stroke:#D68910,color:#000
+    style Final fill:#28B463,stroke:#1E8449,color:#fff
+```
+
+This process is called **reconciliation**.
+
 ## Important Concept
 
 **Kubernetes continuously compares desired state with actual state** and automatically takes action to reconcile any differences.
