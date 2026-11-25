@@ -34,6 +34,10 @@ Open <http://127.0.0.1:8000/docs>. TestClient runs the tests directly, so a runn
 
 ## CI
 
+Commit both `session6-final-lab/` and
+`.github/workflows/session6-final-lab-ci.yml` from the repository root so GitHub
+receives the project and its workflow together.
+
 [Session 6 Final Lab CI](../.github/workflows/session6-final-lab-ci.yml) runs on
 branch pushes that change `session6-final-lab/**`. It installs the dependencies,
 runs `python -m pytest -q`, then builds `sms-api:ci` using this folder as the Docker
