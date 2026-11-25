@@ -16,12 +16,12 @@ class SMSRequest(BaseModel):
     )]
 
 
-@app.get("/health")
+@app.get("/health") 
 def health():
     return {"status": "ok"}
 
 
-@app.post("/predict")
+@app.post("/predicts")
 def predict(payload: SMSRequest):
     label = str(pipeline.predict([payload.message])[0])
     return {"label": label}
