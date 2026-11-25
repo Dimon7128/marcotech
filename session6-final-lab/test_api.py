@@ -12,7 +12,7 @@ def test_health():
 
 
 def test_valid_prediction():
-    response = client.post("/predict", json={"message": "Meeting at five"})
+    response = client.post("/predicts", json={"message": "Meeting at five"})
     assert response.status_code == 200
     assert "label" in response.json()
     assert response.json()["label"] in {"spam", "ham"}
