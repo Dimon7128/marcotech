@@ -1,0 +1,7 @@
+# Keep the supplied model despite the repository's default ignore rule.
+!model.joblib
+
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc

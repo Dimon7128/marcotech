@@ -1,0 +1,5 @@
+*
+!dockerfile
+!requirements.txt
+!main.py
+!model.joblib
