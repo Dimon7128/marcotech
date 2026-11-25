@@ -1,0 +1,97 @@
+{
+  "course": "MLOps Essentials: AI Lifecycle Management",
+  "session": "Session 7 — Monitoring & Maintenance",
+  "reference": "reference/session6.pptx",
+  "parts": [
+    {
+      "part": 1,
+      "title": "What should we monitor?",
+      "first_slide": 1,
+      "last_generated_slide": 8,
+      "minutes": 25,
+      "hands_on_minutes": 10,
+      "source": "slides/part1/slides.json",
+      "status": "complete; objectives, numbering and final rendering checked",
+      "objective": "Distinguish service health from prediction quality.",
+      "main_goals": [
+        "Identify service signals.",
+        "Check predictions against labels.",
+        "Use summaries to protect privacy."
+      ],
+      "objective_slide_id": "p1-objectives"
+    },
+    {
+      "part": 2,
+      "title": "Drift in SMS messages",
+      "first_slide": 9,
+      "last_generated_slide": 19,
+      "minutes": 35,
+      "hands_on_minutes": 15,
+      "source": "slides/part2/slides.json",
+      "status": "complete; objectives, numbering and final rendering checked",
+      "objective": "Explain changing SMS patterns and their limits.",
+      "main_goals": [
+        "Compare reference and current batches.",
+        "Distinguish data and concept drift.",
+        "Measure length and URL-like patterns."
+      ],
+      "objective_slide_id": "p2-objectives"
+    },
+    {
+      "part": 3,
+      "title": "A simple monitoring report",
+      "first_slide": 20,
+      "minutes": 35,
+      "hands_on_minutes": 25,
+      "status": "complete; objectives, numbering and final rendering checked",
+      "last_generated_slide": 28,
+      "source": "slides/part3/slides.json",
+      "objective": "Generate and interpret a simple monitoring report.",
+      "main_goals": [
+        "Prepare two monitoring features.",
+        "Run Evidently and explain one chart.",
+        "State what remains unknown."
+      ],
+      "objective_slide_id": "p3-objectives"
+    },
+    {
+      "part": 4,
+      "title": "What happens after an alert?",
+      "minutes": 30,
+      "hands_on_minutes": 0,
+      "status": "complete; objectives, numbering and final rendering checked",
+      "first_slide": 29,
+      "last_generated_slide": 37,
+      "source": "slides/part4/slides.json",
+      "objective": "Choose a response to a monitoring alert.",
+      "main_goals": [
+        "Inspect data and processing.",
+        "Assess available quality evidence.",
+        "Justify monitoring, investigation or retraining."
+      ],
+      "objective_slide_id": "p4-objectives"
+    },
+    {
+      "part": 5,
+      "title": "Guided lab and recap",
+      "minutes": 55,
+      "hands_on_minutes": 45,
+      "status": "complete; objectives, numbering and final rendering checked",
+      "first_slide": 38,
+      "last_generated_slide": 45,
+      "source": "slides/part5/slides.json",
+      "objective": "Investigate an SMS incident and justify an action.",
+      "main_goals": [
+        "Compare batches and interpret drift.",
+        "Separate observations from unknowns.",
+        "Submit a report and decision."
+      ],
+      "objective_slide_id": "p5-objectives"
+    }
+  ],
+  "final_output": "output/Session7_Monitoring_Maintenance.pptx",
+  "final_slide_count": 45,
+  "final_minutes": 180,
+  "final_hands_on_minutes": 95,
+  "final_status": "45-slide instructor deck checked; student handout synchronized"
+}

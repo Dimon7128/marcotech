@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "reviewed_date": "2026-11-21",
+  "input_sha256": "e30c305991c47e977f20965c29d9bc88cc03265d58a4954234594932290d9b6a",
+  "new_objectives_slides_reviewed": [
+    1,
+    9,
+    20,
+    29,
+    38
+  ],
+  "new_hebrew_notes_pages_reviewed": [
+    1,
+    9,
+    20,
+    29,
+    38
+  ],
+  "original_40_slide_content_regions": "pixel-identical to the previously reviewed final deck, excluding the updated navigation footer",
+  "all_slide_and_notes_text": "verified against current sources, including changed timings and slide references",
+  "findings": "New objectives and three main goals are readable, editable and within the existing visual grid. No clipping or overlaps. Continuous numbering 1–45.",
+  "powerpoint_desktop": "not verified"
+}

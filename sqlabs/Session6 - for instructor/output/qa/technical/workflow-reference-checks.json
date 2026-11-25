@@ -1,0 +1,35 @@
+{
+  "checked_on": "2026-11-20",
+  "validation": "Static inspection of official sources, not a hosted workflow run",
+  "actions": [
+    {
+      "uses": "actions/checkout@v7.0.1",
+      "runtime": "node24",
+      "source": "https://raw.githubusercontent.com/actions/checkout/v7.0.1/action.yml"
+    },
+    {
+      "uses": "actions/setup-python@v7.1.0",
+      "runtime": "node24",
+      "source": "https://raw.githubusercontent.com/actions/setup-python/v7.1.0/action.yml"
+    }
+  ],
+  "runner_label": "ubuntu-latest",
+  "python_version_manifest": "https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json",
+  "python_version_found": "3.10.22",
+  "linux_x64_assets": [
+    {
+      "platform_version": "24.04",
+      "filename": "python-3.10.22-linux-24.04-x64.tar.gz"
+    },
+    {
+      "platform_version": "26.04",
+      "filename": "python-3.10.22-linux-26.04-x64.tar.gz"
+    }
+  ],
+  "runner_software_sources": [
+    "https://raw.githubusercontent.com/actions/runner-images/main/images/ubuntu/Ubuntu2404-Readme.md",
+    "https://raw.githubusercontent.com/actions/runner-images/main/images/ubuntu/Ubuntu2604-Readme.md"
+  ],
+  "docker_client_and_server_listed_for_both_runner_images": true,
+  "hosted_run": "NOT VERIFIED"
+}

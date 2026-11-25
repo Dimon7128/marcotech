@@ -1,0 +1,15 @@
+{
+  "title": "Service health and prediction quality answer different questions",
+  "width": 11.89,
+  "height": 3.35,
+  "elements": [
+    {"type": "rect", "x": 0, "y": 0, "w": 5.73, "h": 3.35, "fill": "F1F7F2", "line": "D5DDD6"},
+    {"type": "rect", "x": 6.16, "y": 0, "w": 5.73, "h": 3.35, "fill": "F5F6F7", "line": "D5DDD6"},
+    {"type": "text", "x": 0.25, "y": 0.28, "w": 5.23, "h": 0.6, "text": "Service health", "size": 30, "bold": true, "color": "196B24"},
+    {"type": "text", "x": 6.41, "y": 0.28, "w": 5.23, "h": 0.6, "text": "Prediction quality", "size": 30, "bold": true, "color": "196B24"},
+    {"type": "text", "x": 0.25, "y": 1.2, "w": 5.23, "h": 1.05, "text": "Did the request\nsucceed?", "size": 28},
+    {"type": "text", "x": 6.41, "y": 1.2, "w": 5.23, "h": 1.05, "text": "Was the classification\ncorrect?", "size": 28},
+    {"type": "text", "x": 0.25, "y": 2.55, "w": 5.23, "h": 0.55, "text": "Status · latency · errors", "size": 24},
+    {"type": "text", "x": 6.41, "y": 2.55, "w": 5.23, "h": 0.55, "text": "Compare with reliable labels.", "size": 24}
+  ]
+}

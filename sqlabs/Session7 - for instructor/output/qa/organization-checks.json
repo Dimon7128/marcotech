@@ -1,0 +1,517 @@
+{
+  "status": "PASS",
+  "date": "2026-11-21",
+  "reference_structure": "Session6: root README plus separate instructor/student folders",
+  "root_entries": [
+    "README.md",
+    "Session7 - for instructor",
+    "Session7 - for students"
+  ],
+  "instructor_files": 126,
+  "student_files": 37,
+  "original_teaching_file_backup": "/tmp/session7-reorganization-20261121-173549/original-teaching-files.tar.gz",
+  "retained_final_presentation": "Session7 - for instructor/output/Session7_Monitoring_Maintenance.pptx",
+  "retained_student_manifest": "Session7 - for instructor/scripts/package_students.py",
+  "removed_files": [
+    {
+      "path": "Session7 - for instructor/slides/part1/Session7_Part1.pptx",
+      "bytes": 56734,
+      "sha256": "3a617d605a2d65a6a63051e4d4e074cbab7d7bd33b40af59bb3de11dfcc93264",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part1/README.md",
+      "bytes": 3752,
+      "sha256": "c0aa81e2b3d3e130d9eeb76dabd6c0d198b28eea4d60ad838ea5a9f941f881ef",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part1/QA_REPORT.md",
+      "bytes": 4928,
+      "sha256": "d529bfb493edb1c4a1b46a9deb75d343ef529539f6abd34ca2992d3079cd2553",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part2/Session7_Part2.pptx",
+      "bytes": 67075,
+      "sha256": "fa29d20ca33019e8545148826712c29482c7af3052d38f0dcc695cfaf7adb26c",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part2/README.md",
+      "bytes": 4498,
+      "sha256": "5ce4dd14411334b721ac2d7cf8b6d424f6fbd9772639b323e4a02aef3607fb7b",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part2/QA_REPORT.md",
+      "bytes": 7190,
+      "sha256": "30812c08d61c5e3743826aa57a9b395f9dfefb7bc7a5dfb533fd1b95bf544b3e",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part3/Session7_Part3.pptx",
+      "bytes": 103816,
+      "sha256": "359cb5ef92a95459409d589273c7b30e43d08973b037f71d5b8e5d6a6c62e63b",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part3/README.md",
+      "bytes": 722,
+      "sha256": "a2bcad776a899d8a6243c4c48cb06bfa28ca043dddb8d8861ec8906f7047b206",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part3/QA_REPORT.md",
+      "bytes": 838,
+      "sha256": "74bc245d2217ac341d1595fc4dedf4a6055ade57e2bfb8e61c316d3622965be5",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part4/Session7_Part4.pptx",
+      "bytes": 59834,
+      "sha256": "9e5751734ecf932889cf69d0933590de6d61fb0bee3c28b7cd1e938c75e399b1",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part4/README.md",
+      "bytes": 723,
+      "sha256": "9e0204308fc8c9cfee2d6bf8045d7d6dcc1d341c4618814e73a677159856dc0a",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part4/QA_REPORT.md",
+      "bytes": 837,
+      "sha256": "23157f2d1d0d1a36137dacad08496ad8589829f7597da634e6d79eba38ffbde6",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part5/Session7_Part5.pptx",
+      "bytes": 56182,
+      "sha256": "c3083addacdac061161bc98322f34abe73c8d8962bddd6e0fe433af186966275",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part5/README.md",
+      "bytes": 716,
+      "sha256": "22d3bb4f316a95e8f41c3d04c221f91cdc3568e9622ee0a8cfb51d456118d470",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/slides/part5/QA_REPORT.md",
+      "bytes": 838,
+      "sha256": "635cc66c6db2d84dec37e62f3a12ba0628f66e67128a67bfba39870d4373049b",
+      "reason": "Superseded by the complete deck, generated part CONTENT.md and the current final QA report."
+    },
+    {
+      "path": "Session7 - for instructor/scripts/author_remaining_parts.py",
+      "bytes": 32520,
+      "sha256": "03ccf0010d6ba7fdaa2c85c6e27c98a5a593f5a88c51b2e88a0ee17e67431bf4",
+      "reason": "Superseded one-off authoring code; editable JSON/notebooks and focused data generator are retained."
+    },
+    {
+      "path": "Session7 - for instructor/scripts/prepare_monitoring_labs.py",
+      "bytes": 6458,
+      "sha256": "c3808c9072085189b9280d13fea92997ee573034976d3203695e6e72695e0a15",
+      "reason": "Superseded one-off authoring code; editable JSON/notebooks and focused data generator are retained."
+    },
+    {
+      "path": "Session7 - for instructor/scripts/lab_monitoring.py",
+      "bytes": 4239,
+      "sha256": "28c9e6539745a698e2de6766caa4ce544d547f85e16454b57352be510bd017d0",
+      "reason": "Superseded one-off authoring code; editable JSON/notebooks and focused data generator are retained."
+    },
+    {
+      "path": "Session7 - for instructor/labs/lab3/Lab3_Student_Files.zip",
+      "bytes": 1355488,
+      "sha256": "2dcf7bab7aaa26ebba2ffa78cc2ccc32bc4f77113555ad7211d7daa6f51555cb",
+      "reason": "Duplicate archive; the separate student folder is the distribution format."
+    },
+    {
+      "path": "Session7 - for instructor/labs/lab2/Lab2_Student_Files.zip",
+      "bytes": 6201,
+      "sha256": "08ca4e6fd913ac68fa0bde2b4a35ae2d7293f8d3c7d6c1623e09b97a970fa0fd",
+      "reason": "Duplicate archive; the separate student folder is the distribution format."
+    },
+    {
+      "path": "Session7 - for instructor/labs/lab4/Lab4_Student_Files.zip",
+      "bytes": 1352205,
+      "sha256": "e2ad686749995755082472639136a5065ff02f3add4798a78c180a521b3de68b",
+      "reason": "Duplicate archive; the separate student folder is the distribution format."
+    },
+    {
+      "path": "Session7 - for instructor/output/Session7_Student_Files.zip",
+      "bytes": 2723922,
+      "sha256": "1874d114378102d7673b478c71d2d01d6fcfc47bc7c0a987aed8f4258d54bc81",
+      "reason": "Duplicate archive or superseded generated manifest."
+    },
+    {
+      "path": "Session7 - for instructor/output/final-slides.json",
+      "bytes": 78248,
+      "sha256": "b922cdfbd0656830763232ffa3bf6799aa50e25198b76062011ddc068e773c19",
+      "reason": "Duplicate archive or superseded generated manifest."
+    },
+    {
+      "path": "Session7 - for students/lab3/README.md",
+      "bytes": 3082,
+      "sha256": "92846fdf30c2c88ad4c246fa1b1a3ef7bff516cc50893cbe019fe4b39ff967dc",
+      "reason": "Duplicate student guide or unused image; root lab guides, HTML report, main chart and summary are retained."
+    },
+    {
+      "path": "Session7 - for students/lab4/README.md",
+      "bytes": 3389,
+      "sha256": "4291120be970d476ae7d5f31bdf2ceeee3c32fa37e81f521b4ca468cf4f4f256",
+      "reason": "Duplicate student guide or unused image; root lab guides, HTML report, main chart and summary are retained."
+    },
+    {
+      "path": "Session7 - for students/lab3/output/report_features.png",
+      "bytes": 33159,
+      "sha256": "6df4250967be2c83cc5336f606f4d76d2cc548b6a70187bb7490bd86ca14a22c",
+      "reason": "Duplicate student guide or unused image; root lab guides, HTML report, main chart and summary are retained."
+    },
+    {
+      "path": "Session7 - for students/lab3/output/report_overview.png",
+      "bytes": 161536,
+      "sha256": "aa6685a436260841cbe11497e9cbf0f0a8e1d5e552c757bc394a2b5526337b16",
+      "reason": "Duplicate student guide or unused image; root lab guides, HTML report, main chart and summary are retained."
+    },
+    {
+      "path": "Session7 - for students/lab4/output/report_features.png",
+      "bytes": 25706,
+      "sha256": "43a3ee80e85b3e7fdd14eb490af0a25c80437046be1d1fb8991169906f43462a",
+      "reason": "Duplicate student guide or unused image; root lab guides, HTML report, main chart and summary are retained."
+    },
+    {
+      "path": "Session7 - for students/lab4/output/report_overview.png",
+      "bytes": 158306,
+      "sha256": "6c07d3c6885ff7dc40610a722d900f0a535ec097cb4828bda3b1d9666220c35d",
+      "reason": "Duplicate student guide or unused image; root lab guides, HTML report, main chart and summary are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part1-api-monitoring.png",
+      "bytes": 9958,
+      "sha256": "ee916fedc8aaae7f174744d43fec43ed3ea71d8b2a201a6c67aa1586a2f42753",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part1-service-health-vs-prediction-quality.png",
+      "bytes": 36419,
+      "sha256": "53daa5aae02a4ab1a2066fb3f78456e861f8d17f63634b972fe1698b97f6630b",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part2-data-vs-concept-drift.png",
+      "bytes": 34695,
+      "sha256": "3e8ebaf6588d070e422ec86ff3b3e7ec17edce441b1ecf8bd909a3dc072f6135",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part2-labeled-relationship-change.png",
+      "bytes": 36000,
+      "sha256": "6a77c80253ef4eadbb5686decf7ffcd78e7b3a5eedb0799a4ccd11fb905ac44c",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part2-reference-vs-current.png",
+      "bytes": 40925,
+      "sha256": "aaa18ccc2070a9ded3ad004357a0e4738150b01889aebf51b8a48f23de05269c",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part3-evidence-limit.png",
+      "bytes": 31150,
+      "sha256": "475328cc71782cbb6b6006af138cc6dc8403ca6e8398d42328f0a14fbedbf5e7",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part3-features.png",
+      "bytes": 22940,
+      "sha256": "e207bc6505fc1237a1c076f31323e9a1b260e719e264a9d8ccdc06801bbb6f28",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part3-monitoring-workflow.png",
+      "bytes": 20639,
+      "sha256": "41082913b883c29476fb2f70917921b360fa8e7d2fb60e734ac15fb59ae80e8f",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part4-candidate-release.png",
+      "bytes": 23796,
+      "sha256": "e7b8d1f25b74ec6ff0222f5dd229d35b11ffaa13c3ce0b26aaff84ada42650f9",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part4-investigation.png",
+      "bytes": 23946,
+      "sha256": "24b8365ef532cc07677b8ba1842b673c85ebb236ff0b02d772b4e619f4ab97e9",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part4-monitoring-location.png",
+      "bytes": 30054,
+      "sha256": "01a751b0ef9ba488e700a106526a7eb79b5d942d5afb9ebbe4e4e72fc9518a07",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part4-possible-causes.png",
+      "bytes": 28565,
+      "sha256": "f8b3646c8692ec5afa5626ef8f3d21fa5ddab85f6fd9cae93f325238ad681bd8",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part4-three-actions.png",
+      "bytes": 35801,
+      "sha256": "ec7b194cd390f29522ba07e2d6fa2585bf5eac9b4ff51911739946d59c56f0dc",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part5-incident.png",
+      "bytes": 26797,
+      "sha256": "bdf44dbebecfea5f3931cb5de77eb7ce62f9269a7ab867abaaf23a1920e00510",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/assets/diagrams/part5-session-recap.png",
+      "bytes": 22955,
+      "sha256": "8676b387caf2054323be53c0722503c91ce4611fefc10ca644d1445ea484a16c",
+      "reason": "Duplicate raster diagram export; the reusable SVG and JSON source are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/notes-review-30-35.png",
+      "bytes": 406588,
+      "sha256": "de42e4d61795b118107960dcd7a6e2063b6f2d7f7338e748223db2ac6f0eba5e",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/objectives-notes-review.png",
+      "bytes": 227516,
+      "sha256": "e61a073222561ba2650907d4bb7e0dc805976114a6e79f454baf18ce7fac3bf5",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/part5-preview.png",
+      "bytes": 398677,
+      "sha256": "297d35a9a34b4f8ecf945df3ed8436e158c0c134ef3ab039324774bd67988be1",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/notes-review-24-29.png",
+      "bytes": 406741,
+      "sha256": "5ee949012cfe3a2d9a5be2a51542883236d165496a4145c0c21fb3b277b0ff25",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/contact-sheet.png",
+      "bytes": 2598018,
+      "sha256": "5a7888317c4c6c61ff84edecd46204616343b7498ddc7536aefa9e049594f278",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/diagrams-review-2.png",
+      "bytes": 154751,
+      "sha256": "b2c34a704851dd06a8f871aa6961b836ebcdf4b59b85d2a5546b3c3b72e1d691",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/notes-review-18-23.png",
+      "bytes": 328320,
+      "sha256": "a51297f992e54c928e03fcdc95c9ad24af58de4c435bea48aca07132b6e067d2",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/part2-preview.png",
+      "bytes": 549013,
+      "sha256": "6d925dbad7a2040b44a3a44e1dfccf080e369383dd61aa1838605c2d702baa74",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/diagrams-review-1.png",
+      "bytes": 127134,
+      "sha256": "0ecb1cdf1cd15881103faaac754a8e31243395597ac4294f9d43e783c564a05f",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/Session7_Monitoring_Maintenance.pdf",
+      "bytes": 180838,
+      "sha256": "44d61bb6dcf781410152f71307c22c3f5bd507f1619035a331c8d502a7297592",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/part3-preview.png",
+      "bytes": 431174,
+      "sha256": "06942151407d2d52905b41f83fdbf2a9741db785e3850fdeb815b7491aade60f",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/notes.pdf",
+      "bytes": 135450,
+      "sha256": "9f88ff492b4cb3e3d9b7d328142915a389c8c1d15cfa8ab638202ddb6e5d3698",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/notes-review-36-40.png",
+      "bytes": 413733,
+      "sha256": "6b181e8e2076d7d760afc834a279b37587bf35a20b15878868fd2b5c2eed55ea",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/objectives-review.png",
+      "bytes": 305041,
+      "sha256": "989b6978a286c5ca0fbf22e80f03bab12fb9da5441f55b69fad5a9118f52812d",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/part1-preview.png",
+      "bytes": 404757,
+      "sha256": "91c79c8d2cbb8e6e671cbab08b0c73071fb15989c263382025f1af7044665258",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/part4-preview.png",
+      "bytes": 505878,
+      "sha256": "b2723fa599411989428dc45f68235bab64f17fbdf420e23cc06aee4443e44f31",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/integration-checks.json",
+      "bytes": 1566,
+      "sha256": "102e6befecc269ccd0777e811137fc186fb8c37217fa4cfd8e4b5a8aa9619864",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/diagrams-review-3.png",
+      "bytes": 63149,
+      "sha256": "0adc4d1b86bb88059d913f3a0fe83341d7a1b1d8effb4ab3aa4b8760e320b626",
+      "reason": "Generated inspection export or obsolete previous integration record; current checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/labs/lab3-script.txt",
+      "bytes": 427,
+      "sha256": "7e835227077626c610d3bb2a5e737216f64ba1904c3b077ca808d86451436c12",
+      "reason": "Transient executed notebook/log or redundant environment listing; current JSON checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/labs/lab4-script.txt",
+      "bytes": 431,
+      "sha256": "416caa02f7d2ee04fbfd51f0389e61cd44e0988515fb2488662d806505426bd7",
+      "reason": "Transient executed notebook/log or redundant environment listing; current JSON checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/labs/lab2-student-start.txt",
+      "bytes": 1281,
+      "sha256": "252a05dd69c6ef4bee2861d0d1a7566d3d1dae7a23dd7e67e23eb13653a74dac",
+      "reason": "Transient executed notebook/log or redundant environment listing; current JSON checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/labs/tested-environment.txt",
+      "bytes": 2103,
+      "sha256": "c4b5a61c822a6bf2a2c638ffe99ddfac91112c2f3755d61f5e14704f7517c234",
+      "reason": "Transient executed notebook/log or redundant environment listing; current JSON checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/labs/lab4-executed.ipynb",
+      "bytes": 9248,
+      "sha256": "89e7ab0e24160341a0e0827ad982e30d15b9b30eca60b3733877edfda0a2e79d",
+      "reason": "Transient executed notebook/log or redundant environment listing; current JSON checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/labs/lab3-executed.ipynb",
+      "bytes": 9103,
+      "sha256": "e2b27bc40c2ac6ccd65d4cf03fe5a6acadcc3ce4bcafc73fc6b8af69d1747bcd",
+      "reason": "Transient executed notebook/log or redundant environment listing; current JSON checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/labs/lab2-student-completed.txt",
+      "bytes": 1287,
+      "sha256": "2cd1891de7721b4ee6bb289c3d31cd4a401435bfb5cc4ab2e2deeb0840bd4c37",
+      "reason": "Transient executed notebook/log or redundant environment listing; current JSON checks are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/baseline-sha256.json",
+      "bytes": 4239,
+      "sha256": "39594a559191c9553fd24f6c68d8b966ab5dcb7319923c46ff877509cfc72b8a",
+      "reason": "Obsolete previous deck hashes; current original-content preservation evidence is retained."
+    }
+  ],
+  "removed_directories": [
+    {
+      "path": ".venv-lab2",
+      "files": 4190,
+      "bytes": 112253667,
+      "reason": "Disposable local validation environment; requirements and completed QA records are retained."
+    },
+    {
+      "path": ".venv-monitoring",
+      "files": 39327,
+      "bytes": 739348655,
+      "reason": "Disposable local validation environment; requirements and completed QA records are retained."
+    },
+    {
+      "path": ".venv-monitoring-check",
+      "files": 38997,
+      "bytes": 736391414,
+      "reason": "Disposable local validation environment; requirements and completed QA records are retained."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/part1",
+      "files": 24,
+      "bytes": 1418648,
+      "reason": "Superseded inspection exports from the previous partial decks."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/part2",
+      "files": 36,
+      "bytes": 1954883,
+      "reason": "Superseded inspection exports from the previous partial decks."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/diagrams",
+      "files": 30,
+      "bytes": 657711,
+      "reason": "Generated inspection previews or rendered diagrams; reproducible with retained QA scripts."
+    },
+    {
+      "path": "Session7 - for instructor/output/qa/final/previews",
+      "files": 90,
+      "bytes": 4667419,
+      "reason": "Generated inspection previews or rendered diagrams; reproducible with retained QA scripts."
+    },
+    {
+      "path": "Session7 - for instructor/labs/lab3/__pycache__",
+      "files": 1,
+      "bytes": 4151,
+      "reason": "Generated Python cache."
+    },
+    {
+      "path": "Session7 - for instructor/labs/lab4/__pycache__",
+      "files": 1,
+      "bytes": 4151,
+      "reason": "Generated Python cache."
+    },
+    {
+      "path": "Session7 - for instructor/scripts/__pycache__",
+      "files": 4,
+      "bytes": 40695,
+      "reason": "Generated Python cache."
+    }
+  ],
+  "removed_file_count": 82770,
+  "removed_bytes": 1611145639,
+  "kept_categories": [
+    "final PPTX and PDF",
+    "part objectives and goals",
+    "slide JSON and generated Hebrew notes/content",
+    "lab masters and instructor answer keys",
+    "student exercises and fallbacks",
+    "actual reports and synthetic data",
+    "SVG/JSON diagrams",
+    "local reference",
+    "build and validation scripts",
+    "current small QA records"
+  ],
+  "all_markdown_links_checked": 87,
+  "final_pptx_sha256": "e30c305991c47e977f20965c29d9bc88cc03265d58a4954234594932290d9b6a",
+  "final_slide_count": 45,
+  "validation": "PASS after cleanup: presentation, sources, notes, lab evidence, report identities, links and clean two-folder structure"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "Controlled synthetic story: the same visible SMS with different known contexts and labels",
+  "width":11.89,
+  "height":3.35,
+  "elements":[
+    {"type":"text","x":0.25,"y":0,"w":11.39,"h":0.5,"text":"Synthetic labeled story","size":24,"color":"196B24"},
+    {"type":"text","x":0.25,"y":0.65,"w":11.39,"h":0.7,"text":"Your update: www.example.com","size":28},
+    {"type":"rect","x":0,"y":1.5,"w":5.73,"h":1.85,"fill":"F1F7F2","line":"D5DDD6"},
+    {"type":"rect","x":6.16,"y":1.5,"w":5.73,"h":1.85,"fill":"F5F6F7","line":"D5DDD6"},
+    {"type":"text","x":0.25,"y":1.68,"w":5.23,"h":0.5,"text":"Earlier","size":28,"bold":true,"color":"196B24"},
+    {"type":"text","x":6.41,"y":1.68,"w":5.23,"h":0.5,"text":"Later","size":28,"bold":true,"color":"196B24"},
+    {"type":"text","x":0.25,"y":2.28,"w":5.23,"h":0.5,"text":"Unwanted promotion","size":24},
+    {"type":"text","x":6.41,"y":2.28,"w":5.23,"h":0.5,"text":"Requested service update","size":24},
+    {"type":"text","x":0.25,"y":2.9,"w":5.23,"h":0.4,"text":"Known label: spam","size":24},
+    {"type":"text","x":6.41,"y":2.9,"w":5.23,"h":0.4,"text":"Known label: ham","size":24}
+  ]
+}

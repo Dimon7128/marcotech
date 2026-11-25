@@ -25,16 +25,20 @@ This is the **student project** for MLOps Essentials, Session 4, Part 5.
 
 **Quick setup:**
 
+**Python 3.10 or newer is required.** Check `python3 --version` before creating
+the environment. The pinned scikit-learn 1.7.2 supports Python 3.10. Activate the
+environment before installing dependencies and running the lab scripts.
+
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 # Activate your environment: Windows PowerShell: .venv\Scripts\Activate.ps1
 # macOS/Linux: source .venv/bin/activate
-python -m pip install -r requirements.txt
-python prepare_data.py
+python3 -m pip install -r requirements.txt
+python3 prepare_data.py
 ```
 
 If the UCI download fails, download the official ZIP in your browser and use
-`python prepare_data.py --zip "path/to/official.zip"`.
+`python3 prepare_data.py --zip "path/to/official.zip"`.
 If you already have the original normalized `text,label` dataset from earlier sessions,
 place it at `data/sms.csv` instead. Keep any original copy.
 

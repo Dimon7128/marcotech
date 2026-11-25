@@ -19,10 +19,15 @@
 
 **WHAT:** Use local Python and the official UCI SMS dataset. The original UCI data contains 5,574 labeled messages and must be converted into a CSV with `text` and `label` columns.
 
+**Python 3.10 or newer is required.** Check `python3 --version` first. The pinned
+scikit-learn 1.7.2 supports Python 3.10; you can use your existing Python 3.10
+virtual environment. Activate it before installing dependencies and running the
+lab scripts.
+
 **RUN** — open a terminal **inside the extracted project folder**:
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 ```
 
 Activate it:
@@ -33,8 +38,8 @@ Activate it:
 Then:
 
 ```bash
-python -m pip install -r requirements.txt
-python prepare_data.py
+python3 -m pip install -r requirements.txt
+python3 prepare_data.py
 ```
 
 **VERIFY:** The terminal reports `READY` and a file `data/sms.csv` exists. It contains `text` and `label` columns. The download uses UCI data, not a synthetic replacement.
@@ -42,7 +47,7 @@ python prepare_data.py
 **EXPLAIN:** Why do we prepare the dataset once instead of downloading it during every training run?
 
 <details><summary>Hint / fallback</summary>
-If the download fails, open https://archive.ics.uci.edu/dataset/228/sms+spam+collection in your browser, download the ZIP, and run `python prepare_data.py --zip "PATH_TO_ZIP"`. You can also copy a previously normalized `text,label` UCI CSV from an earlier session to `data/sms.csv`. If PowerShell blocks activation, use `.venv\Scripts\python.exe` instead of `python` for each subsequent command.
+If the download fails, open https://archive.ics.uci.edu/dataset/228/sms+spam+collection in your browser, download the ZIP, and run `python3 prepare_data.py --zip "PATH_TO_ZIP"`. You can also copy a previously normalized `text,label` UCI CSV from an earlier session to `data/sms.csv`. If PowerShell blocks activation, use `.venv\Scripts\python.exe` instead of `python3` for each subsequent command.
 </details>
 
 ### Step 2 — Inspect the dataset (Coding Exercise 1)
@@ -56,7 +61,7 @@ If the download fails, open https://archive.ics.uci.edu/dataset/228/sms+spam+col
 **RUN:**
 
 ```bash
-python inspect_data.py
+python3 inspect_data.py
 ```
 
 Open `inspect_data.py` and **uncomment the line** beginning with `# print('Class counts:'...` so you see the count of each label. Run it again.
@@ -80,7 +85,7 @@ A comment begins with `#`. Removing that first `#` activates a provided Python s
 **RUN:**
 
 ```bash
-python train.py --version v1
+python3 train.py --version v1
 ```
 
 Look for `LOAD + CHECK`, `SPLIT`, `TRAIN`, `EVALUATE`, `QUALITY GATE`, and `SAVE`. Then open `train.py`, find `quality_gate()`, and **add one log line** *before* the precision comparison that prints the required and observed spam precision. Suggested starting point:
@@ -128,8 +133,8 @@ Precision asks: “When we say spam, how often are we right?” Recall asks: “
 **RUN:**
 
 ```bash
-python make_bad_data.py
-python train.py --data data/sms_broken.csv --version v2
+python3 make_bad_data.py
+python3 train.py --data data/sms_broken.csv --version v2
 ```
 
 This run should **fail**. Inspect its message. Then open `make_bad_data.py` and change `COLUMN_TO_DROP = 'text'` to `COLUMN_TO_DROP = 'label'`. Rerun both commands and compare the error messages.
@@ -137,7 +142,7 @@ This run should **fail**. Inspect its message. Then open `make_bad_data.py` and 
 Now **repair the input** by using the original validated dataset:
 
 ```bash
-python train.py --data data/sms.csv --version v2
+python3 train.py --data data/sms.csv --version v2
 ```
 
 **VERIFY:** The two broken runs stop before fitting and do not create `sms_model_v2.joblib`. The corrected run succeeds, creates `v2`, and displays your **new quality-gate log** from Step 3.
@@ -165,8 +170,8 @@ log(f"TF-IDF features: {len(model.named_steps['tfidf'].vocabulary_)}")
 Then:
 
 ```bash
-python train.py --version v3
-python compare_runs.py v1 v3
+python3 train.py --version v3
+python3 compare_runs.py v1 v3
 ```
 
 **VERIFY:** The new log prints a vocabulary size. The `v1` and `v3` **validation precision and recall match** in the same environment with unchanged data and training settings.
@@ -188,8 +193,8 @@ The number of TF-IDF features comes from the fitted vectorizer: `model.named_ste
 **RUN:**
 
 ```bash
-python predict.py --version v1 --text "Claim your free reward today"
-python predict.py --version v1 --text "Please pick up bread after work"
+python3 predict.py --version v1 --text "Claim your free reward today"
+python3 predict.py --version v1 --text "Please pick up bread after work"
 ```
 
 **VERIFY:** Each command prints a predicted `spam` or `ham` label; it does **not** retrain the model. Individual predictions are model-dependent, so investigate rather than assume an exact answer.
@@ -217,7 +222,7 @@ The model expects numerical features, while the application receives raw strings
 1. Read `spam_recall` from `models/metrics_v1.json`.
 2. Open `train.py` and find `MIN_SPAM_RECALL = 0.00`.
 3. Set it to a threshold **higher than the measured recall**, such as `1.00` if recall is below 1.00. (If recall is exactly 1.00, temporarily use `1.01` only to demonstrate an impossible gate.)
-4. Run `python train.py --version v4`.
+4. Run `python3 train.py --version v4`.
 5. Verify that training and evaluation complete, but the recall quality gate **rejects saving v4**.
 6. Restore `MIN_SPAM_RECALL = 0.00` and run the same `v4` command again.
 
@@ -236,7 +241,7 @@ The gate is in `quality_gate()`, *after* `evaluate()` and *before* `save()`. The
 **RUN:** Check the `models/` folder for `sms_model_v1.joblib` and `metrics_v1.json`. Use:
 
 ```bash
-python predict.py --version v1 --text "Let's meet at the library tomorrow"
+python3 predict.py --version v1 --text "Let's meet at the library tomorrow"
 ```
 
 **VERIFY:** You can load the saved whole pipeline and get a prediction without the training dataset. Keep this trusted file and your matching `requirements.txt` for Session 5 (FastAPI deployment).

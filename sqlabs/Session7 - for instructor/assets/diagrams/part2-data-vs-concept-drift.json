@@ -1,0 +1,15 @@
+{
+  "title":"Data drift versus concept drift in the SMS classifier",
+  "width":11.89,
+  "height":3.35,
+  "elements":[
+    {"type":"rect","x":0,"y":0,"w":5.73,"h":3.35,"fill":"F1F7F2","line":"D5DDD6"},
+    {"type":"rect","x":6.16,"y":0,"w":5.73,"h":3.35,"fill":"F5F6F7","line":"D5DDD6"},
+    {"type":"text","x":0.25,"y":0.28,"w":5.23,"h":0.6,"text":"Data drift","size":30,"bold":true,"color":"196B24"},
+    {"type":"text","x":6.41,"y":0.28,"w":5.23,"h":0.6,"text":"Concept drift","size":30,"bold":true,"color":"196B24"},
+    {"type":"text","x":0.25,"y":1.2,"w":5.23,"h":1.05,"text":"Inputs look different.","size":28},
+    {"type":"text","x":6.41,"y":1.2,"w":5.23,"h":1.05,"text":"Input-to-label\nrelationship changes.","size":28},
+    {"type":"text","x":0.25,"y":2.55,"w":5.23,"h":0.55,"text":"Longer messages.","size":24},
+    {"type":"text","x":6.41,"y":2.45,"w":5.23,"h":0.85,"text":"Same pattern, different\ncorrect label.","size":24}
+  ]
+}

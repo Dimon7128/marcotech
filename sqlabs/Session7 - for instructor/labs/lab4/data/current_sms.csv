@@ -1,0 +1,201 @@
+record_id,message
+cur-001,Class update 001: Please check www.example.com/info before your visit.
+cur-002,Library update 002: Please check www.example.com/info before your visit.
+cur-003,Team update 003: Please check www.example.com/info before your visit.
+cur-004,Event update 004: Please check www.example.com/info before your visit.
+cur-005,Club update 005: Please check www.example.com/info before your visit.
+cur-006,Course update 006: Please check www.example.com/info before your visit.
+cur-007,Ticket update 007: Please check www.example.com/info before your visit.
+cur-008,Account update 008: Please check your printed handout before your visit.
+cur-009,Delivery update 009: Please check your printed handout before your visit.
+cur-010,Appointment update 010: Please check your printed handout before your visit.
+cur-011,Class update 011: Please check www.example.com/info for the latest details.
+cur-012,Library update 012: Please check www.example.com/info for the latest details.
+cur-013,Team update 013: Please check www.example.com/info for the latest details.
+cur-014,Event update 014: Please check www.example.com/info for the latest details.
+cur-015,Club update 015: Please check www.example.com/info for the latest details.
+cur-016,Course update 016: Please check www.example.com/info for the latest details.
+cur-017,Ticket update 017: Please check www.example.com/info for the latest details.
+cur-018,Account update 018: Please check your printed handout for the latest details.
+cur-019,Delivery update 019: Please check your printed handout for the latest details.
+cur-020,Appointment update 020: Please check your printed handout for the latest details.
+cur-021,Class update 021: Please check www.example.com/info before the next meeting.
+cur-022,Library update 022: Please check www.example.com/info before the next meeting.
+cur-023,Team update 023: Please check www.example.com/info before the next meeting.
+cur-024,Event update 024: Please check www.example.com/info before the next meeting.
+cur-025,Club update 025: Please check www.example.com/info before the next meeting.
+cur-026,Course update 026: Please check www.example.com/info before the next meeting.
+cur-027,Ticket update 027: Please check www.example.com/info before the next meeting.
+cur-028,Account update 028: Please check your printed handout before the next meeting.
+cur-029,Delivery update 029: Please check your printed handout before the next meeting.
+cur-030,Appointment update 030: Please check your printed handout before the next meeting.
+cur-031,Class update 031: Please check www.example.com/info when you have a moment.
+cur-032,Library update 032: Please check www.example.com/info when you have a moment.
+cur-033,Team update 033: Please check www.example.com/info when you have a moment.
+cur-034,Event update 034: Please check www.example.com/info when you have a moment.
+cur-035,Club update 035: Please check www.example.com/info when you have a moment.
+cur-036,Course update 036: Please check www.example.com/info when you have a moment.
+cur-037,Ticket update 037: Please check www.example.com/info when you have a moment.
+cur-038,Account update 038: Please check your printed handout when you have a moment.
+cur-039,Delivery update 039: Please check your printed handout when you have a moment.
+cur-040,Appointment update 040: Please check your printed handout when you have a moment.
+cur-041,Class update 041: Please check www.example.com/info before tomorrow morning.
+cur-042,Library update 042: Please check www.example.com/info before tomorrow morning.
+cur-043,Team update 043: Please check www.example.com/info before tomorrow morning.
+cur-044,Event update 044: Please check www.example.com/info before tomorrow morning.
+cur-045,Club update 045: Please check www.example.com/info before tomorrow morning.
+cur-046,Course update 046: Please check www.example.com/info before tomorrow morning.
+cur-047,Ticket update 047: Please check www.example.com/info before tomorrow morning.
+cur-048,Account update 048: Please check your printed handout before tomorrow morning.
+cur-049,Delivery update 049: Please check your printed handout before tomorrow morning.
+cur-050,Appointment update 050: Please check your printed handout before tomorrow morning.
+cur-051,Class update 051: Please check www.example.com/info before your visit.
+cur-052,Library update 052: Please check www.example.com/info before your visit.
+cur-053,Team update 053: Please check www.example.com/info before your visit.
+cur-054,Event update 054: Please check www.example.com/info before your visit.
+cur-055,Club update 055: Please check www.example.com/info before your visit.
+cur-056,Course update 056: Please check www.example.com/info before your visit.
+cur-057,Ticket update 057: Please check www.example.com/info before your visit.
+cur-058,Account update 058: Please check your printed handout before your visit.
+cur-059,Delivery update 059: Please check your printed handout before your visit.
+cur-060,Appointment update 060: Please check your printed handout before your visit.
+cur-061,Class update 061: Please check www.example.com/info for the latest details.
+cur-062,Library update 062: Please check www.example.com/info for the latest details.
+cur-063,Team update 063: Please check www.example.com/info for the latest details.
+cur-064,Event update 064: Please check www.example.com/info for the latest details.
+cur-065,Club update 065: Please check www.example.com/info for the latest details.
+cur-066,Course update 066: Please check www.example.com/info for the latest details.
+cur-067,Ticket update 067: Please check www.example.com/info for the latest details.
+cur-068,Account update 068: Please check your printed handout for the latest details.
+cur-069,Delivery update 069: Please check your printed handout for the latest details.
+cur-070,Appointment update 070: Please check your printed handout for the latest details.
+cur-071,Class update 071: Please check www.example.com/info before the next meeting.
+cur-072,Library update 072: Please check www.example.com/info before the next meeting.
+cur-073,Team update 073: Please check www.example.com/info before the next meeting.
+cur-074,Event update 074: Please check www.example.com/info before the next meeting.
+cur-075,Club update 075: Please check www.example.com/info before the next meeting.
+cur-076,Course update 076: Please check www.example.com/info before the next meeting.
+cur-077,Ticket update 077: Please check www.example.com/info before the next meeting.
+cur-078,Account update 078: Please check your printed handout before the next meeting.
+cur-079,Delivery update 079: Please check your printed handout before the next meeting.
+cur-080,Appointment update 080: Please check your printed handout before the next meeting.
+cur-081,Class update 081: Please check www.example.com/info when you have a moment.
+cur-082,Library update 082: Please check www.example.com/info when you have a moment.
+cur-083,Team update 083: Please check www.example.com/info when you have a moment.
+cur-084,Event update 084: Please check www.example.com/info when you have a moment.
+cur-085,Club update 085: Please check www.example.com/info when you have a moment.
+cur-086,Course update 086: Please check www.example.com/info when you have a moment.
+cur-087,Ticket update 087: Please check www.example.com/info when you have a moment.
+cur-088,Account update 088: Please check your printed handout when you have a moment.
+cur-089,Delivery update 089: Please check your printed handout when you have a moment.
+cur-090,Appointment update 090: Please check your printed handout when you have a moment.
+cur-091,Class update 091: Please check www.example.com/info before tomorrow morning.
+cur-092,Library update 092: Please check www.example.com/info before tomorrow morning.
+cur-093,Team update 093: Please check www.example.com/info before tomorrow morning.
+cur-094,Event update 094: Please check www.example.com/info before tomorrow morning.
+cur-095,Club update 095: Please check www.example.com/info before tomorrow morning.
+cur-096,Course update 096: Please check www.example.com/info before tomorrow morning.
+cur-097,Ticket update 097: Please check www.example.com/info before tomorrow morning.
+cur-098,Account update 098: Please check your printed handout before tomorrow morning.
+cur-099,Delivery update 099: Please check your printed handout before tomorrow morning.
+cur-100,Appointment update 100: Please check your printed handout before tomorrow morning.
+cur-101,Class update 101: Please check www.example.com/info before your visit.
+cur-102,Library update 102: Please check www.example.com/info before your visit.
+cur-103,Team update 103: Please check www.example.com/info before your visit.
+cur-104,Event update 104: Please check www.example.com/info before your visit.
+cur-105,Club update 105: Please check www.example.com/info before your visit.
+cur-106,Course update 106: Please check www.example.com/info before your visit.
+cur-107,Ticket update 107: Please check www.example.com/info before your visit.
+cur-108,Account update 108: Please check your printed handout before your visit.
+cur-109,Delivery update 109: Please check your printed handout before your visit.
+cur-110,Appointment update 110: Please check your printed handout before your visit.
+cur-111,Class update 111: Please check www.example.com/info for the latest details.
+cur-112,Library update 112: Please check www.example.com/info for the latest details.
+cur-113,Team update 113: Please check www.example.com/info for the latest details.
+cur-114,Event update 114: Please check www.example.com/info for the latest details.
+cur-115,Club update 115: Please check www.example.com/info for the latest details.
+cur-116,Course update 116: Please check www.example.com/info for the latest details.
+cur-117,Ticket update 117: Please check www.example.com/info for the latest details.
+cur-118,Account update 118: Please check your printed handout for the latest details.
+cur-119,Delivery update 119: Please check your printed handout for the latest details.
+cur-120,Appointment update 120: Please check your printed handout for the latest details.
+cur-121,Class update 121: Please check www.example.com/info before the next meeting.
+cur-122,Library update 122: Please check www.example.com/info before the next meeting.
+cur-123,Team update 123: Please check www.example.com/info before the next meeting.
+cur-124,Event update 124: Please check www.example.com/info before the next meeting.
+cur-125,Club update 125: Please check www.example.com/info before the next meeting.
+cur-126,Course update 126: Please check www.example.com/info before the next meeting.
+cur-127,Ticket update 127: Please check www.example.com/info before the next meeting.
+cur-128,Account update 128: Please check your printed handout before the next meeting.
+cur-129,Delivery update 129: Please check your printed handout before the next meeting.
+cur-130,Appointment update 130: Please check your printed handout before the next meeting.
+cur-131,Class update 131: Please check www.example.com/info when you have a moment.
+cur-132,Library update 132: Please check www.example.com/info when you have a moment.
+cur-133,Team update 133: Please check www.example.com/info when you have a moment.
+cur-134,Event update 134: Please check www.example.com/info when you have a moment.
+cur-135,Club update 135: Please check www.example.com/info when you have a moment.
+cur-136,Course update 136: Please check www.example.com/info when you have a moment.
+cur-137,Ticket update 137: Please check www.example.com/info when you have a moment.
+cur-138,Account update 138: Please check your printed handout when you have a moment.
+cur-139,Delivery update 139: Please check your printed handout when you have a moment.
+cur-140,Appointment update 140: Please check your printed handout when you have a moment.
+cur-141,Class update 141: Please check www.example.com/info before tomorrow morning.
+cur-142,Library update 142: Please check www.example.com/info before tomorrow morning.
+cur-143,Team update 143: Please check www.example.com/info before tomorrow morning.
+cur-144,Event update 144: Please check www.example.com/info before tomorrow morning.
+cur-145,Club update 145: Please check www.example.com/info before tomorrow morning.
+cur-146,Course update 146: Please check www.example.com/info before tomorrow morning.
+cur-147,Ticket update 147: Please check www.example.com/info before tomorrow morning.
+cur-148,Account update 148: Please check your printed handout before tomorrow morning.
+cur-149,Delivery update 149: Please check your printed handout before tomorrow morning.
+cur-150,Appointment update 150: Please check your printed handout before tomorrow morning.
+cur-151,Class update 151: Please check www.example.com/info before your visit.
+cur-152,Library update 152: Please check www.example.com/info before your visit.
+cur-153,Team update 153: Please check www.example.com/info before your visit.
+cur-154,Event update 154: Please check www.example.com/info before your visit.
+cur-155,Club update 155: Please check www.example.com/info before your visit.
+cur-156,Course update 156: Please check www.example.com/info before your visit.
+cur-157,Ticket update 157: Please check www.example.com/info before your visit.
+cur-158,Account update 158: Please check your printed handout before your visit.
+cur-159,Delivery update 159: Please check your printed handout before your visit.
+cur-160,Appointment update 160: Please check your printed handout before your visit.
+cur-161,Class update 161: Please check www.example.com/info for the latest details.
+cur-162,Library update 162: Please check www.example.com/info for the latest details.
+cur-163,Team update 163: Please check www.example.com/info for the latest details.
+cur-164,Event update 164: Please check www.example.com/info for the latest details.
+cur-165,Club update 165: Please check www.example.com/info for the latest details.
+cur-166,Course update 166: Please check www.example.com/info for the latest details.
+cur-167,Ticket update 167: Please check www.example.com/info for the latest details.
+cur-168,Account update 168: Please check your printed handout for the latest details.
+cur-169,Delivery update 169: Please check your printed handout for the latest details.
+cur-170,Appointment update 170: Please check your printed handout for the latest details.
+cur-171,Class update 171: Please check www.example.com/info before the next meeting.
+cur-172,Library update 172: Please check www.example.com/info before the next meeting.
+cur-173,Team update 173: Please check www.example.com/info before the next meeting.
+cur-174,Event update 174: Please check www.example.com/info before the next meeting.
+cur-175,Club update 175: Please check www.example.com/info before the next meeting.
+cur-176,Course update 176: Please check www.example.com/info before the next meeting.
+cur-177,Ticket update 177: Please check www.example.com/info before the next meeting.
+cur-178,Account update 178: Please check your printed handout before the next meeting.
+cur-179,Delivery update 179: Please check your printed handout before the next meeting.
+cur-180,Appointment update 180: Please check your printed handout before the next meeting.
+cur-181,Class update 181: Please check www.example.com/info when you have a moment.
+cur-182,Library update 182: Please check www.example.com/info when you have a moment.
+cur-183,Team update 183: Please check www.example.com/info when you have a moment.
+cur-184,Event update 184: Please check www.example.com/info when you have a moment.
+cur-185,Club update 185: Please check www.example.com/info when you have a moment.
+cur-186,Course update 186: Please check www.example.com/info when you have a moment.
+cur-187,Ticket update 187: Please check www.example.com/info when you have a moment.
+cur-188,Account update 188: Please check your printed handout when you have a moment.
+cur-189,Delivery update 189: Please check your printed handout when you have a moment.
+cur-190,Appointment update 190: Please check your printed handout when you have a moment.
+cur-191,Class update 191: Please check www.example.com/info before tomorrow morning.
+cur-192,Library update 192: Please check www.example.com/info before tomorrow morning.
+cur-193,Team update 193: Please check www.example.com/info before tomorrow morning.
+cur-194,Event update 194: Please check www.example.com/info before tomorrow morning.
+cur-195,Club update 195: Please check www.example.com/info before tomorrow morning.
+cur-196,Course update 196: Please check www.example.com/info before tomorrow morning.
+cur-197,Ticket update 197: Please check www.example.com/info before tomorrow morning.
+cur-198,Account update 198: Please check your printed handout before tomorrow morning.
+cur-199,Delivery update 199: Please check your printed handout before tomorrow morning.
+cur-200,Appointment update 200: Please check your printed handout before tomorrow morning.

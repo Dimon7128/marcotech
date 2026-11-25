@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "python": "3.10.12",
+  "dependencies": {
+    "pandas": "2.2.3",
+    "numpy": "2.2.6",
+    "python-dateutil": "3.0.0",
+    "pytz": "2026.6",
+    "six": "1.17.0",
+    "tzdata": "2026.6"
+  },
+  "source_sha256": {
+    "starter.py": "d409951b5b0faff8ae905de2ee1fe350eaff34432575f98f788ab19da30e381a",
+    "reference.csv": "88647dff87a5a2a2954377716194a6232b5d91fa6602ac9482cf25844f4b9146",
+    "current.csv": "2213874bf42d01604dded67016f9cfda50c2df97fbf00d26bd54e1367612159e",
+    "requirements.txt": "83ab76601ed236641a6af07231500a19a0a0a70190e271967073669476c89798",
+    "README.md": "065ec919585c4fd7aba4b02f25a3085d233d03c9c01c3da5103a82ea14eefbbe",
+    "WORKSHEET.md": "f1a1ce44deaa51e20a1c8bed05aa64366a1b5a79afe02ebe1859f12123efcc95",
+    "EXPECTED_RESULTS.md": "012b3eb75f50b7f3a4dab03466503237d5326039d41ea5f3c43cd8e59d9984e6",
+    "expected_results.json": "ddb640fe12bbb4280e41726381ed9d51c2a185a96901a365ad0e7c55d4a7aacd"
+  },
+  "checks": [
+    "original starter executes with intentional TODO",
+    "completed student copy executes",
+    "execution works outside script directory",
+    "pandas results equal independent CSV calculations",
+    "all per-record features agree",
+    "URL rule and its documented limitations",
+    "fallback and expected results match real data",
+    "original starter preserved"
+  ],
+  "results": {
+    "Reference": {
+      "rows": 10,
+      "average_length": 25.4,
+      "url_like_count": 2,
+      "url_like_percentage": 20.0
+    },
+    "Current": {
+      "rows": 10,
+      "average_length": 109.0,
+      "url_like_count": 8,
+      "url_like_percentage": 80.0
+    }
+  },
+  "classroom_timing": "15-minute teaching plan; not measured with students",
+  "platform": "Linux execution; Windows/macOS commands reviewed, not executed"
+}

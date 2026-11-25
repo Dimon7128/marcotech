@@ -19,22 +19,22 @@ Training starts manually. CT triggers, deployed-model comparison, promotion appr
 
 ## Before class
 
-Use local Python, a writable project folder, an editor, terminal, and browser. **Python >=3.11 is required** by pinned scikit-learn 1.8.0; Python 3.11 is the class baseline. Preserve `requirements.txt`: pandas 2.2.3, scikit-learn 1.8.0, joblib 1.5.3. Python and transitive dependencies are not fully pinned, so retain the working environment for comparisons and serving.
+Use local Python, a writable project folder, an editor, terminal, and browser. **Python >=3.10 is required** by pinned scikit-learn 1.7.2; Python 3.10 is the class baseline. Preserve `requirements.txt`: pandas 2.2.3, scikit-learn 1.7.2, joblib 1.5.3. Python and transitive dependencies are not fully pinned, so retain the working environment for comparisons and serving.
 
 Follow the README setup once, then check from the lab folder with the selected interpreter:
 
 ```bash
-python --version
-python -c "import pandas, sklearn, joblib; print(pandas.__version__, sklearn.__version__, joblib.__version__)"
-python inspect_data.py
+python3 --version
+python3 -c "import pandas, sklearn, joblib; print(pandas.__version__, sklearn.__version__, joblib.__version__)"
+python3 inspect_data.py
 ```
 
-Expected direct package versions: `2.2.3 1.8.0 1.5.3`. A bare `python3` may be too old; select a compatible interpreter such as `python3.11` when creating the environment. If PowerShell blocks activation, invoke `.venv\Scripts\python.exe` directly.
+Expected direct package versions: `2.2.3 1.7.2 1.5.3`. Check that `python3` selects Python 3.10 or newer in the active environment. If PowerShell blocks activation, invoke `.venv\Scripts\python.exe` directly.
 
 The official UCI dataset is **not bundled**. Arrange download access or use:
 
 ```bash
-python prepare_data.py --zip "PATH_TO_OFFICIAL_ZIP"
+python3 prepare_data.py --zip "PATH_TO_OFFICIAL_ZIP"
 ```
 
 A previously normalized UCI `text,label` CSV is also supported. Observe preparation row/class counts rather than making an exact count a pass condition. Most script paths resolve from the script folder; relative `--zip` paths resolve from the terminal's current directory.
@@ -64,7 +64,7 @@ Follow Student Steps 1–9 in order. The worksheet owns the full commands and re
 
 ### Steps 1–2 — Prepare and inspect (Exercise 1)
 
-After setup, run `python inspect_data.py`. Show column names and missing counts without printing message text. Explain that `ham` means legitimate SMS. Enable this provided line in `inspect_data.py` and rerun:
+After setup, run `python3 inspect_data.py`. Show column names and missing counts without printing message text. Explain that `ham` means legitimate SMS. Enable this provided line in `inspect_data.py` and rerun:
 
 ```python
 print('Class counts:', data['label'].value_counts().to_dict())
@@ -74,7 +74,7 @@ Expect more ham than spam. A majority-class predictor can have high accuracy whi
 
 ### Steps 3–4 — Baseline and evaluation (Exercise 2)
 
-Run `python train.py --version v1`. Show five numbered stages and the unnumbered gate between evaluation and saving. Success creates the matching model/report pair described above. Then add this line inside `quality_gate()`, before the comparisons:
+Run `python3 train.py --version v1`. Show five numbered stages and the unnumbered gate between evaluation and saving. Success creates the matching model/report pair described above. Then add this line inside `quality_gate()`, before the comparisons:
 
 ```python
 log(f"Precision gate: required {MIN_SPAM_PRECISION}, observed {metrics['spam_precision']}")
@@ -85,8 +85,8 @@ Do not rerun a successful v1: the new log appears on the repaired v2 run. Read `
 ### Step 5 — Break and repair input (Exercise 3)
 
 ```bash
-python make_bad_data.py
-python train.py --data data/sms_broken.csv --version v2
+python3 make_bad_data.py
+python3 train.py --data data/sms_broken.csv --version v2
 ```
 
 The first broken copy lacks `text`. Change only `COLUMN_TO_DROP = 'text'` to `COLUMN_TO_DROP = 'label'` in `make_bad_data.py`, then repeat both commands. Each attempt must report the missing column, stop before `TRAIN`, and create neither v2 output. The original CSV remains intact.
@@ -94,7 +94,7 @@ The first broken copy lacks `text`. Change only `COLUMN_TO_DROP = 'text'` to `CO
 Repair by selecting the original input:
 
 ```bash
-python train.py --data data/sms.csv --version v2
+python3 train.py --data data/sms.csv --version v2
 ```
 
 With the same accepted baseline input/settings, this saves v2 and displays Exercise 2's precision log. Input validation and validation-set evaluation are different checks at different stages.
@@ -110,8 +110,8 @@ log(f"TF-IDF features: {len(model.named_steps['tfidf'].vocabulary_)}")
 Then run:
 
 ```bash
-python train.py --version v3
-python compare_runs.py v1 v3
+python3 train.py --version v3
+python3 compare_runs.py v1 v3
 ```
 
 Expect a positive vocabulary size and matching validation precision/recall when input, settings, and environment are unchanged. Logging changes observability rather than fitting. `compare_runs.py` prints values for manual comparison; it does not assert equivalence or promote a candidate. Equal rounded metrics do not prove identical artifact bytes or predictions on every message.
@@ -119,14 +119,14 @@ Expect a positive vocabulary size and matching validation precision/recall when 
 ### Step 7 — Reuse the fitted pipeline
 
 ```bash
-python predict.py --version v1 --text "Please pick up bread after work"
+python3 predict.py --version v1 --text "Please pick up bread after work"
 ```
 
 `predict.py` loads the saved whole pipeline, transforms text, and prints `ham` or `spam` without reading the CSV or calling `fit()`. Do not promise a particular label for an arbitrary example. Use synthetic messages and load only trusted joblib artifacts: loading can execute code.
 
 ### Step 8 — Optional recall challenge
 
-The recall check is already implemented. Raise `MIN_SPAM_RECALL` above the measured v1 recall, then run `python train.py --version v4`. Use `1.00` if recall is below 1.00; `1.01` is an intentionally impossible demonstration only if recall equals 1.00.
+The recall check is already implemented. Raise `MIN_SPAM_RECALL` above the measured v1 recall, then run `python3 train.py --version v4`. Use `1.00` if recall is below 1.00; `1.01` is an intentionally impossible demonstration only if recall equals 1.00.
 
 Expect evaluation to finish, the gate to reject, and neither v4 output to exist. Restore `0.00` and rerun v4: measured recall stays the same and saving is allowed. Changing acceptance policy does not improve the fitted model. Discuss the costs of overly strict or permissive gates.
 
@@ -138,7 +138,7 @@ Locate the model/report pair, confirm prediction still works, and ask why input 
 
 | Symptom | Instructor response |
 |---|---|
-| Install/import failure | Check Python >=3.11, active interpreter, and installation of the existing requirements. |
+| Install/import failure | Check Python >=3.10, active interpreter, and installation of the existing requirements. scikit-learn is pinned to 1.7.2 for Python 3.10 compatibility. |
 | Download/CSV unavailable | Prepare data first; use the official local-ZIP or normalized-CSV fallback above. |
 | Missing column | Expected in Step 5. Select the original input instead of weakening validation. |
 | Python edit fails | Check indentation, comment removal, quotation marks, and dictionary keys. |
@@ -186,8 +186,10 @@ For each proposed slide, provide title, 15–30 student-facing words, simple vis
 
 ## Verification
 
-Before consolidation on **2026-11-11**, disposable copies passed **27 synthetic-data checks and 28 official-UCI checks** under Python 3.12.13 with the exact direct dependency pins. Coverage included ZIP normalization/invalid-input preservation, all four exercise edits, stage order, whole-artifact contents, invalid data stopping before fitting, both gates, rejection without either output, version protection, repeated metrics, and prediction after removing the copied dataset.
+Before consolidation on **2026-11-11**, disposable copies passed **27 synthetic-data checks and 28 official-UCI checks** under Python 3.12.13 with the direct dependency pins used at that time (including scikit-learn 1.8.0). Coverage included ZIP normalization/invalid-input preservation, all four exercise edits, stage order, whole-artifact contents, invalid data stopping before fitting, both gates, rejection without either output, version protection, repeated metrics, and prediction after removing the copied dataset.
 
-The downloaded official ZIP prepared 5,574 rows (4,827 ham / 747 spam). Baseline v1/v3 validation precision **1.0000** and recall **0.7857** matched; these are observed results, not future pass criteria. Slide references above were checked against the actual deck. Student instructions, Python source, dependency pins, and PowerPoint remain unchanged.
+The downloaded official ZIP prepared 5,574 rows (4,827 ham / 747 spam). Baseline v1/v3 validation precision **1.0000** and recall **0.7857** matched; these are observed results, not future pass criteria. Slide references above were checked against the actual deck. At that review, student instructions, Python source, dependency pins, and PowerPoint remained unchanged.
 
-Further reference: [scikit-learn Pipeline](https://scikit-learn.org/1.8/modules/generated/sklearn.pipeline.Pipeline.html), [data leakage pitfalls](https://scikit-learn.org/1.8/common_pitfalls.html), [model persistence](https://scikit-learn.org/1.8/model_persistence.html), [GitHub Actions](https://docs.github.com/en/actions/get-started/understand-github-actions), [FastAPI first steps](https://fastapi.tiangolo.com/tutorial/first-steps/).
+On **2026-11-17**, the updated direct pins (pandas 2.2.3, scikit-learn 1.7.2, joblib 1.5.3) installed successfully in a clean Python 3.10.12 environment, and `pip check` passed. Disposable copies of both lab folders passed training, the quality gate, artifact save/load, and prediction using the prepared official UCI CSV. Observed validation precision was **1.0000** and recall **0.7857** in both copies. This compatibility check did not rerun the full historical check suite above.
+
+Further reference: [scikit-learn Pipeline](https://scikit-learn.org/1.7/modules/generated/sklearn.pipeline.Pipeline.html), [data leakage pitfalls](https://scikit-learn.org/1.7/common_pitfalls.html), [model persistence](https://scikit-learn.org/1.7/model_persistence.html), [GitHub Actions](https://docs.github.com/en/actions/get-started/understand-github-actions), [FastAPI first steps](https://fastapi.tiangolo.com/tutorial/first-steps/).

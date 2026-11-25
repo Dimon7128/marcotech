@@ -1,0 +1,15 @@
+{
+  "title": "Basic SMS API monitoring",
+  "width": 11.89,
+  "height": 1.28,
+  "elements": [
+    {"type": "rect", "x": 0, "y": 0.09, "w": 3.2, "h": 1.1, "fill": "F1F7F2", "line": "196B24"},
+    {"type": "rect", "x": 4.345, "y": 0.09, "w": 3.2, "h": 1.1, "fill": "F1F7F2", "line": "196B24"},
+    {"type": "rect", "x": 8.69, "y": 0.09, "w": 3.2, "h": 1.1, "fill": "F1F7F2", "line": "196B24"},
+    {"type": "arrow", "x1": 3.3, "y1": 0.64, "x2": 4.245, "y2": 0.64, "line": "196B24"},
+    {"type": "arrow", "x1": 7.645, "y1": 0.64, "x2": 8.59, "y2": 0.64, "line": "196B24"},
+    {"type": "text", "x": 0.1, "y": 0.24, "w": 3.0, "h": 0.8, "text": "Request", "size": 28, "align": "center", "vertical": "middle"},
+    {"type": "text", "x": 4.445, "y": 0.24, "w": 3.0, "h": 0.8, "text": "SMS API", "size": 28, "align": "center", "vertical": "middle"},
+    {"type": "text", "x": 8.79, "y": 0.24, "w": 3.0, "h": 0.8, "text": "Response", "size": 28, "align": "center", "vertical": "middle"}
+  ]
+}

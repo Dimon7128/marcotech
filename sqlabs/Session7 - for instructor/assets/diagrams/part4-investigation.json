@@ -1,0 +1,119 @@
+{
+  "title": "Investigate before choosing an action",
+  "width": 11.89,
+  "height": 3.1,
+  "elements": [
+    {
+      "type": "rect",
+      "x": 0.0,
+      "y": 0.35,
+      "w": 2.5975,
+      "h": 2.4,
+      "fill": "F5F6F7",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 0.12,
+      "y": 0.8,
+      "w": 2.3575,
+      "h": 1.5,
+      "text": "Detect\na warning",
+      "size": 26,
+      "bold": true,
+      "color": "24292D",
+      "align": "center",
+      "vertical": "middle"
+    },
+    {
+      "type": "arrow",
+      "x1": 2.6675,
+      "y1": 1.55,
+      "x2": 3.0275000000000003,
+      "y2": 1.55,
+      "line": "196B24"
+    },
+    {
+      "type": "rect",
+      "x": 3.0975,
+      "y": 0.35,
+      "w": 2.5975,
+      "h": 2.4,
+      "fill": "F5F6F7",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 3.2175000000000002,
+      "y": 0.8,
+      "w": 2.3575,
+      "h": 1.5,
+      "text": "Inspect\nthe evidence",
+      "size": 26,
+      "bold": true,
+      "color": "24292D",
+      "align": "center",
+      "vertical": "middle"
+    },
+    {
+      "type": "arrow",
+      "x1": 5.765000000000001,
+      "y1": 1.55,
+      "x2": 6.125,
+      "y2": 1.55,
+      "line": "196B24"
+    },
+    {
+      "type": "rect",
+      "x": 6.195,
+      "y": 0.35,
+      "w": 2.5975,
+      "h": 2.4,
+      "fill": "F5F6F7",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 6.315,
+      "y": 0.8,
+      "w": 2.3575,
+      "h": 1.5,
+      "text": "Understand\npossible causes",
+      "size": 26,
+      "bold": true,
+      "color": "24292D",
+      "align": "center",
+      "vertical": "middle"
+    },
+    {
+      "type": "arrow",
+      "x1": 8.8625,
+      "y1": 1.55,
+      "x2": 9.2225,
+      "y2": 1.55,
+      "line": "196B24"
+    },
+    {
+      "type": "rect",
+      "x": 9.2925,
+      "y": 0.35,
+      "w": 2.5975,
+      "h": 2.4,
+      "fill": "F1F7F2",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 9.4125,
+      "y": 0.8,
+      "w": 2.3575,
+      "h": 1.5,
+      "text": "Decide\nthe next action",
+      "size": 26,
+      "bold": true,
+      "color": "196B24",
+      "align": "center",
+      "vertical": "middle"
+    }
+  ]
+}

@@ -32,7 +32,7 @@ def main():
         except Exception as exc:
             raise SystemExit(
                 "Download failed. Download the ZIP from the UCI dataset page "
-                "in your browser, then run: python prepare_data.py --zip YOUR_FILE.zip"
+                "in your browser, then run: python3 prepare_data.py --zip YOUR_FILE.zip"
             ) from exc
 
     with zipfile.ZipFile(io.BytesIO(zip_bytes)) as archive:

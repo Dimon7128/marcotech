@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "student_files": 37,
+  "student_relative_links": 25,
+  "relocated_student_scripts": "Lab 2 starter/completed copy and Labs 3\u20134 report scripts passed from a temporary copy and different cwd",
+  "preserved_lab_sources": [
+    "labs/lab3/monitoring.py",
+    "labs/lab3/WORKSHEET.md",
+    "labs/lab3/monitoring_report.ipynb",
+    "labs/lab3/data/current_sms.csv",
+    "labs/lab3/data/reference_sms.csv",
+    "labs/lab3/instructor/ANSWER_KEY_HE.md",
+    "labs/lab2/starter.py",
+    "labs/lab2/WORKSHEET.md",
+    "labs/lab2/INSTRUCTOR_GUIDE_HE.md",
+    "labs/lab2/current.csv",
+    "labs/lab2/reference.csv",
+    "labs/lab4/monitoring.py",
+    "labs/lab4/submission_template.md",
+    "labs/lab4/monitoring_incident.ipynb",
+    "labs/lab4/data/current_sms.csv",
+    "labs/lab4/data/reference_sms.csv",
+    "labs/lab4/instructor/ANSWER_KEY_HE.md",
+    "labs/lab1/WORKSHEET.md",
+    "labs/lab1/records.csv",
+    "labs/lab1/INSTRUCTOR_GUIDE_HE.md"
+  ],
+  "lab4_generator_matches_original_data": true
+}

@@ -1,0 +1,27 @@
+name: SMS API CI
+
+on: [TODO_TRIGGER]
+
+permissions:
+  contents: read
+
+jobs:
+  check-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@v7.1.0
+        with:
+          python-version: "TODO_PYTHON_VERSION"
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Run API tests
+        run: TODO_TEST_COMMAND
+
+      - name: Build Docker image
+        run: TODO_BUILD_COMMAND

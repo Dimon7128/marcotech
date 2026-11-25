@@ -1,6 +1,6 @@
 """Session 4 SMS workflow: load/check -> split -> train -> evaluate -> save.
 
-Run with: python train.py --version v1
+Run with: python3 train.py --version v1
 Only training data fits the scikit-learn Pipeline. Validation is for model review.
 The held-out test data is NEVER used to choose a candidate in this lab.
 """
@@ -68,8 +68,7 @@ def fit_model(train):
         ('classifier', MultinomialNB(alpha=1.0)),
     ])
     model.fit(train['text'], train['label'])
-    # EXERCISE 4: Print the fitted TF-IDF vocabulary size after training.
-    # Hint: len(model.named_steps['tfidf'].vocabulary_)
+    # log(f"TF-IDF features: {len(model.named_steps['tfidf'].vocabulary_)}")
     log('[3/5] TRAIN — COMPLETED')
     return model
 

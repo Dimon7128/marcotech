@@ -1,0 +1,8 @@
+{
+  "version": "v1",
+  "spam_precision": 1.0,
+  "spam_recall": 0.7857,
+  "minimum_spam_precision": 0.9,
+  "minimum_spam_recall": 0.0,
+  "random_seed": 42
+}

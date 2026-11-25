@@ -1,0 +1,46 @@
+{
+  "transport": "HTTP over loopback to Uvicorn inside the built runtime container",
+  "results": [
+    {
+      "route": "/health",
+      "message_length": null,
+      "expected_status": 200,
+      "actual_status": 200,
+      "content_type": "application/json",
+      "as_expected": true
+    },
+    {
+      "route": "/predict",
+      "message_length": 15,
+      "expected_status": 200,
+      "actual_status": 200,
+      "content_type": "application/json",
+      "as_expected": true
+    },
+    {
+      "route": "/predict",
+      "message_length": 500,
+      "expected_status": 200,
+      "actual_status": 200,
+      "content_type": "application/json",
+      "as_expected": true
+    },
+    {
+      "route": "/predict",
+      "message_length": 501,
+      "expected_status": 422,
+      "actual_status": 422,
+      "content_type": "application/json",
+      "as_expected": true
+    },
+    {
+      "route": "/predict",
+      "message_length": 3,
+      "expected_status": 422,
+      "actual_status": 422,
+      "content_type": "application/json",
+      "as_expected": true
+    }
+  ],
+  "all_expected": true
+}

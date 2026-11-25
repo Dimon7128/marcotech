@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6f2">
+  <title>SMS Sandbox · Docker Lab</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="workspace">
+    <aside class="sidebar" aria-label="About this lab">
+      <a class="brand" href="/" aria-label="SMS Sandbox home">
+        <span class="brand-mark" aria-hidden="true">s.</span>
+        <span>SMS Sandbox</span>
+      </a>
+      <div class="sidebar-content">
+        <p class="eyebrow">MLOPS ESSENTIALS / LAB 04</p>
+        <h1>Your model.<br>A conversation away.</h1>
+        <p class="intro">Send a sample SMS and see how your trained pipeline classifies it.</p>
+        <div class="architecture" aria-label="Request path">
+          <p class="card-title">One request, two containers</p>
+          <ol>
+            <li><span class="step-dot">1</span><span>Your browser<small>Writes the message</small></span></li>
+            <li><span class="step-dot">2</span><span>Frontend · Nginx<small>Serves the chat and proxies /api</small></span></li>
+            <li><span class="step-dot">3</span><span>Model API · FastAPI<small>Runs the saved SMS pipeline</small></span></li>
+          </ol>
+        </div>
+      </div>
+      <p class="sidebar-footer">SESSION 5 <span>MODEL DEPLOYMENT</span></p>
+    </aside>
+
+    <main class="chat-panel">
+      <header class="chat-header">
+        <div>
+          <p class="eyebrow">THE PLAYGROUND</p>
+          <h2>Message classifier</h2>
+        </div>
+        <button class="connection" id="connection" type="button" title="Check the model connection">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span id="connection-label" role="status">Checking model…</span>
+        </button>
+      </header>
+
+      <div class="conversation-heading">
+        <span><span class="live-dot" aria-hidden="true"></span> A new conversation</span>
+        <button class="text-button" id="clear-chat" type="button">Clear chat</button>
+      </div>
+      <section class="transcript" id="transcript" role="log" aria-live="polite" aria-label="Classification conversation"></section>
+
+      <div class="composer-area">
+        <div class="examples" aria-label="Example messages">
+          <span>Try a sample</span>
+          <button type="button" data-example="Please pick up bread after work.">Everyday message <span aria-hidden="true">↗</span></button>
+          <button type="button" data-example="Congratulations! Claim your free prize today.">Prize message <span aria-hidden="true">↗</span></button>
+        </div>
+        <form id="message-form">
+          <label class="sr-only" for="message">SMS message to classify</label>
+          <div class="composer">
+            <textarea id="message" name="message" rows="2" maxlength="2000" placeholder="Type a synthetic SMS message…" required aria-describedby="input-hint"></textarea>
+            <button class="send-button" id="send-button" type="submit"><span id="send-label">Classify</span><span aria-hidden="true">↑</span></button>
+          </div>
+          <div class="composer-footer">
+            <p id="input-hint">Enter to send · Shift + Enter for a new line</p>
+            <span id="character-count" aria-label="Message length">0 / 2000</span>
+          </div>
+        </form>
+        <p class="form-error" id="form-error" role="alert"></p>
+        <p class="privacy-note">Use synthetic examples. Conversation history stays in this page until you clear or reload it.</p>
+        <noscript>Enable JavaScript to send messages to the model API.</noscript>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+{
+  "title": "Two batches become a monitoring report",
+  "width": 11.89,
+  "height": 3.1,
+  "elements": [
+    {
+      "type": "rect",
+      "x": 0.0,
+      "y": 0.35,
+      "w": 3.6300000000000003,
+      "h": 2.4,
+      "fill": "F5F6F7",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 0.12,
+      "y": 0.8,
+      "w": 3.3900000000000006,
+      "h": 1.5,
+      "text": "Reference SMS\n+ Current SMS",
+      "size": 26,
+      "bold": true,
+      "color": "24292D",
+      "align": "center",
+      "vertical": "middle"
+    },
+    {
+      "type": "arrow",
+      "x1": 3.7,
+      "y1": 1.55,
+      "x2": 4.0600000000000005,
+      "y2": 1.55,
+      "line": "196B24"
+    },
+    {
+      "type": "rect",
+      "x": 4.130000000000001,
+      "y": 0.35,
+      "w": 3.6300000000000003,
+      "h": 2.4,
+      "fill": "F5F6F7",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 4.250000000000001,
+      "y": 0.8,
+      "w": 3.3900000000000006,
+      "h": 1.5,
+      "text": "Two familiar\nfeatures",
+      "size": 26,
+      "bold": true,
+      "color": "24292D",
+      "align": "center",
+      "vertical": "middle"
+    },
+    {
+      "type": "arrow",
+      "x1": 7.830000000000002,
+      "y1": 1.55,
+      "x2": 8.190000000000001,
+      "y2": 1.55,
+      "line": "196B24"
+    },
+    {
+      "type": "rect",
+      "x": 8.260000000000002,
+      "y": 0.35,
+      "w": 3.6300000000000003,
+      "h": 2.4,
+      "fill": "F1F7F2",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 8.38,
+      "y": 0.8,
+      "w": 3.3900000000000006,
+      "h": 1.5,
+      "text": "Evidently\nHTML report",
+      "size": 26,
+      "bold": true,
+      "color": "196B24",
+      "align": "center",
+      "vertical": "middle"
+    }
+  ]
+}

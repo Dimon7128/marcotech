@@ -1,0 +1,17 @@
+{
+  "synthetic": true,
+  "evidently_version": "0.7.23",
+  "reference": {
+    "messages": 10,
+    "average_length": 25.4,
+    "url_like_count": 2,
+    "url_like_percentage": 20.0
+  },
+  "current": {
+    "messages": 10,
+    "average_length": 109.0,
+    "url_like_count": 8,
+    "url_like_percentage": 80.0
+  },
+  "quality_evidence": "No labels or matching predictions; accuracy is unknown."
+}

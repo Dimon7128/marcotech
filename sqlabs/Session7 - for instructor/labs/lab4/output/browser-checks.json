@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "browser": "159.0.8154.6",
+  "offline": true,
+  "blocked_requests": [],
+  "url_row": "\thas_url\tcat\t\n\t\n\tDetected\tZ-test p_value\t0",
+  "length_row": "\tmessage_length\tnum\t\n\t\n\tNot Detected\tK-S p_value\t1",
+  "report_sha256": "a0400748ff795f10fd1ca26e89c8cfce1a1576f3d1202fbc96734f7442461c48",
+  "javascript_errors": [],
+  "traces": [
+    {
+      "name": "current",
+      "x": [
+        "yes",
+        "no"
+      ],
+      "y": [
+        140,
+        60
+      ]
+    },
+    {
+      "name": "current",
+      "x": [
+        "yes",
+        "no"
+      ],
+      "y": [
+        70,
+        30
+      ]
+    },
+    {
+      "name": "reference",
+      "x": [
+        "no",
+        "yes"
+      ],
+      "y": [
+        180,
+        20
+      ]
+    },
+    {
+      "name": "reference",
+      "x": [
+        "no",
+        "yes"
+      ],
+      "y": [
+        90,
+        10
+      ]
+    }
+  ],
+  "screenshots": [
+    "report_overview.png",
+    "report_features.png",
+    "url_distribution.png"
+  ],
+  "screenshot_note": "Actual report UI and chart; cropped without changing plotted values or labels."
+}

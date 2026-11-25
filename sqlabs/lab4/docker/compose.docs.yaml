@@ -1,0 +1,6 @@
+# Optional local access to the model container's own Swagger UI.
+# Use together with compose.yaml; the normal stack keeps the API unpublished.
+services:
+  model-api:
+    ports:
+      - "127.0.0.1:${API_DOCS_PORT:-8001}:8000"

@@ -1,0 +1,157 @@
+{
+  "python": "3.10.22 (main, Oct  6 2026, 02:05:33) [GCC 14.2.0]",
+  "versions": {
+    "pytest": "8.4.2",
+    "httpx": "0.28.1",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.7.2",
+    "joblib": "1.5.3",
+    "fastapi": "0.128.2",
+    "pydantic": "2.14.3",
+    "starlette": "0.50.0",
+    "uvicorn": "0.48.0"
+  },
+  "cases": {
+    "starter": {
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "expected_summary": "1 failed, 2 passed",
+      "as_expected": true,
+      "stdout": ".F.                                                                      [100%]\n=================================== FAILURES ===================================\n____________________________ test_valid_prediction _____________________________\n\n    def test_valid_prediction():\n        response = client.post(\"/predict\", json={\"message\": \"Meeting at five\"})\n        assert response.status_code == 200\n        assert \"label\" in response.json()\n>       assert response.json()[\"label\"] in {\"TODO\"}, \"Complete the allowed-label assertion\"\nE       AssertionError: Complete the allowed-label assertion\nE       assert 'ham' in {'TODO'}\n\ntest_api.py:18: AssertionError\n=============================== warnings summary ===============================\n../../usr/local/lib/python3.10/site-packages/starlette/testclient.py:45\n  /usr/local/lib/python3.10/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED test_api.py::test_valid_prediction - AssertionError: Complete the allo...\n1 failed, 2 passed, 1 warning in 1.75s\n",
+      "stderr": ""
+    },
+    "boundary_before_rule": {
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "expected_summary": "1 failed, 4 passed",
+      "as_expected": true,
+      "stdout": "....F                                                                    [100%]\n=================================== FAILURES ===================================\n______________________ test_overlong_message_is_rejected _______________________\n\n    def test_overlong_message_is_rejected():\n        response = client.post(\"/predict\", json={\"message\": \"x\" * 501})\n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntest_api.py:42: AssertionError\n=============================== warnings summary ===============================\n../../usr/local/lib/python3.10/site-packages/starlette/testclient.py:45\n  /usr/local/lib/python3.10/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED test_api.py::test_overlong_message_is_rejected - assert 200 == 422\n1 failed, 4 passed, 1 warning in 0.94s\n",
+      "stderr": ""
+    },
+    "completed": {
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "expected_summary": "5 passed",
+      "as_expected": true,
+      "stdout": ".....                                                                    [100%]\n=============================== warnings summary ===============================\n../../usr/local/lib/python3.10/site-packages/starlette/testclient.py:45\n  /usr/local/lib/python3.10/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n5 passed, 1 warning in 0.87s\n",
+      "stderr": ""
+    },
+    "health_assertion_failure": {
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "expected_summary": "1 failed, 4 passed",
+      "as_expected": true,
+      "stdout": "F....                                                                    [100%]\n=================================== FAILURES ===================================\n_________________________________ test_health __________________________________\n\n    def test_health():\n        response = client.get(\"/health\")\n>       assert response.status_code == 201\nE       assert 200 == 201\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntest_api.py:10: AssertionError\n=============================== warnings summary ===============================\n../../usr/local/lib/python3.10/site-packages/starlette/testclient.py:45\n  /usr/local/lib/python3.10/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED test_api.py::test_health - assert 200 == 201\n1 failed, 4 passed, 1 warning in 0.89s\n",
+      "stderr": ""
+    },
+    "option_a_before": {
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "expected_summary": "1 failed, 5 passed",
+      "as_expected": true,
+      "stdout": ".....F                                                                   [100%]\n=================================== FAILURES ===================================\n__________________ test_unexpected_request_field_is_rejected ___________________\n\n    def test_unexpected_request_field_is_rejected():\n        response = client.post(\n            \"/predict\", json={\"message\": \"Meeting at five\", \"unexpected\": True}\n        )\n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntest_challenge.py:11: AssertionError\n=============================== warnings summary ===============================\n../../usr/local/lib/python3.10/site-packages/starlette/testclient.py:45\n  /usr/local/lib/python3.10/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED test_challenge.py::test_unexpected_request_field_is_rejected - assert ...\n1 failed, 5 passed, 1 warning in 0.93s\n",
+      "stderr": ""
+    },
+    "option_a_after": {
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "expected_summary": "6 passed",
+      "as_expected": true,
+      "stdout": "......                                                                   [100%]\n=============================== warnings summary ===============================\n../../usr/local/lib/python3.10/site-packages/starlette/testclient.py:45\n  /usr/local/lib/python3.10/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n6 passed, 1 warning in 0.87s\n",
+      "stderr": ""
+    },
+    "option_b_correct": {
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "expected_summary": "6 passed",
+      "as_expected": true,
+      "stdout": "......                                                                   [100%]\n=============================== warnings summary ===============================\n../../usr/local/lib/python3.10/site-packages/starlette/testclient.py:45\n  /usr/local/lib/python3.10/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n6 passed, 1 warning in 0.86s\n",
+      "stderr": ""
+    },
+    "option_b_wrong_header": {
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "expected_summary": "1 failed, 5 passed",
+      "as_expected": true,
+      "stdout": ".....F                                                                   [100%]\n=================================== FAILURES ===================================\n___________________ test_prediction_declares_json_media_type ___________________\n\n    def test_prediction_declares_json_media_type():\n        response = client.post(\"/predict\", json={\"message\": \"Meeting at five\"})\n        assert response.status_code == 200\n        assert \"label\" in response.json()\n        assert response.json()[\"label\"] in {\"spam\", \"ham\"}\n        media_type = response.headers.get(\"content-type\", \"\").split(\";\", 1)[0]\n>       assert media_type.strip().lower() == \"application/json\"\nE       AssertionError: assert 'text/plain' == 'application/json'\nE         \nE         - application/json\nE         + text/plain\n\ntest_challenge.py:13: AssertionError\n=============================== warnings summary ===============================\n../../usr/local/lib/python3.10/site-packages/starlette/testclient.py:45\n  /usr/local/lib/python3.10/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED test_challenge.py::test_prediction_declares_json_media_type - Assertio...\n1 failed, 5 passed, 1 warning in 0.90s\n",
+      "stderr": ""
+    },
+    "option_b_wrong_header_baseline": {
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "expected_summary": "5 passed",
+      "as_expected": true,
+      "stdout": ".....                                                                    [100%]\n=============================== warnings summary ===============================\n../../usr/local/lib/python3.10/site-packages/starlette/testclient.py:45\n  /usr/local/lib/python3.10/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n5 passed, 1 warning in 0.86s\n",
+      "stderr": ""
+    },
+    "option_b_json_parameters": {
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "expected_summary": "6 passed",
+      "as_expected": true,
+      "stdout": "......                                                                   [100%]\n=============================== warnings summary ===============================\n../../usr/local/lib/python3.10/site-packages/starlette/testclient.py:45\n  /usr/local/lib/python3.10/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n6 passed, 1 warning in 0.83s\n",
+      "stderr": ""
+    }
+  },
+  "schema_probe": [
+    {
+      "case": 1,
+      "expected_status": 422,
+      "actual_status": 422
+    },
+    {
+      "case": 2,
+      "expected_status": 422,
+      "actual_status": 422
+    },
+    {
+      "case": 3,
+      "expected_status": 422,
+      "actual_status": 422
+    },
+    {
+      "case": 4,
+      "expected_status": 422,
+      "actual_status": 422
+    },
+    {
+      "case": 5,
+      "expected_status": 422,
+      "actual_status": 422
+    },
+    {
+      "case": 6,
+      "expected_status": 200,
+      "actual_status": 200
+    },
+    {
+      "case": 7,
+      "expected_status": 200,
+      "actual_status": 200
+    },
+    {
+      "case": 8,
+      "expected_status": 422,
+      "actual_status": 422
+    },
+    {
+      "case": 9,
+      "expected_status": 200,
+      "actual_status": 200
+    },
+    {
+      "case": 10,
+      "expected_status": 422,
+      "actual_status": 422
+    }
+  ],
+  "model_steps": [
+    "TfidfVectorizer",
+    "MultinomialNB"
+  ],
+  "labels": [
+    "ham",
+    "spam"
+  ],
+  "all_expected": true
+}

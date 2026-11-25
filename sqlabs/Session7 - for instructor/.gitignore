@@ -1,0 +1,11 @@
+.venv*/
+**/.venv*/
+**/__pycache__/
+*.py[cod]
+node_modules/
+output/qa/final/previews/
+output/qa/final/diagrams/
+output/qa/final/*.png
+output/qa/final/*.pdf
+output/qa/labs/*-executed.ipynb
+output/qa/labs/*.txt

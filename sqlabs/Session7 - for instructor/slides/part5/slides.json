@@ -1,0 +1,278 @@
+{
+  "part": 5,
+  "title": "Guided lab and recap",
+  "slides": [
+    {
+      "id": "p5-objectives",
+      "title": "Guided lab and recap",
+      "layout": "objectives",
+      "minutes": 1,
+      "hands_on_minutes": 0,
+      "objective_label": "Objective",
+      "objective": "Investigate an SMS incident and justify an action.",
+      "goals_label": "Main goals",
+      "lines": [
+        "Compare batches and interpret drift.",
+        "Separate observations from unknowns.",
+        "Submit a report and decision."
+      ],
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "דקה אחת. לפתוח בשם החלק, במטרה ובשלוש תוצאות הלמידה."
+        },
+        {
+          "heading": "מטרה",
+          "text": "להציג את מטרת החלק: לחקור אירוע SMS חדש באופן עצמאי ולנמק פעולה. נשווה נתונים ודוח, נפריד בין תצפיות לבין אי־ודאות ונגיש דוח עם החלטה קצרה."
+        },
+        {
+          "heading": "הנחיית הוראה",
+          "text": "יש קוד עובד, דוח מוכן לחלופה ורמזים מדורגים. לא לחשוף את הפתרון. העבודה העצמאית נשארת 45 דקות, וההגשה היא דוח ופסקת החלטה קצרה."
+        },
+        {
+          "heading": "מעבר",
+          "text": "לעבור לכרטיס האירוע החדש ולהסביר מה המצב הידוע לפני החקירה."
+        }
+      ]
+    },
+    {
+      "id": "p5-01",
+      "title": "Your Monitoring Incident",
+      "layout": "diagram_takeaway",
+      "minutes": 1,
+      "hands_on_minutes": 0,
+      "diagram": "part5-incident",
+      "takeaway": "Investigate a new synthetic SMS incident independently.",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "דקה אחת לפי התכנון. זמן פתיחת המטרות נכלל במשך החלק ואינו תוספת למעבדה."
+        },
+        {
+          "heading": "הצגת האירוע",
+          "text": "זהו אירוע אחר מ־Lab 3. בכרטיס כתוב שהשירות זמין, המודל לא השתנה ואין תוויות אמינות או תחזיות תואמות. דגימה ועיבוד טרם אומתו. לא לחשוף את המספרים או ההחלטה הרצויה לפני העבודה."
+        },
+        {
+          "heading": "הכנה",
+          "text": "הקבצים והסביבה של Lab 3 מוכנים, או שהדוח והתמונות המוכנים זמינים. עבודה אישית ואפשרות לשיחה קצרה לאחר כתיבת מסקנה עצמאית. אין צורך בשירות פעיל או במודל מאומן נוסף."
+        },
+        {
+          "heading": "מעבר",
+          "text": "נגדיר מה מגישים ואיך מחלקים את 45 דקות החקירה."
+        }
+      ]
+    },
+    {
+      "id": "p5-02",
+      "title": "Mission and Deliverables",
+      "layout": "plain_takeaway",
+      "minutes": 3,
+      "hands_on_minutes": 0,
+      "lines": [
+        "Inspect the incident and compare both batches.",
+        "Submit one report and a short decision worksheet."
+      ],
+      "takeaway": "Use evidence, acknowledge uncertainty, name a next step.",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "3 דקות לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "מטרה והגשה",
+          "text": "לפתוח `labs/lab4/README.md`, `INCIDENT.md` ו־`submission_template.md`. להגיש HTML שהופק או נבדק ועוד כ־3–5 משפטים בחמשת השדות: שינוי, ראיה, מה לא ידוע, החלטה וצעד הבא."
+        },
+        {
+          "heading": "חלוקת זמן",
+          "text": "45 דקות עבודה בחמישה שלבים: 5 הבנת האירוע, 10 בדיקת הנתונים, 10 הפקת דוח, 10 פירוש, 10 החלטה. שלושת שקפי העבודה הבאים מכסים 15, 20 ו־10 דקות. חמש דקות הסיום יישארו לשיתוף ולמעבר."
+        },
+        {
+          "heading": "תמיכה",
+          "text": "הקוד מלא; מוקד העבודה הוא החשיבה. להציע את `HINTS.md` רמז אחד בכל פעם, ולהשתמש בדוח המוכן אם ההתקנה מתעכבת. לציין אם השתמשו בחלופה."
+        },
+        {
+          "heading": "מעבר",
+          "text": "להתחיל בקריאה ובנתונים עצמם; לשמור את המסקנה פתוחה עד שיבחנו ראיות."
+        }
+      ]
+    },
+    {
+      "id": "p5-03",
+      "title": "Read the Incident, Inspect the Data",
+      "layout": "lab",
+      "minutes": 15,
+      "hands_on_minutes": 15,
+      "lines": [
+        "Read what is known and unknown.",
+        "Compare counts, character length and URL-like share."
+      ],
+      "guide": "Lab 4: incident card and data inspection",
+      "badge": "15 minutes",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "15 דקות לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "פעולות",
+          "text": "5 דקות לקריאת כרטיס האירוע וזיהוי מה עובד ומה חסר, ואז 10 לטעינת שני קבצי ה־CSV ולסיכום. להשתמש במחברת או בסקריפט שסופקו; אין להשלים אלגוריתם חדש."
+        },
+        {
+          "heading": "תוצאה צפויה למרצה",
+          "text": "200 הודעות בכל קבוצה, אורך ממוצע 75.7 תווים בשתיהן, URL ב־20 מתוך 200 לעומת 140 מתוך 200: 10% לעומת 70%. הנתונים נבנו כך שכל התפלגות האורך נשארת זהה; זו אינה טענה על אוכלוסייה אמיתית."
+        },
+        {
+          "heading": "רמז והתערבות",
+          "text": "אם מעתיקים את תשובת Lab 3, לשאול האם גם האורך השתנה כאן. אם משווים רק ספירות בלי גודל קבוצה, לבקש מכנה. דפוס קישור אינו תווית spam."
+        },
+        {
+          "heading": "תקלות וחלופה",
+          "text": "נתיב שגוי או kernel חסר: לבדוק שהנתונים בתיקיית data ושהמחברת רצה בתיקיית המעבדה. אם לא נפתר מהר, לפתוח `output/FEATURE_SUMMARY.md`."
+        },
+        {
+          "heading": "מעבר",
+          "text": "לשמור תצפית אחת ושאלה פתוחה לפני שמפיקים את הדוח."
+        }
+      ]
+    },
+    {
+      "id": "p5-04",
+      "title": "Generate, Then Explain the Report",
+      "layout": "lab",
+      "minutes": 20,
+      "hands_on_minutes": 20,
+      "lines": [
+        "Open the report and inspect each feature.",
+        "Separate the observation from possible explanations."
+      ],
+      "guide": "Lab 4: 10 minutes to generate; 10 minutes to interpret",
+      "badge": "20 minutes",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "20 דקות לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "פעולות",
+          "text": "10 דקות להרצת הקוד ולפתיחת HTML, ואז 10 לפירוש. זו אותה גרסת `Evidently 0.7.23` ואותו helper כמו Lab 3; לא ללמד API חדש. להרחיב את השורות ולבדוק את המקרא."
+        },
+        {
+          "heading": "תוצאה צפויה למרצה",
+          "text": "הדוח בפועל מסמן `has_url` כ־`Detected` ו־`message_length` כ־`Not Detected`. עמודה אחת מתוך שתיים אינה 50% תחזיות שגויות. תרשים URL מציג `yes`: 140 ב־Current לעומת 20 ב־Reference."
+        },
+        {
+          "heading": "שאלות הנחיה",
+          "text": "מה באמת נצפה? מה עשוי להסביר אותו? האם דגימה או עיבוד נבדקו? האם יש תוויות אמינות ותחזיות תואמות? המראה של הודעת עדכון אינו תווית אמת."
+        },
+        {
+          "heading": "רמז והתערבות",
+          "text": "לתת קודם את רמז המיקום בדוח, אחר כך להשוות את שני המאפיינים, ולבסוף להזכיר את גבול הראיה. לא למסור את הפתרון המלא; לבקש מהסטודנט להפריד תצפית מהסבר."
+        },
+        {
+          "heading": "חלופה ומעבר",
+          "text": "להשתמש ב־HTML ובתמונה המוכנים אם ההפקה נכשלת. אותן שאלות ואותה הגשה. כעת לבחור פעולה עם צעד הבא קונקרטי."
+        }
+      ]
+    },
+    {
+      "id": "p5-05",
+      "title": "Choose and Justify an Action",
+      "layout": "lab",
+      "minutes": 10,
+      "hands_on_minutes": 10,
+      "lines": [
+        "Keep monitoring, investigate, or consider retraining?",
+        "Give evidence, one uncertainty and a concrete next step."
+      ],
+      "guide": "Lab 4 decision worksheet: 3–5 sentences",
+      "badge": "10 minutes",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "10 דקות לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "פעולות והגשה",
+          "text": "כל סטודנט משלים את חמשת שדות `submission_template.md` בכ־3–5 משפטים בסך הכול ושומר את הדוח שהופק או נבדק. להקדיש כשבע דקות לכתיבה ושלוש לבדיקה עצמית או שיתוף קצר."
+        },
+        {
+          "heading": "תשובה צפויה למרצה",
+          "text": "לחקור: יש יותר דפוסי קישור בלי שינוי אורך, אבל איכות התחזיות לא ידועה. לאסוף תוויות אמינות למדגם מייצג עם תחזיות ולבדוק איסוף/עיבוד. אפשר להשאיר את המודל פעיל בזמן החקירה; זה אינו התעלמות."
+        },
+        {
+          "heading": "קריטריונים",
+          "text": "לחפש שינוי נכון, ראיה עם יחידות, מגבלה מפורשת, פעולה מנומקת וצעד הבא. מי שמציע אימון מחדש צריך להסביר את הראיות שעוד חסרות ואת השוואת המועמד לפני שחרור; אין לאמן בפועל."
+        },
+        {
+          "heading": "תמיכה וחלופה",
+          "text": "אם הכתיבה מתארכת, משפט אחד יכול לכסות שני שדות. להשתמש בדוח המוכן בדיוק באותה דרך ולסמן זאת. אם נותר זמן, לשאול מה היה משנה את ההחלטה."
+        },
+        {
+          "heading": "מעבר",
+          "text": "להכין שיתוף של משפט אחד: מה ראינו, מה לא ידענו ומה נעשה."
+        }
+      ]
+    },
+    {
+      "id": "p5-06",
+      "title": "Share Findings and Recap",
+      "layout": "diagram_takeaway",
+      "minutes": 3,
+      "hands_on_minutes": 0,
+      "diagram": "part5-session-recap",
+      "takeaway": "Share one finding, one uncertainty and one justified action.",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "3 דקות לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "שיתוף",
+          "text": "לבקש שני סיכומים קצרים ולחזור על המסלול: שירות, נתונים, דוח, חקירה והחלטה. בתרחיש החדש שיעור URL עלה מ־10% ל־70% והאורך נשאר 75.7; אין נתוני איכות."
+        },
+        {
+          "heading": "סיכום מעשי",
+          "text": "HTTP 200 אינו הוכחה לתחזית נכונה. drift אינו הוכחה לירידה באיכות. בדיקת סיבה ותוויות יכולה לשנות החלטה, ואימון מחדש הוא אפשרות מותנית ולא תגובה אוטומטית."
+        },
+        {
+          "heading": "שאלת המשך",
+          "text": "איזו ראיה חדשה עשויה להצדיק פעולה אחרת? באג מאומת, איכות יציבה לאורך מדגם מתאים, או פגיעה מתמשכת באיכות. לא לדרוש מסקנה חזקה יותר מהראיות."
+        },
+        {
+          "heading": "מעבר",
+          "text": "ההגשה הקצרה הופכת למסמך החלטה שאפשר להמשיך ממנו בשלב הבא בקורס."
+        }
+      ]
+    },
+    {
+      "id": "p5-07",
+      "title": "Carry Evidence into Session 8",
+      "layout": "plain_takeaway",
+      "minutes": 2,
+      "hands_on_minutes": 0,
+      "lines": [
+        "Keep your report and decision worksheet.",
+        "Record the next check and who should own it."
+      ],
+      "takeaway": "Monitoring decisions connect evidence to the next lifecycle step.",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "2 דקות לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "סיום והעברה",
+          "text": "לבקש לשמור את הדוח ואת ההמלצה יחד, לציין איזו בדיקה תבוצע ומי אחראי. אלו הראיות והאי־ודאות שנעביר למפגש 8; אין להמציא כאן סדר יום שלא סוכם למפגש הבא."
+        },
+        {
+          "heading": "שאלת יציאה",
+          "text": "מהי בדיקה אחת שתבצעו לפני שינוי מודל? לקבל תשובה קונקרטית כגון אימות דגימה ועיבוד או איסוף תוויות אמינות ותחזיות תואמות."
+        },
+        {
+          "heading": "בדיקת הבנה",
+          "text": "להזכיר שההחלטה יכולה להשתנות עם ראיות חדשות. להודות על ההגשות ולסיים בזמן; הרחבה או הפסקות הן מעבר ל־180 הדקות המתוכננות."
+        }
+      ]
+    }
+  ]
+}

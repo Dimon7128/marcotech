@@ -1,0 +1,14 @@
+{
+  "Reference": {
+    "rows": 10,
+    "average_length": 25.4,
+    "url_like_count": 2,
+    "url_like_percentage": 20.0
+  },
+  "Current": {
+    "rows": 10,
+    "average_length": 109.0,
+    "url_like_count": 8,
+    "url_like_percentage": 80.0
+  }
+}

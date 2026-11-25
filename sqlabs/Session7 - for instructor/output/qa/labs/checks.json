@@ -1,0 +1,97 @@
+{
+  "status": "PASS",
+  "labs": {
+    "3": {
+      "features": {
+        "reference": {
+          "messages": 10,
+          "average_length": 25.4,
+          "url_like_count": 2,
+          "url_like_percentage": 20.0
+        },
+        "current": {
+          "messages": 10,
+          "average_length": 109.0,
+          "url_like_count": 8,
+          "url_like_percentage": 80.0
+        }
+      },
+      "evidently_drifted_columns": 2.0,
+      "script_clean_environment": "PASS",
+      "notebook_clean_environment": "PASS",
+      "raw_text_submitted": false,
+      "clean_python": "/home/dima/git/MLOPS/session7/Session7 - for instructor/../.venv-monitoring-check/bin/python",
+      "timing": "planned; no classroom timing trial"
+    },
+    "4": {
+      "features": {
+        "reference": {
+          "messages": 200,
+          "average_length": 75.7,
+          "url_like_count": 20,
+          "url_like_percentage": 10.0
+        },
+        "current": {
+          "messages": 200,
+          "average_length": 75.7,
+          "url_like_count": 140,
+          "url_like_percentage": 70.0
+        }
+      },
+      "evidently_drifted_columns": 1.0,
+      "script_clean_environment": "PASS",
+      "notebook_clean_environment": "PASS",
+      "raw_text_submitted": false,
+      "clean_python": "/home/dima/git/MLOPS/session7/Session7 - for instructor/../.venv-monitoring-check/bin/python",
+      "timing": "planned; no classroom timing trial"
+    }
+  },
+  "input_error_cases": [
+    "empty",
+    "header_only",
+    "wrong_schema",
+    "blank_message",
+    "duplicate_ids",
+    "blank_id",
+    "malformed",
+    "missing_file"
+  ],
+  "url_edge_cases": 6,
+  "source_sha256": {
+    "labs/lab3/README.md": "92846fdf30c2c88ad4c246fa1b1a3ef7bff516cc50893cbe019fe4b39ff967dc",
+    "labs/lab3/TROUBLESHOOTING.md": "4b639186cc98ff88e411323b87af91244cba5d41aab99e128e95a4141dd2508e",
+    "labs/lab3/WORKSHEET.md": "25f1450afc197d01b91f9d69020d0eb6c90ac6387e9870bae760fddc1acbda68",
+    "labs/lab3/data/current_sms.csv": "2213874bf42d01604dded67016f9cfda50c2df97fbf00d26bd54e1367612159e",
+    "labs/lab3/data/reference_sms.csv": "88647dff87a5a2a2954377716194a6232b5d91fa6602ac9482cf25844f4b9146",
+    "labs/lab3/monitoring.py": "28c9e6539745a698e2de6766caa4ce544d547f85e16454b57352be510bd017d0",
+    "labs/lab3/monitoring_report.ipynb": "0ff6ff30f13f27c24436f1b48bec3fa420d361a47f28080a3d254eef569f60e9",
+    "labs/lab3/requirements.txt": "3c89553e889df35ede197c408e44c1f465d9cfe0eeb0a8c50c9ea0065387cfef",
+    "labs/lab3/run_report.py": "33bd352a593774d7a0bf859d5ee7ec65e817bc018a86fbcecdef3748ae1cbefa",
+    "labs/lab4/HINTS.md": "662d9a43196e1777f5fcb5bcbcaac0dbb93317b6f30ba2e872f4bda02dcc4cff",
+    "labs/lab4/INCIDENT.md": "88033c8ad607a5562c01bd349f7d6d04ef8717f174592dacf8e591f6e3d015d6",
+    "labs/lab4/README.md": "a18077843ebc38b3efdc7a5f4fa8495d756ccf48669cf535a3700fded6cccc54",
+    "labs/lab4/TROUBLESHOOTING.md": "94f49a59a67f62823408a9a3bceb893f55abf87c661a03f0aa70395c75f9040e",
+    "labs/lab4/data/current_sms.csv": "ef5a211ae186bb2782893d85d120bd8e17031c6dd5b5789ac30b2157e7777cf8",
+    "labs/lab4/data/reference_sms.csv": "3068d8b2bfd0a277d77456c3ce800b1aa05aa9fd5608e1d4d3cfd5bdff874ecb",
+    "labs/lab4/monitoring.py": "28c9e6539745a698e2de6766caa4ce544d547f85e16454b57352be510bd017d0",
+    "labs/lab4/monitoring_incident.ipynb": "3a2825cc57d8c75b50d08d83e224f3e6104190e2b7c842ce4ba51eaa2b163d33",
+    "labs/lab4/requirements.txt": "3c89553e889df35ede197c408e44c1f465d9cfe0eeb0a8c50c9ea0065387cfef",
+    "labs/lab4/run_report.py": "33bd352a593774d7a0bf859d5ee7ec65e817bc018a86fbcecdef3748ae1cbefa",
+    "labs/lab4/submission_template.md": "255fe4e12ef846b2ab18142f5fa51330955783e6560768e16a38dd0ac1af63a0"
+  },
+  "notes": "No classifier trained, no raw-text drift model, no labels/predictions, no quality metrics.",
+  "authoring_versions": {
+    "evidently": "0.7.23",
+    "pandas": "2.2.3",
+    "numpy": "2.2.6",
+    "nbformat": "5.11.1",
+    "nbclient": "0.11.0",
+    "ipykernel": "7.3.0"
+  },
+  "clean_environment_versions": {
+    "evidently": "0.7.23",
+    "pandas": "2.2.3",
+    "numpy": "2.2.6",
+    "ipykernel": "7.3.0"
+  }
+}

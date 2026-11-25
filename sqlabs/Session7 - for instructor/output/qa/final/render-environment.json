@@ -1,0 +1,32 @@
+{
+  "rendered_at_utc": "2026-11-21T15:43:33.677892+00:00",
+  "input": "output/Session7_Monitoring_Maintenance.pptx",
+  "input_sha256": "e30c305991c47e977f20965c29d9bc88cc03265d58a4954234594932290d9b6a",
+  "renderer": "LibreOffice 7.3.7.2 30(Build:2)",
+  "resolved_fonts": {
+    "Aptos": "Aptos,Aptos Display",
+    "Aptos Display": "Aptos,Aptos Display",
+    "Aptos Mono": "Aptos Mono",
+    "Arial": "Arial"
+  },
+  "slides_pdf": "Session7_Monitoring_Maintenance.pdf",
+  "actual_notes_pdf": "notes.pdf",
+  "svg_diagrams": [
+    "part1-api-monitoring",
+    "part1-service-health-vs-prediction-quality",
+    "part2-data-vs-concept-drift",
+    "part2-labeled-relationship-change",
+    "part2-reference-vs-current",
+    "part3-evidence-limit",
+    "part3-features",
+    "part3-monitoring-workflow",
+    "part4-candidate-release",
+    "part4-investigation",
+    "part4-monitoring-location",
+    "part4-possible-causes",
+    "part4-three-actions",
+    "part5-incident",
+    "part5-session-recap"
+  ],
+  "powerpoint_desktop": "not verified"
+}

@@ -1,0 +1,293 @@
+{
+  "part": 3,
+  "title": "A simple monitoring report",
+  "slides": [
+    {
+      "id": "p3-objectives",
+      "title": "A simple monitoring report",
+      "layout": "objectives",
+      "minutes": 1,
+      "hands_on_minutes": 0,
+      "objective_label": "Objective",
+      "objective": "Generate and interpret a simple monitoring report.",
+      "goals_label": "Main goals",
+      "lines": [
+        "Prepare two monitoring features.",
+        "Run Evidently and explain one chart.",
+        "State what remains unknown."
+      ],
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "דקה אחת. לפתוח בשם החלק, במטרה ובשלוש תוצאות הלמידה."
+        },
+        {
+          "heading": "מטרה",
+          "text": "להציג את מטרת החלק: להפיק דוח ניטור ולפרש אותו. נכין שני מאפיינים מוכרים, נריץ Evidently ונזהה מה עדיין לא ידוע על תחזיות המודל."
+        },
+        {
+          "heading": "הנחיית הוראה",
+          "text": "להזכיר שהקוד מסופק ושהמיקוד הוא קריאת תרשים ומסקנה עם מגבלה. נשתמש באותם נתוני Lab 2, ללא מודל חדש וללא תוויות איכות חדשות."
+        },
+        {
+          "heading": "מעבר",
+          "text": "לעבור מההשוואה הידנית למסלול האוטומטי של הפקת דוח."
+        }
+      ]
+    },
+    {
+      "id": "p3-01",
+      "title": "From Checks to Monitoring Reports",
+      "layout": "diagram_takeaway",
+      "minutes": 1,
+      "hands_on_minutes": 0,
+      "diagram": "part3-monitoring-workflow",
+      "takeaway": "Automated comparisons make changes easier to inspect.",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "דקה אחת לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "הסבר",
+          "text": "לחבר בקצרה למעבדה 2: שם השווינו שני סיכומים ידנית. כאן אותם קבצים ואותם כללי מאפיינים נכנסים לדוח. `Reference` הוא הבסיס המוקדם ו־`Current` הוא האצווה החדשה; אינם סטי אימון ומבחן."
+        },
+        {
+          "heading": "שאלת הוראה",
+          "text": "מה כלי ההשוואה יכול לחסוך? תשובה צפויה: חישוב והצגה עקביים, בלי לקבוע לבדו מה הפעולה הנכונה."
+        },
+        {
+          "heading": "מעבר",
+          "text": "נכיר ספרייה אחת, ואז נקרא דוח אמיתי שנוצר מהנתונים שלנו."
+        }
+      ]
+    },
+    {
+      "id": "p3-02",
+      "title": "Meet Evidently",
+      "layout": "plain_takeaway",
+      "minutes": 1,
+      "hands_on_minutes": 0,
+      "lines": [
+        "A Python library for evaluating data and models.",
+        "Today: compare two batches using a drift report."
+      ],
+      "takeaway": "Start with the same two familiar features.",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "דקה אחת לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "הסבר",
+          "text": "`Evidently` היא ספריית Python להערכת נתונים והתנהגות מודלים, כולל שינויים בנתונים. היום משתמשים רק בדוח `DataDriftPreset` מקומי. הסביבה שנבדקה משתמשת בגרסה `0.7.23`; ההתקנה מוכנה מראש."
+        },
+        {
+          "heading": "גבול השיעור",
+          "text": "לא לפתוח שירות ענן, תשתית ניטור, מבחנים סטטיסטיים או ספים מותאמים. הקוד המלא מחכה במחברת; אין צורך לזכור את ה־API."
+        },
+        {
+          "heading": "מעבר",
+          "text": "לפני קריאת הדוח נוודא מה בדיוק הכלי מקבל."
+        }
+      ]
+    },
+    {
+      "id": "p3-03",
+      "title": "Two Batches, Two Features",
+      "layout": "diagram_takeaway",
+      "minutes": 1,
+      "hands_on_minutes": 0,
+      "diagram": "part3-features",
+      "takeaway": "Use the same rules for reference and current.",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "דקה אחת לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "הסבר",
+          "text": "שני הקבצים הועתקו מ־Lab 2 ללא שינוי. לכל הודעה מחשבים `message_length` כמספר התווים השמורים, ו־`has_url` כ־`yes` אם הטקסט באותיות קטנות מכיל `http://`, `https://` או `www.`. זה בדיוק אותו כלל של `has_url_like`."
+        },
+        {
+          "heading": "דגש",
+          "text": "האורך מוגדר מספרי והקישור קטגוריאלי. רק שתי העמודות האלה נכנסות לכלי; לא הטקסט הגולמי, מזהים, תוויות או תחזיות. אין כאן אימון מסווג טקסט נוסף."
+        },
+        {
+          "heading": "מעבר",
+          "text": "נראה היכן שני המאפיינים מופיעים בתוצאת הרצה אמיתית."
+        }
+      ]
+    },
+    {
+      "id": "p3-04",
+      "title": "Read the Real Report",
+      "layout": "report_overview",
+      "minutes": 1,
+      "hands_on_minutes": 0,
+      "image": "labs/lab3/output/report_features.png",
+      "image_role": "actual Evidently report excerpt",
+      "lines": [
+        "Reference: earlier batch. Current: newer batch.",
+        "Both features are flagged in this prepared example."
+      ],
+      "takeaway": "A drift warning asks us to investigate.",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "דקה אחת לפי התכנון. זמן פתיחת המטרות נכלל במשך החלק ואינו תוספת למעבדה."
+        },
+        {
+          "heading": "הדגמה",
+          "text": "זו תמונה מתוך HTML שהופק בפועל עם `Evidently 0.7.23`, ולא תוצאה מאוירת. לפתוח גם את `labs/lab3/output/monitoring_report.html`. להצביע על `has_url`, `message_length`, התפלגות הבסיס, ההתפלגות החדשה וסימון `Detected`."
+        },
+        {
+          "heading": "שאלת הוראה",
+          "text": "100% מהעמודות מסומנות — האם 100% מהתחזיות שגויות? תשובה: לא; אלו שתי עמודות נתונים בלבד, לא תחזיות עם תוויות."
+        },
+        {
+          "heading": "טעות נפוצה",
+          "text": "הממשק המלא מציג גם שיטה וציון. לא להסביר חישובים או ספים; התוצאה תלויה בשיטת הכלי ובמדגם הסינתטי הקטן."
+        },
+        {
+          "heading": "מעבר",
+          "text": "נפתח מאפיין אחד ונקרא את העמודות עם המקרא."
+        }
+      ]
+    },
+    {
+      "id": "p3-05",
+      "title": "Explain One Chart",
+      "layout": "report_chart",
+      "minutes": 2,
+      "hands_on_minutes": 0,
+      "image": "labs/lab3/output/url_distribution.png",
+      "image_role": "actual Evidently URL distribution chart",
+      "lines": [
+        "URL-like messages",
+        "Reference: 2 of 10",
+        "Current: 8 of 10"
+      ],
+      "takeaway": "More URL-like patterns; prediction quality remains unknown.",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "2 דקות לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "הדגמה",
+          "text": "התרשים מציג את השורה `has_url` לאחר פתיחתה. ציר הספירה הוא מספר הודעות, והקטגוריה `yes` היא דפוס דמוי URL. המקרא מסמן אדום כ־`current` ואפור כ־`reference`. ב־`yes` רואים 8 לעומת 2; בשתי הקבוצות 10 הודעות, כלומר 80% לעומת 20%."
+        },
+        {
+          "heading": "שאלה ותשובה",
+          "text": "האם כל הודעה עם קישור היא spam? לא. גם הודעת שירות או עדכון מבוקש יכולה להכיל קישור; זו תכונת קלט בלבד."
+        },
+        {
+          "heading": "דגש",
+          "text": "אלה עשר הודעות סינתטיות בכל קבוצה. לא לטעון שזה שיעור אמיתי באוכלוסייה או שדיוק המודל השתנה."
+        },
+        {
+          "heading": "מעבר",
+          "text": "נסכם בדיוק איזה סוג ראיה חסר לנו."
+        }
+      ]
+    },
+    {
+      "id": "p3-06",
+      "title": "Changed Data, Unknown Accuracy",
+      "layout": "diagram_takeaway",
+      "minutes": 1,
+      "hands_on_minutes": 0,
+      "diagram": "part3-evidence-limit",
+      "takeaway": "A data drift report is not an accuracy report.",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "דקה אחת לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "הסבר",
+          "text": "הדוח מודד שינויים במאפייני קלט. כדי להעריך `precision` ו־`recall` צריך לחבר תחזיות לתוויות אמינות של אותן הודעות, במדגם מתאים. בדוח הזה אין אף אחת משתי הראיות האלה."
+        },
+        {
+          "heading": "שאלה ותשובה",
+          "text": "יותר קישורים היום — האם המודל פחות מדויק? אין מספיק מידע. אפשר לבדוק דגימה ועיבוד ולאסוף תוויות לתחזיות; לא לחשב איכות מהתרשים."
+        },
+        {
+          "heading": "מעבר",
+          "text": "עכשיו כל סטודנט יפיק או יפתח את הדוח ויכתוב פירוש קצר בעצמו."
+        }
+      ]
+    },
+    {
+      "id": "p3-07",
+      "title": "Lab 3: Generate and Interpret",
+      "layout": "lab",
+      "minutes": 25,
+      "hands_on_minutes": 25,
+      "lines": [
+        "Run the supplied report.",
+        "Explain one chart and its limits.",
+        "Name the next evidence to collect."
+      ],
+      "guide": "Lab 3 guide and notebook",
+      "badge": "25 minutes",
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "25 דקות לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "מטרה והכנה",
+          "text": "להפיק דוח או לבדוק את הדוח המוכן ולהסביר שינוי אחד. להשתמש ב־`labs/lab3/README.md` ובמחברת או ב־`run_report.py`; הסביבה מותקנת לפני השיעור. אין השלמת קוד או אימון."
+        },
+        {
+          "heading": "חלוקת זמן",
+          "text": "5 דקות טעינה וסקירת מאפיינים, 10 הפקה ופתיחת HTML, 7 פירוש התרשים ו־3 הצעת ראיה הבאה. לא להוסיף הקדמה נפרדת לזמן העבודה."
+        },
+        {
+          "heading": "תוצאה צפויה",
+          "text": "10 הודעות בכל קבוצה; אורך ממוצע 25.4 לעומת 109.0; דפוס קישור ב־2 מתוך 10 לעומת 8 מתוך 10. שני המאפיינים מסומנים. ההגשה היא דוח שנוצר או נבדק ו־`WORKSHEET.md` קצר."
+        },
+        {
+          "heading": "תקלות וחלופה",
+          "text": "בחירת kernel שגוי או נתיב קובץ שגוי הן תקלות סבירות. אחרי כמה דקות לפתוח את ה־HTML, התמונה וסיכום המאפיינים שכבר נמצאים ב־output ולהמשיך באותן שאלות."
+        },
+        {
+          "heading": "התערבות ומעבר",
+          "text": "לשאול מה רואים ומה עדיין לא יודעים, בלי לכתוב את התשובה עבורם. בסיום לבקש ראיה קונקרטית אחת להערכת איכות ולעבור לתגובה אחרי התראה."
+        }
+      ]
+    },
+    {
+      "id": "p3-08",
+      "title": "What Evidence Comes Next?",
+      "layout": "plain",
+      "minutes": 2,
+      "hands_on_minutes": 0,
+      "lines": [
+        "What changed in the input?",
+        "What would help us judge the predictions?",
+        "What should we inspect before acting?"
+      ],
+      "notes": [
+        {
+          "heading": "משך",
+          "text": "2 דקות לפי התכנון; לא להוסיף את זמן הפעילות שוב."
+        },
+        {
+          "heading": "דיון",
+          "text": "לבקש משני סטודנטים משפט עם תצפית ומשפט עם מגבלה. תשובה אפשרית: שיעור דפוסי URL עלה; לא ידוע אם סיווגי spam טובים פחות."
+        },
+        {
+          "heading": "תשובה צפויה",
+          "text": "לבדוק עקביות איסוף ועיבוד, ואז לאסוף תוויות אמינות למדגם מייצג ולחבר לתחזיות תואמות. שינוי בהתפלגות אינו אבחון של הסיבה."
+        },
+        {
+          "heading": "מעבר",
+          "text": "בחלק 4 לא נכתוב עוד קוד. נבחן מה עושים אחרי שקיבלנו סימן שדורש תשומת לב."
+        }
+      ]
+    }
+  ]
+}

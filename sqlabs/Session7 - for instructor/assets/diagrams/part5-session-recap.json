@@ -1,0 +1,149 @@
+{
+  "title": "Monitoring leads to an evidence-based decision",
+  "width": 11.89,
+  "height": 3.1,
+  "elements": [
+    {
+      "type": "rect",
+      "x": 0.0,
+      "y": 0.35,
+      "w": 2.0580000000000003,
+      "h": 2.4,
+      "fill": "F5F6F7",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 0.12,
+      "y": 0.8,
+      "w": 1.8180000000000003,
+      "h": 1.5,
+      "text": "Check\nservice",
+      "size": 24,
+      "bold": true,
+      "color": "24292D",
+      "align": "center",
+      "vertical": "middle"
+    },
+    {
+      "type": "arrow",
+      "x1": 2.128,
+      "y1": 1.55,
+      "x2": 2.3880000000000003,
+      "y2": 1.55,
+      "line": "196B24"
+    },
+    {
+      "type": "rect",
+      "x": 2.458,
+      "y": 0.35,
+      "w": 2.0580000000000003,
+      "h": 2.4,
+      "fill": "F5F6F7",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 2.5780000000000003,
+      "y": 0.8,
+      "w": 1.8180000000000003,
+      "h": 1.5,
+      "text": "Compare\ndata",
+      "size": 24,
+      "bold": true,
+      "color": "24292D",
+      "align": "center",
+      "vertical": "middle"
+    },
+    {
+      "type": "arrow",
+      "x1": 4.586,
+      "y1": 1.55,
+      "x2": 4.846,
+      "y2": 1.55,
+      "line": "196B24"
+    },
+    {
+      "type": "rect",
+      "x": 4.916,
+      "y": 0.35,
+      "w": 2.0580000000000003,
+      "h": 2.4,
+      "fill": "F5F6F7",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 5.0360000000000005,
+      "y": 0.8,
+      "w": 1.8180000000000003,
+      "h": 1.5,
+      "text": "Read\nthe report",
+      "size": 24,
+      "bold": true,
+      "color": "24292D",
+      "align": "center",
+      "vertical": "middle"
+    },
+    {
+      "type": "arrow",
+      "x1": 7.0440000000000005,
+      "y1": 1.55,
+      "x2": 7.304,
+      "y2": 1.55,
+      "line": "196B24"
+    },
+    {
+      "type": "rect",
+      "x": 7.3740000000000006,
+      "y": 0.35,
+      "w": 2.0580000000000003,
+      "h": 2.4,
+      "fill": "F5F6F7",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 7.494000000000001,
+      "y": 0.8,
+      "w": 1.8180000000000003,
+      "h": 1.5,
+      "text": "Investigate\nthe cause",
+      "size": 24,
+      "bold": true,
+      "color": "24292D",
+      "align": "center",
+      "vertical": "middle"
+    },
+    {
+      "type": "arrow",
+      "x1": 9.502,
+      "y1": 1.55,
+      "x2": 9.762,
+      "y2": 1.55,
+      "line": "196B24"
+    },
+    {
+      "type": "rect",
+      "x": 9.832,
+      "y": 0.35,
+      "w": 2.0580000000000003,
+      "h": 2.4,
+      "fill": "F1F7F2",
+      "line": "D5DDD6"
+    },
+    {
+      "type": "text",
+      "x": 9.952,
+      "y": 0.8,
+      "w": 1.8180000000000003,
+      "h": 1.5,
+      "text": "Decide\nand monitor",
+      "size": 24,
+      "bold": true,
+      "color": "196B24",
+      "align": "center",
+      "vertical": "middle"
+    }
+  ]
+}

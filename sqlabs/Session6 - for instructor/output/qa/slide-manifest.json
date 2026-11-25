@@ -1,0 +1,314 @@
+[
+  {
+    "slide": 1,
+    "part": 1,
+    "title": "From Working Code to Reliable Changes",
+    "minutes": 3.0,
+    "body_words": 14,
+    "notes_characters": 764
+  },
+  {
+    "slide": 2,
+    "part": 1,
+    "title": "Why Do We Need Automation?",
+    "minutes": 3.0,
+    "body_words": 18,
+    "notes_characters": 955
+  },
+  {
+    "slide": 3,
+    "part": 1,
+    "title": "Continuous Integration (CI)",
+    "minutes": 3.0,
+    "body_words": 17,
+    "notes_characters": 800
+  },
+  {
+    "slide": 4,
+    "part": 1,
+    "title": "CI vs CD vs CT",
+    "minutes": 5.0,
+    "body_words": 27,
+    "notes_characters": 1234
+  },
+  {
+    "slide": 5,
+    "part": 1,
+    "title": "What Can Change in an ML Project?",
+    "minutes": 4.0,
+    "body_words": 18,
+    "notes_characters": 1126
+  },
+  {
+    "slide": 6,
+    "part": 1,
+    "title": "Our First CI Pipeline",
+    "minutes": 5.0,
+    "body_words": 29,
+    "notes_characters": 1382
+  },
+  {
+    "slide": 7,
+    "part": 1,
+    "title": "What Will We Build Today?",
+    "minutes": 2.0,
+    "body_words": 17,
+    "notes_characters": 969
+  },
+  {
+    "slide": 8,
+    "part": 2,
+    "title": "API Tests vs Model Evaluation",
+    "minutes": 1.5,
+    "body_words": 24,
+    "notes_characters": 580
+  },
+  {
+    "slide": 9,
+    "part": 2,
+    "title": "A Schema Defines Valid Input",
+    "minutes": 1.5,
+    "body_words": 16,
+    "notes_characters": 732
+  },
+  {
+    "slide": 10,
+    "part": 2,
+    "title": "Add an API Input Limit",
+    "minutes": 1.5,
+    "body_words": 16,
+    "notes_characters": 684
+  },
+  {
+    "slide": 11,
+    "part": 2,
+    "title": "Test 1: Health Check",
+    "minutes": 1.0,
+    "body_words": 12,
+    "notes_characters": 542
+  },
+  {
+    "slide": 12,
+    "part": 2,
+    "title": "Test 2: Valid Prediction",
+    "minutes": 1.5,
+    "body_words": 15,
+    "notes_characters": 607
+  },
+  {
+    "slide": 13,
+    "part": 2,
+    "title": "Test 3: Invalid Input",
+    "minutes": 1.5,
+    "body_words": 18,
+    "notes_characters": 704
+  },
+  {
+    "slide": 14,
+    "part": 2,
+    "title": "Meet pytest",
+    "minutes": 1.5,
+    "body_words": 13,
+    "notes_characters": 647
+  },
+  {
+    "slide": 15,
+    "part": 2,
+    "title": "FastAPI TestClient",
+    "minutes": 2.0,
+    "body_words": 16,
+    "notes_characters": 711
+  },
+  {
+    "slide": 16,
+    "part": 2,
+    "title": "Run and Understand Your Tests",
+    "minutes": 3.0,
+    "body_words": 19,
+    "notes_characters": 1047
+  },
+  {
+    "slide": 17,
+    "part": 2,
+    "title": "Guided Lab 1: Test the SMS API",
+    "minutes": 25.0,
+    "body_words": 17,
+    "notes_characters": 1480
+  },
+  {
+    "slide": 18,
+    "part": 3,
+    "title": "From Manual to Automatic Tests",
+    "minutes": 1.0,
+    "body_words": 17,
+    "notes_characters": 403
+  },
+  {
+    "slide": 19,
+    "part": 3,
+    "title": "What Is GitHub Actions?",
+    "minutes": 1.0,
+    "body_words": 18,
+    "notes_characters": 397
+  },
+  {
+    "slide": 20,
+    "part": 3,
+    "title": "Four Important Terms",
+    "minutes": 2.0,
+    "body_words": 15,
+    "notes_characters": 590
+  },
+  {
+    "slide": 21,
+    "part": 3,
+    "title": "Where Does the Workflow Live?",
+    "minutes": 1.0,
+    "body_words": 16,
+    "notes_characters": 491
+  },
+  {
+    "slide": 22,
+    "part": 3,
+    "title": "Our CI Workflow",
+    "minutes": 2.0,
+    "body_words": 22,
+    "notes_characters": 712
+  },
+  {
+    "slide": 23,
+    "part": 3,
+    "title": "Read the YAML Structure",
+    "minutes": 2.0,
+    "body_words": 18,
+    "notes_characters": 639
+  },
+  {
+    "slide": 24,
+    "part": 3,
+    "title": "When a Step Fails",
+    "minutes": 3.0,
+    "body_words": 20,
+    "notes_characters": 847
+  },
+  {
+    "slide": 25,
+    "part": 3,
+    "title": "When Everything Passes",
+    "minutes": 3.0,
+    "body_words": 20,
+    "notes_characters": 948
+  },
+  {
+    "slide": 26,
+    "part": 3,
+    "title": "Guided Lab 1: Automate the SMS API",
+    "minutes": 35.0,
+    "body_words": 19,
+    "notes_characters": 1221
+  },
+  {
+    "slide": 27,
+    "part": 4,
+    "title": "CI Passed. Are We Live?",
+    "minutes": 3.0,
+    "body_words": 22,
+    "notes_characters": 838
+  },
+  {
+    "slide": 28,
+    "part": 4,
+    "title": "Identify the Version",
+    "minutes": 5.0,
+    "body_words": 17,
+    "notes_characters": 1275
+  },
+  {
+    "slide": 29,
+    "part": 4,
+    "title": "Who Approves the Release?",
+    "minutes": 4.0,
+    "body_words": 18,
+    "notes_characters": 981
+  },
+  {
+    "slide": 30,
+    "part": 4,
+    "title": "Smoke Test: Does It Actually Work?",
+    "minutes": 5.0,
+    "body_words": 22,
+    "notes_characters": 1325
+  },
+  {
+    "slide": 31,
+    "part": 4,
+    "title": "Rollback: What If Something Breaks?",
+    "minutes": 5.0,
+    "body_words": 16,
+    "notes_characters": 1187
+  },
+  {
+    "slide": 32,
+    "part": 4,
+    "title": "The Complete SMS Release Story",
+    "minutes": 8.0,
+    "body_words": 29,
+    "notes_characters": 2432
+  },
+  {
+    "slide": 33,
+    "part": 5,
+    "title": "Your CI Challenge",
+    "minutes": 1.0,
+    "body_words": 17,
+    "notes_characters": 427
+  },
+  {
+    "slide": 34,
+    "part": 5,
+    "title": "Choose Your Mission",
+    "minutes": 1.5,
+    "body_words": 16,
+    "notes_characters": 1005
+  },
+  {
+    "slide": 35,
+    "part": 5,
+    "title": "What Does Success Look Like?",
+    "minutes": 1.0,
+    "body_words": 17,
+    "notes_characters": 483
+  },
+  {
+    "slide": 36,
+    "part": 5,
+    "title": "Prove Your Solution",
+    "minutes": 1.5,
+    "body_words": 16,
+    "notes_characters": 722
+  },
+  {
+    "slide": 37,
+    "part": 5,
+    "title": "Work Independently",
+    "minutes": 47.0,
+    "body_words": 19,
+    "notes_characters": 1566
+  },
+  {
+    "slide": 38,
+    "part": 5,
+    "title": "Share Your Approach",
+    "minutes": 5.0,
+    "body_words": 13,
+    "notes_characters": 582
+  },
+  {
+    "slide": 39,
+    "part": 5,
+    "title": "Session 6 Recap",
+    "minutes": 3.0,
+    "body_words": 22,
+    "notes_characters": 737
+  }
+]

@@ -1,0 +1,7 @@
+record_id,http_status,synthetic_sms,predicted_label,true_label
+sms-01,200,URGENT! Claim your free prize now!,ham,spam
+sms-02,200,Can we meet at five today?,ham,ham
+sms-03,200,WIN a free gift! Claim your reward today!,spam,spam
+sms-04,200,Your appointment is confirmed for Monday.,spam,ham
+sms-05,200,Please bring the notebook to class.,ham,ham
+sms-06,200,Exclusive offer! Reply now to claim a free prize.,spam,spam
